@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SimpleCMS</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<div class="container">
+  <% flash.each do |k, v| %>
+    <div class="alert alert-<%= k %> alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <%= v %>
+    </div>
+  <% end %>
+
+  <%= yield %>
+</div>
+
+</body>
+</html>

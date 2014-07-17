@@ -1,0 +1,29 @@
+<h1><%= @problem.title %></h1>
+<p><%= @problem.statement %></p>
+
+<% if signed_in? %>
+  <% @problem.tasks.each do |task| %>
+    <div class="well">
+    <%= form_for(:submission, :url => submissions_path) do |f| %>
+      <pre><%= task.input %></pre>
+
+      <%= f.hidden_field(:task_id, :value => task.id) %>
+
+      <div class="form-group">
+        <%= f.label :input, "Answer" %>
+        <%= f.text_area :input, :class => "form-control" %>
+      </div>
+
+      <%= f.submit "Submit", :class => "btn btn-primary" %>
+
+      <% if task.solved_by?(current_user) %>
+        <span class="label label-success">Solved!</span>
+      <% elsif task.attempted_by?(current_user) %>
+        <span class="label label-danger">Wrong answer</span>
+      <% end %>
+    <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <p>
+<% end %>

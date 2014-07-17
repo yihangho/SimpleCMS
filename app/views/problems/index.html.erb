@@ -1,0 +1,7 @@
+<h1>Problems</h1>
+
+<ul>
+    <% @problems.each do |problem| %>
+        <li><%= link_to problem.title, problem %></li>
+    <% end %>
+</ul>

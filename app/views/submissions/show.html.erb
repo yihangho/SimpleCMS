@@ -1,0 +1,13 @@
+<h1>Submission <%= @submission.id %></h1>
+<h2>Input</h2>
+<p class="well"><%= @submission.task.input %></p>
+<h2>Your Answer</h2>
+<p class="well"><%= @submission.input %></p>
+<p>
+  Status:
+  <% if @submission.correct_input? %>
+    <span class="label label-success">Accepted</span>
+  <% else %>
+    <span class="label label-danger">Wrong Answer</span>
+  <% end %>
+</p>

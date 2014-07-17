@@ -1,0 +1,24 @@
+<h1>My Submissions</h1>
+
+<table class="table">
+  <thead>
+    <th>ID</th>
+    <th>Problem</th>
+    <th>Status</th>
+  </thead>
+  <tbody>
+    <% current_user.submissions.each do |submission| %>
+      <tr>
+        <td><%= link_to submission.id, submission %></td>
+        <td><%= submission.task.problem.title %></td>
+        <td>
+          <% if submission.correct_input? %>
+            <p class="text-success">Accepted</p>
+          <% else %>
+            <p class="text-danger">Wrong Answer</p>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

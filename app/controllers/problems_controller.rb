@@ -1,4 +1,6 @@
 class ProblemsController < ApplicationController
+  before_action :correct_user, :only => [:new, :create]
+
   def index
     @problems = Problem.all
   end
@@ -32,5 +34,9 @@ class ProblemsController < ApplicationController
 
   def tasks_params
     params.require(:problem).require(:tasks).permit!
+  end
+
+  def correct_user
+    redirect_to signin_path unless signed_in? and current_user.admin?
   end
 end

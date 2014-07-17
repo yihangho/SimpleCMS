@@ -7,7 +7,7 @@
     <th>Status</th>
   </thead>
   <tbody>
-    <% current_user.submissions.each do |submission| %>
+    <% current_user.submissions.reverse.each do |submission| %>
       <tr>
         <td><%= link_to submission.id, submission %></td>
         <td><%= submission.task.problem.title %></td>

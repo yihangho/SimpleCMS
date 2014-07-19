@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  validates :email, :format => { :with => /\A.+?@.+?\..+\z/ }
   has_secure_password
   has_many :submissions
 

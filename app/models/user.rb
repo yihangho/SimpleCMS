@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   validates :email, :format => { :with => /\A.+?@.+?\..+\z/ }
   has_secure_password
   has_many :submissions
+  has_many :set_problems, :class_name => "Problem", :foreign_key => "setter_id"
 
   def self.new_remember_token
     SecureRandom.uuid

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :users, :only => [:new, :create]
   resources :sessions, :only => :create
   resources :submissions, :only => [:index, :create, :show]
-  resources :contests, :only => [:index, :new, :create]
+  resources :contests, :only => [:index, :new, :create, :show]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

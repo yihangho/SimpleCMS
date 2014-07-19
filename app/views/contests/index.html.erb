@@ -2,6 +2,6 @@
 
 <ul>
   <% @contests.each do |c| %>
-    <li><%= c.title %></li>
+    <li><%= link_to c.title, c %></li>
   <% end %>
 </ul>

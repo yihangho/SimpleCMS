@@ -16,6 +16,10 @@ class ContestsController < ApplicationController
     end
   end
 
+  def show
+    @contest = Contest.find(params[:id])
+  end
+
   private
 
   def contest_params

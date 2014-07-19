@@ -1,4 +1,6 @@
 class ContestsController < ApplicationController
+  before_action :only_admin, :only => [:new, :create]
+
   def index
     @contests = Contest.all
   end
@@ -24,5 +26,9 @@ class ContestsController < ApplicationController
 
   def contest_params
     params.require(:contest).permit(:title, :start, :end)
+  end
+
+  def only_admin
+    redirect_to contests_path unless signed_in? && current_user.admin?
   end
 end

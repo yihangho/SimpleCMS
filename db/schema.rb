@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140719013519) do
+ActiveRecord::Schema.define(version: 20140719040043) do
 
   create_table "contests", force: true do |t|
     t.string   "title"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20140719013519) do
     t.text     "input"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "accepted"
   end
 
   create_table "tasks", force: true do |t|

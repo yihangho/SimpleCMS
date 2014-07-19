@@ -5,4 +5,8 @@ class Submission < ActiveRecord::Base
   def correct_input?
     input == task.output
   end
+
+  def grade
+    self.accepted = correct_input?
+  end
 end

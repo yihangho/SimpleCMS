@@ -12,6 +12,7 @@ class ContestsController < ApplicationController
   def create
     @contest = Contest.create(contest_params)
     if @contest.save
+      @contest.problem_ids = contest_params[:problem_ids]
       redirect_to contests_path
     else
       render 'new'
@@ -25,7 +26,7 @@ class ContestsController < ApplicationController
   private
 
   def contest_params
-    params.require(:contest).permit(:title, :start, :end)
+    params.require(:contest).permit(:title, :start, :end, { :problem_ids => [] })
   end
 
   def only_admin

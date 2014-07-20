@@ -16,5 +16,15 @@
     <%= f.datetime_field :end, :class => "form-control" %>
   </div>
 
+  <div class="form-group">
+  <% p f.class %>
+    <%= f.label :problem_ids %>
+    <%= f.select(:problem_ids,
+      options_for_select(Problem.all.map { |problem| [problem.title, problem.id]}),
+      {},
+      :class => "form-control", :multiple => true
+      ) %>
+  </div>
+
   <%= f.submit "Create", :class => "btn btn-primary" %>
 <% end %>

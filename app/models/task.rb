@@ -3,7 +3,7 @@ class Task < ActiveRecord::Base
   has_many :submissions
 
   def solved_by?(user)
-    !user.submissions.where("task_id = #{id}").none? { |x| x.correct_input? }
+    !user.submissions.where("task_id = #{id}").none? { |x| x.accepted? }
   end
 
   def attempted_by?(user)

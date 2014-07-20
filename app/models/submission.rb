@@ -7,6 +7,7 @@ class Submission < ActiveRecord::Base
   end
 
   def grade
-    self.accepted = correct_input?
+    update_attribute(:accepted, correct_input?)
+    self.accepted
   end
 end

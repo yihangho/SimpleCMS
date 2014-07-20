@@ -11,7 +11,7 @@ class SubmissionsController < ApplicationController
         submission.update_attribute(:user_id, current_user.id)
       end
 
-      if submission.correct_input?
+      if submission.grade
         flash[:success] = "Your last submission was correct."
       else
         flash[:danger] = "Your last submission was incorrect."

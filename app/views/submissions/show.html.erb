@@ -5,8 +5,10 @@
 <p class="well"><%= @submission.input %></p>
 <p>
   Status:
-  <% if @submission.correct_input? %>
+  <% if @submission.accepted? %>
     <span class="label label-success">Accepted</span>
+  <% elsif @submission.accepted.nil? %>
+    <span class="label label-warning">Ungraded</span>
   <% else %>
     <span class="label label-danger">Wrong Answer</span>
   <% end %>

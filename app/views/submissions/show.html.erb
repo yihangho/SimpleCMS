@@ -3,6 +3,13 @@
 <p class="well"><%= @submission.task.input %></p>
 <h2>Your Answer</h2>
 <p class="well"><%= @submission.input %></p>
+
+<% if @submission.code_link %>
+  <p>
+    <%= link_to "Link to code", @submission.code_link %>
+  </p>
+<% end %>
+
 <p>
   Status:
   <% if @submission.accepted? %>

@@ -1,4 +1,10 @@
-<h1><%= @problem.title %></h1>
+<h1>
+  <%= @problem.title %>
+
+  <% if signed_in? and @problem.solvers.include?(current_user) %>
+    <span class="label label-success">Solved</span>
+  <% end %>
+</h1>
 <p><%= @problem.statement %></p>
 
 <% if signed_in? %>

@@ -23,3 +23,19 @@
     <p>You are not invited.</p>
   <% end %>
 <% end %>
+
+<% if signed_in? and current_user == @contest.creator %>
+<h2>Invited Users</h2>
+<ul>
+  <% @contest.invited_users.each do |user| %>
+    <li><%= user.email %></li>
+  <% end %>
+</ul>
+
+<h2>Participants</h2>
+<ul>
+  <% @contest.participants.each do |user| %>
+    <li><%= user.email %></li>
+  <% end %>
+</ul>
+<% end %>

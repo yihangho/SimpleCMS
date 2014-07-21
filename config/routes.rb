@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'signin' => 'sessions#new'
+  get 'signin' => 'sessions#new', :as => 'signin'
   resources :problems, :only => [:index, :new, :create, :show]
   resources :users, :only => [:new, :create]
   resources :sessions, :only => :create

@@ -1,5 +1,6 @@
 class ContestsController < ApplicationController
   before_action :only_admin, :only => [:new, :create, :edit, :update]
+  before_action :must_be_signed_in, :only => [:participate]
 
   def index
     @contests = Contest.all
@@ -36,6 +37,12 @@ class ContestsController < ApplicationController
     end
   end
 
+  def participate
+    @contest = Contest.find(params[:id])
+    @contest.participant_ids |= [current_user.id]
+    redirect_to show_contests_path(@contest)
+  end
+
   private
 
   def contest_params
@@ -44,5 +51,9 @@ class ContestsController < ApplicationController
 
   def only_admin
     redirect_to contests_path unless signed_in? && current_user.admin?
+  end
+
+  def must_be_signed_in
+    redirect_to contests_path unless signed_in?
   end
 end

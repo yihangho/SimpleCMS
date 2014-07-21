@@ -16,6 +16,8 @@ class SubmissionsController < ApplicationController
       else
         flash[:danger] = "Your last submission was incorrect."
       end
+
+      submission.task.problem.cache_solved_status(current_user)
     end
     redirect_to submission.task.problem
   end

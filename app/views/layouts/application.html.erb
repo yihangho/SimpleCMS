@@ -27,6 +27,7 @@
             <li><%= link_to "Submissions", submissions_path %></li>
             <li><%= link_to "Problems", problems_path %></li>
             <li><%= link_to "Contests", contests_path %></li>
+            <li><%= link_to "Sign Out", signout_path, :method => :delete %></li>
           <% else %>
             <li><%= link_to "Sign In", signin_path %></li>
             <li><%= link_to "Regsiter", new_user_path %></li>

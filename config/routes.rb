@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'signin' => 'sessions#new', :as => 'signin'
+  delete 'signout' => 'sessions#destroy', :as => 'signout'
   resources :problems, :only => [:index, :new, :create, :show]
   resources :users, :only => [:new, :create]
   resources :sessions, :only => :create

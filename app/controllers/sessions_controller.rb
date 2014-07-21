@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_action :signed_in
+  before_action :signed_in, :except => :destroy
 
   def new
   end
@@ -12,6 +12,11 @@ class SessionsController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  def destroy
+    sign_out
+    redirect_to signin_path
   end
 
   private

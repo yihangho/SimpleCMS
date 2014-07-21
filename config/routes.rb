@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   delete 'signout' => 'sessions#destroy', :as => 'signout'
   post '/contests/:id/participate' => 'contests#participate', :as => 'participate_contest'
   resources :problems, :only => [:index, :new, :create, :show]
-  resources :users, :only => [:new, :create]
+  resources :users, :only => [:new, :create, :show]
   resources :sessions, :only => :create
   resources :submissions, :only => [:index, :create, :show]
   resources :contests, :only => [:index, :new, :create, :show, :edit, :update]

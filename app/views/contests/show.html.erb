@@ -1,15 +1,6 @@
 <h1><%= @contest.title %></h1>
 
-<p>
-  Status:
-  <% if Time.now < @contest.start %>
-    Not started
-  <% elsif Time.now >= @contest.start && Time.now <= @contest.end %>
-    In progress
-  <% elsif Time.now > @contest.end %>
-    Ended
-  <% end %>
-</p>
+<p>Status: <%= @contest.status %></p>
 
 <% if signed_in? %>
   <% if @contest.participants.include?(current_user) %>

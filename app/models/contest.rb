@@ -12,4 +12,14 @@ class Contest < ActiveRecord::Base
       errors.add(:start, "can't happen after end")
     end
   end
+
+  def status
+    if Time.now < self.start
+      :not_started
+    elsif Time.now >= self.start && Time.now <= self.end
+      :in_progress
+    elsif Time.now > self.end
+      :ended
+    end
+  end
 end

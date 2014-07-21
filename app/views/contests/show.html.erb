@@ -28,14 +28,14 @@
 <h2>Invited Users</h2>
 <ul>
   <% @contest.invited_users.each do |user| %>
-    <li><%= user.email %></li>
+    <li><%= link_to user.email, user %></li>
   <% end %>
 </ul>
 
 <h2>Participants</h2>
 <ul>
   <% @contest.participants.each do |user| %>
-    <li><%= user.email %></li>
+    <li><%= link_to user.email, user %></li>
   <% end %>
 </ul>
 <% end %>

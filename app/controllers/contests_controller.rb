@@ -1,5 +1,5 @@
 class ContestsController < ApplicationController
-  before_action :only_admin, :only => [:new, :create]
+  before_action :only_admin, :only => [:new, :create, :edit, :update]
 
   def index
     @contests = Contest.all
@@ -21,6 +21,19 @@ class ContestsController < ApplicationController
 
   def show
     @contest = Contest.find(params[:id])
+  end
+
+  def edit
+    @contest = Contest.find(params[:id])
+  end
+
+  def update
+    @contest = Contest.find(params[:id])
+    if @contest.update_attributes(contest_params)
+      render 'show'
+    else
+      render 'edit'
+    end
   end
 
   private

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140720033126) do
+ActiveRecord::Schema.define(version: 20140721000434) do
 
   create_table "contests", force: true do |t|
     t.string   "title"
@@ -30,6 +30,11 @@ ActiveRecord::Schema.define(version: 20140720033126) do
   end
 
   add_index "contests_problems", ["contest_id", "problem_id"], name: "index_contests_problems_on_contest_id_and_problem_id"
+
+  create_table "contests_users", id: false, force: true do |t|
+    t.integer "contest_id"
+    t.integer "user_id"
+  end
 
   create_table "problems", force: true do |t|
     t.string   "title"

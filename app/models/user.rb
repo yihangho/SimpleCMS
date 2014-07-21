@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :invited_contests, :class_name => "Contest"
   has_and_belongs_to_many :participated_contests, :class_name => "Contest", :join_table => "contests_participants"
   has_and_belongs_to_many :solved_problems, :class_name => "Problem", :join_table => "solved_problems"
+  has_and_belongs_to_many :solved_tasks, :class_name => "Task", :join_table => "solved_tasks"
 
   def self.new_remember_token
     SecureRandom.uuid

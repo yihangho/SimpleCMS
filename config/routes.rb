@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get '/' => redirect("/signin")
   get 'signin' => 'sessions#new', :as => 'signin'
   delete 'signout' => 'sessions#destroy', :as => 'signout'
   resources :problems, :only => [:index, :new, :create, :show]

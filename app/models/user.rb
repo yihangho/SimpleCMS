@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :set_problems, :class_name => "Problem", :foreign_key => "setter_id"
   has_many :created_contests, :class_name => "Contest", :foreign_key => "creator_id"
   has_and_belongs_to_many :invited_contests, :class_name => "Contest"
+  has_and_belongs_to_many :participated_contests, :class_name => "Contest", :join_table => "contests_participants"
 
   def self.new_remember_token
     SecureRandom.uuid

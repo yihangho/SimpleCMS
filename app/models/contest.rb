@@ -5,6 +5,7 @@ class Contest < ActiveRecord::Base
   has_and_belongs_to_many :problems
   belongs_to :creator, :class_name => "User"
   has_and_belongs_to_many :invited_users, :class_name => "User"
+  has_and_belongs_to_many :participants, :class_name => "User", :join_table => "contests_participants"
 
   def starting_and_ending_time_must_make_sense
     if self.start && self.end && self.start > self.end

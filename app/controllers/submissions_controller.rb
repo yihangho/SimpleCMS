@@ -27,7 +27,7 @@ class SubmissionsController < ApplicationController
   private
 
   def submission_params
-    params.require(:submission).permit(:task_id, :input)
+    params.require(:submission).permit(:task_id, :input, :code_link)
   end
 
   def signed_in

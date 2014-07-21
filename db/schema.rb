@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140721100232) do
+ActiveRecord::Schema.define(version: 20140721110228) do
 
   create_table "contests", force: true do |t|
     t.string   "title"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 20140721100232) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "accepted"
+    t.string   "code_link"
   end
 
   create_table "tasks", force: true do |t|

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140721110228) do
+ActiveRecord::Schema.define(version: 20140721140806) do
 
   create_table "contests", force: true do |t|
     t.string   "title"
@@ -50,6 +50,11 @@ ActiveRecord::Schema.define(version: 20140721110228) do
   end
 
   add_index "problems", ["setter_id"], name: "index_problems_on_setter_id"
+
+  create_table "solved_problems", id: false, force: true do |t|
+    t.integer "problem_id"
+    t.integer "user_id"
+  end
 
   create_table "submissions", force: true do |t|
     t.integer  "user_id"

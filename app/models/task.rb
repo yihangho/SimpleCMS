@@ -10,4 +10,12 @@ class Task < ActiveRecord::Base
   def attempted_by?(user)
     user.submissions.where("task_id = #{id}").any?
   end
+
+  def cache_solved_status(user)
+    if solved_by?(user)
+      self.solvers |= [user]
+    else
+      self.solvers.delete(user)
+    end
+  end
 end

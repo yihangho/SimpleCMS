@@ -40,6 +40,18 @@ class Contest < ActiveRecord::Base
     end
   end
 
+  def visible_to?(user)
+    if visibility == "public"
+      true
+    elsif visibility == "unlisted"
+      true
+    elsif visibility == "invite_only"
+      invited_users.include?(user)
+    else
+      true
+    end
+  end
+
   def can_participate_by?(user)
     if participation == "public"
       true

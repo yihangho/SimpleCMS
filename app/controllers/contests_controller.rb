@@ -1,6 +1,7 @@
 class ContestsController < ApplicationController
   before_action :only_admin, :only => [:new, :create, :edit, :update]
   before_action :must_be_signed_in, :only => [:participate]
+  before_action :correct_access, :only => :show
 
   def index
     @contests = Contest.all
@@ -55,5 +56,9 @@ class ContestsController < ApplicationController
 
   def must_be_signed_in
     redirect_to contests_path unless signed_in?
+  end
+
+  def correct_access
+    redirect_to contests_path unless Contest.find(params[:id]).visible_to?(current_user)
   end
 end

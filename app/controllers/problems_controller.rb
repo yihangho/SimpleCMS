@@ -1,5 +1,6 @@
 class ProblemsController < ApplicationController
   before_action :correct_user, :only => [:new, :create]
+  before_action :correct_access, :only => :show
 
   def index
     @problems = Problem.all
@@ -38,5 +39,9 @@ class ProblemsController < ApplicationController
 
   def correct_user
     redirect_to signin_path unless signed_in? and current_user.admin?
+  end
+
+  def correct_access
+    redirect_to problems_path unless Problem.find(params[:id]).visible_to?(current_user)
   end
 end

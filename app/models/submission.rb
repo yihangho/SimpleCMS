@@ -10,4 +10,11 @@ class Submission < ActiveRecord::Base
     update_attribute(:accepted, correct_input?)
     self.accepted
   end
+
+  def cache_all
+    grade
+    task.cache_solved_status(user)
+    task.problem.cache_solved_status(user)
+    self.accepted
+  end
 end

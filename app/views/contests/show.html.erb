@@ -8,10 +8,11 @@
   <% elsif @contest.invited_users.include?(current_user) %>
     <p>
       You are invited.
-      <%= link_to "Participate", participate_contest_path(@contest), :method => :post %>
     </p>
-  <% else %>
-    <p>You are not invited.</p>
+  <% end %>
+
+  <% if @contest.can_participate_by?(current_user) %>
+    <p><%= link_to "Participate", participate_contest_path(@contest), :method => :post %></p>
   <% end %>
 <% end %>
 

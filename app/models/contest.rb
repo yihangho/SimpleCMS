@@ -40,6 +40,16 @@ class Contest < ActiveRecord::Base
     end
   end
 
+  def can_participate_by?(user)
+    if participation == "public"
+      true
+    elsif participation == "invite_only"
+      invited_users.include?(user)
+    else
+      false
+    end
+  end
+
   def status
     if Time.now < self.start
       :not_started

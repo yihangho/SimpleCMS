@@ -30,6 +30,15 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :participation %>
+    <%= f.select(:participation,
+          options_for_select(Contest.possible_participations.map { |k,v| [v, k]}, [@contest.participation]),
+          {},
+          :class => "form-control"
+        ) %>
+  </div>
+
+  <div class="form-group">
     <%= f.label :problem_ids, "Problems" %>
     <%= f.select(:problem_ids,
       options_for_select(Problem.all.map { |problem| [problem.title, problem.id]}, @contest.problem_ids),

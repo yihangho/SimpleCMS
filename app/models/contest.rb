@@ -21,6 +21,13 @@ class Contest < ActiveRecord::Base
     }
   end
 
+  def self.possible_participations
+    {
+      :public => "Public",
+      :invite_only => "Invite only"
+    }
+  end
+
   def listed_to?(user)
     if visibility == "public"
       true

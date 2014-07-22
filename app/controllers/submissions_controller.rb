@@ -1,5 +1,5 @@
 class SubmissionsController < ApplicationController
-  before_action :signed_in, :only => :index
+  before_action :signed_in, :only => [:index, :create]
 
   def index
   end
@@ -7,9 +7,7 @@ class SubmissionsController < ApplicationController
   def create
     submission = Submission.create(submission_params)
     if submission.save
-      if signed_in?
-        submission.update_attribute(:user_id, current_user.id)
-      end
+      submission.update_attribute(:user_id, current_user.id)
 
       if submission.grade
         flash[:success] = "Your last submission was correct."
@@ -17,7 +15,7 @@ class SubmissionsController < ApplicationController
         flash[:danger] = "Your last submission was incorrect."
       end
 
-      submission.task.problem.cache_solved_status(current_user)
+      submission.cache_all
     end
     redirect_to submission.task.problem
   end

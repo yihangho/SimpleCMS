@@ -2,6 +2,8 @@
 
 <ul>
     <% @problems.each do |problem| %>
+      <% if problem.listed_to?(current_user) %>
         <li><%= link_to problem.title, problem %></li>
+      <% end %>
     <% end %>
 </ul>

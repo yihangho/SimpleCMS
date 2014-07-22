@@ -13,6 +13,18 @@ class Problem < ActiveRecord::Base
     }
   end
 
+  def listed_to?(user)
+    if visibility == "public"
+      true
+    elsif visibility == "unlisted"
+      false
+    elsif visibility == "contest_only"
+      user && contests.any? { |contest| contest.participants.include?(user) && contest.status != :not_started }
+    else
+      true
+    end
+  end
+
   def solved_by?(user)
     tasks.all? { |task| task.solved_by?(user) }
   end

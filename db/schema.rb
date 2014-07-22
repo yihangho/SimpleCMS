@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140721223938) do
+ActiveRecord::Schema.define(version: 20140722022514) do
 
   create_table "contests", force: true do |t|
     t.string   "title"
@@ -29,17 +29,25 @@ ActiveRecord::Schema.define(version: 20140721223938) do
     t.integer "user_id"
   end
 
+  add_index "contests_participants", ["contest_id"], name: "index_contests_participants_on_contest_id"
+  add_index "contests_participants", ["user_id"], name: "index_contests_participants_on_user_id"
+
   create_table "contests_problems", id: false, force: true do |t|
     t.integer "contest_id"
     t.integer "problem_id"
   end
 
   add_index "contests_problems", ["contest_id", "problem_id"], name: "index_contests_problems_on_contest_id_and_problem_id"
+  add_index "contests_problems", ["contest_id"], name: "index_contests_problems_on_contest_id"
+  add_index "contests_problems", ["problem_id"], name: "index_contests_problems_on_problem_id"
 
   create_table "contests_users", id: false, force: true do |t|
     t.integer "contest_id"
     t.integer "user_id"
   end
+
+  add_index "contests_users", ["contest_id"], name: "index_contests_users_on_contest_id"
+  add_index "contests_users", ["user_id"], name: "index_contests_users_on_user_id"
 
   create_table "problems", force: true do |t|
     t.string   "title"
@@ -56,10 +64,16 @@ ActiveRecord::Schema.define(version: 20140721223938) do
     t.integer "user_id"
   end
 
+  add_index "solved_problems", ["problem_id"], name: "index_solved_problems_on_problem_id"
+  add_index "solved_problems", ["user_id"], name: "index_solved_problems_on_user_id"
+
   create_table "solved_tasks", id: false, force: true do |t|
     t.integer "task_id"
     t.integer "user_id"
   end
+
+  add_index "solved_tasks", ["task_id"], name: "index_solved_tasks_on_task_id"
+  add_index "solved_tasks", ["user_id"], name: "index_solved_tasks_on_user_id"
 
   create_table "submissions", force: true do |t|
     t.integer  "user_id"

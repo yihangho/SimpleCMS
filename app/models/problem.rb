@@ -5,6 +5,14 @@ class Problem < ActiveRecord::Base
   has_and_belongs_to_many :contests
   has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_problems"
 
+  def self.possible_visibilities
+    {
+      :public => "Public",
+      :unlisted => "Unlisted",
+      :contest_only => "Contest only"
+    }
+  end
+
   def solved_by?(user)
     tasks.all? { |task| task.solved_by?(user) }
   end

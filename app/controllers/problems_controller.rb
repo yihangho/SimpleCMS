@@ -29,7 +29,7 @@ class ProblemsController < ApplicationController
   private
 
   def problem_params
-    params.require(:problem).permit(:title, :statement)
+    params.require(:problem).permit(:title, :statement, :visibility)
   end
 
   def tasks_params

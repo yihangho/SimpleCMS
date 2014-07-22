@@ -40,7 +40,7 @@ class ContestsController < ApplicationController
   def participate
     @contest = Contest.find(params[:id])
     @contest.participant_ids |= [current_user.id]
-    redirect_to show_contests_path(@contest)
+    redirect_to @contest
   end
 
   private

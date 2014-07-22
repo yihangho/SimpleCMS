@@ -21,6 +21,15 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :visibility %>
+    <%= f.select(:visibility,
+          options_for_select(Contest.possible_visibilities.map { |k,v| [v, k]}, [@contest.visibility]),
+          {},
+          :class => "form-control"
+        ) %>
+  </div>
+
+  <div class="form-group">
     <%= f.label :problem_ids, "Problems" %>
     <%= f.select(:problem_ids,
       options_for_select(Problem.all.map { |problem| [problem.title, problem.id]}, @contest.problem_ids),

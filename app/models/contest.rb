@@ -13,6 +13,26 @@ class Contest < ActiveRecord::Base
     end
   end
 
+  def self.possible_visibilities
+    {
+      :public => "Public",
+      :unlisted => "Unlisted",
+      :invite_only => "Invite only"
+    }
+  end
+
+  def listed_to?(user)
+    if visibility == "public"
+      true
+    elsif visibility == "unlisted"
+      false
+    elsif visibility == "invite_only"
+      invited_users.include?(user)
+    else
+      true
+    end
+  end
+
   def status
     if Time.now < self.start
       :not_started

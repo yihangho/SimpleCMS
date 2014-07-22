@@ -2,6 +2,8 @@
 
 <ul>
   <% @contests.each do |c| %>
-    <li><%= link_to c.title, c %></li>
+    <% if c.listed_to?(current_user) %>
+      <li><%= link_to c.title, c %></li>
+    <% end %>
   <% end %>
 </ul>

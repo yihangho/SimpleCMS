@@ -46,7 +46,7 @@ class ContestsController < ApplicationController
   private
 
   def contest_params
-    params.require(:contest).permit(:title, :start, :end, { :problem_ids => [] }, { :invited_user_ids => [] })
+    params.require(:contest).permit(:title, :start, :end, :visibility, { :problem_ids => [] }, { :invited_user_ids => [] })
   end
 
   def only_admin

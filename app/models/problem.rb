@@ -1,5 +1,5 @@
 class Problem < ActiveRecord::Base
-  validates :title, :statement, :presence => true
+  validates :title, :statement, :visibility, :presence => true
   validates :visibility, :inclusion => { :in => ["public", "unlisted", "contest_only"] }
   belongs_to :setter, :class_name => "User"
   has_many :tasks, :dependent => :destroy
@@ -22,7 +22,7 @@ class Problem < ActiveRecord::Base
     elsif visibility == "unlisted"
       false
     elsif visibility == "contest_only"
-      user && contests.any? { |contest| contest.participants.include?(user) && contest.status != :not_started }
+      false
     else
       true
     end

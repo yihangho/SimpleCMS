@@ -75,4 +75,33 @@ describe Contest do
       end
     end
   end
+
+  context "status" do
+    describe "when contest has not started" do
+      it "status should be :not_started" do
+        @contest.start = 1.day.from_now
+        @contest.end   = 2.days.from_now
+
+        expect(@contest.status).to eq :not_started
+      end
+    end
+
+    describe "when contest is in progress" do
+      it "status should be :in_progress" do
+        @contest.start = 1.day.ago
+        @contest.end   = 1.day.from_now
+
+        expect(@contest.status).to eq :in_progress
+      end
+    end
+
+    describe "when contest has ended" do
+      it "status should be :ended" do
+        @contest.start = 2.days.ago
+        @contest.end   = 1.day.ago
+
+        expect(@contest.status).to eq :ended
+      end
+    end
+  end
 end

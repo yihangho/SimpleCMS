@@ -14,7 +14,9 @@ class Problem < ActiveRecord::Base
   end
 
   def listed_to?(user)
-    if visibility == "public"
+    if setter == user
+      true
+    elsif visibility == "public"
       true
     elsif visibility == "unlisted"
       false
@@ -26,7 +28,9 @@ class Problem < ActiveRecord::Base
   end
 
   def visible_to?(user)
-    if visibility == "public"
+    if setter == user
+      true
+    elsif visibility == "public"
       true
     elsif visibility == "unlisted"
       true

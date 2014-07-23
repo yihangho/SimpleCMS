@@ -71,7 +71,7 @@ class Contest < ActiveRecord::Base
   def status
     if Time.now < self.start
       :not_started
-    elsif Time.now >= self.start && Time.now <= self.end
+    elsif valid? && Time.now.between?(self.start, self.end)
       :in_progress
     elsif Time.now > self.end
       :ended

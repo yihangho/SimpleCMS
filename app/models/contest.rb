@@ -36,7 +36,7 @@ class Contest < ActiveRecord::Base
     elsif visibility == "public"
       true
     elsif visibility == "unlisted"
-      false
+      invited_users.include?(user)
     elsif visibility == "invite_only"
       invited_users.include?(user)
     else

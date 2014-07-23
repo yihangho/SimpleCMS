@@ -13,6 +13,7 @@ class ProblemsController < ApplicationController
   def create
     @problem = Problem.create(problem_params)
     if @problem.save
+      @problem.update_attribute(:setter_id, current_user.id)
       tasks_params.each do |_, v|
         v["problem_id"] = @problem.id
         Task.create(v)

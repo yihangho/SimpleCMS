@@ -1,5 +1,7 @@
 class Contest < ActiveRecord::Base
-  validates :title, :start, :end, :presence => true
+  validates :title, :start, :end, :visibility, :participation, :presence => true
+  validates :visibility, :inclusion => { :in => ["public", "unlisted", "invite_only"] }
+  validates :participation, :inclusion => { :in => ["public", "invite_only"] }
   validate :starting_and_ending_time_must_make_sense
 
   has_and_belongs_to_many :problems

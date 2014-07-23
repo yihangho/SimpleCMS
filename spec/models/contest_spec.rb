@@ -104,4 +104,145 @@ describe Contest do
       end
     end
   end
+
+  context "access control" do
+    before do
+      @admin = User.create(:email => "admin@example.com", :password => "12345", :password_confirmation => "12345")
+      @user  = User.new(:email => "test@example.com", :password => "12345", :password_confirmation => "12345")
+      @invited_user = User.new(:email => "invited@example.com", :password => "12345", :password_confirmation => "12345")
+
+      @contest.creator = @admin
+      @contest.invited_users = [@invited_user]
+      @contest.save
+    end
+
+    context "contests list" do
+      describe "public contest" do
+        before do
+          @contest.visibility = "public"
+          @contest.save
+        end
+
+        it "should be listed to everyone" do
+          [@admin, @user, @invited_user].each do |user|
+            expect(@contest.listed_to?(user)).to be_truthy
+          end
+        end
+      end
+
+      describe "unlisted contest" do
+        before do
+          @contest.visibility = "unlisted"
+          @contest.save
+        end
+
+        it "should be listed to its creator" do
+          expect(@contest.listed_to?(@admin)).to be_truthy
+        end
+
+        it "should be listed to invited users" do
+          expect(@contest.listed_to?(@invited_user)).to be_truthy
+        end
+
+        it "should not be listed to others" do
+          expect(@contest.listed_to?(@user)).to be_falsy
+        end
+      end
+
+      describe "invite-only contest" do
+        before do
+          @contest.visibility = "invite_only"
+          @contest.save
+        end
+
+        it "should be listed to its creator" do
+          expect(@contest.listed_to?(@admin)).to be_truthy
+        end
+
+        it "should be listed to invited users" do
+          expect(@contest.listed_to?(@invited_user)).to be_truthy
+        end
+
+        it "should not be listed to others" do
+          expect(@contest.listed_to?(@user)).to be_falsy
+        end
+      end
+    end
+
+    context "visibility" do
+      describe "public contest" do
+        before do
+          @contest.visibility = "public"
+          @contest.save
+        end
+
+        it "should be listed to everyone" do
+          [@admin, @user, @invited_user].each do |user|
+            expect(@contest.visible_to?(user)).to be_truthy
+          end
+        end
+      end
+
+      describe "unlisted contest" do
+        before do
+          @contest.visibility = "unlisted"
+          @contest.save
+        end
+
+        it "should be listed to everyone" do
+          [@admin, @user, @invited_user].each do |user|
+            expect(@contest.visible_to?(user)).to be_truthy
+          end
+        end
+      end
+
+      describe "invite-only contest" do
+        before do
+          @contest.visibility = "invite_only"
+          @contest.save
+        end
+
+        it "should be listed to its creator" do
+          expect(@contest.listed_to?(@admin)).to be_truthy
+        end
+
+        it "should be listed to invited users" do
+          expect(@contest.listed_to?(@invited_user)).to be_truthy
+        end
+
+        it "should not be listed to others" do
+          expect(@contest.listed_to?(@user)).to be_falsy
+        end
+      end
+    end
+
+    context "participation" do
+      describe "public" do
+        before do
+          @contest.participation = "public"
+          @contest.save
+        end
+
+        it "should be able to be participated by everyone" do
+          [@admin, @user, @invited_user].each do |user|
+            expect(@contest.can_participate_by?(user)).to be_truthy
+          end
+        end
+      end
+
+      describe "invite-only" do
+        before do
+          @contest.participation = "invite_only"
+          @contest.save
+        end
+
+        it "should be able to be participated by invited users only" do
+          expect(@contest.can_participate_by?(@invited_user)).to be_truthy
+          [@admin, @user].each do |user|
+            expect(@contest.can_participate_by?(user)).to be_falsy
+          end
+        end
+      end
+    end
+  end
 end

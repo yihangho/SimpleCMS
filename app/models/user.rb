@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   validates :name, :presence => true
-  validates :email, :format => { :with => /\A.+?@.+?\..+\z/ }
+  validates :email, :format => { :with => /\A.+?@.+?\..+\z/ }, :uniqueness => { :case_sensitive => false }
   has_secure_password
   has_many :sessions, :validate => false
   has_many :submissions, :validate => false

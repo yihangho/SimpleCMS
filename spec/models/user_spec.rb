@@ -33,5 +33,13 @@ describe User do
       before { @user.name = "" }
       it { should_not be_valid }
     end
+
+    describe "when email is taken" do
+      before do
+        @doppelganger = User.create(:name => "Faker", :email => @user.email.upcase, :password => "12345", :password_confirmation => "12345")
+      end
+
+      it { should_not be_valid }
+    end
   end
 end

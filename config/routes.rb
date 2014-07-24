@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'signin' => 'sessions#new', :as => 'signin'
   delete 'signout' => 'sessions#destroy', :as => 'signout'
   post '/contests/:id/participate' => 'contests#participate', :as => 'participate_contest'
+  patch '/users/:id/admin' => 'users#set_admin', :as => 'set_admin'
   resources :problems, :only => [:index, :new, :create, :show]
   resources :users, :only => [:index, :new, :create, :show]
   resources :sessions, :only => :create

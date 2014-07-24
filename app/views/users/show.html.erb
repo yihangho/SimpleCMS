@@ -2,6 +2,23 @@
 
 <p>Email: <%= @user.email %></p>
 
+<% if current_user && current_user.admin? %>
+  <%= form_for(@user, :url => set_admin_path) do |f| %>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :admin %>
+        Admin
+      </label>
+    </div>
+
+    <% if current_user == @user %>
+      <%= f.submit "Save", :class => "btn btn-default", :data => { :confirm => "Are you sure you want to modify your own admin status?" } %>
+    <% else %>
+      <%= f.submit "Save", :class => "btn btn-default" %>
+    <% end %>
+  <% end %>
+<% end %>
+
 <h2>Problems by user</h2>
 <% if @user.set_problems.any? %>
   <ul>

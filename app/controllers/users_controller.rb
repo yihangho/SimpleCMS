@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :only_admin, :only => :index
+  before_action :only_admin, :only => [:index, :set_admin]
 
   def index
     @users = User.all
@@ -23,10 +23,20 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def set_admin
+    @user = User.find(params[:id])
+    @user.update_attribute(:admin, set_admin_params)
+    render 'show'
+  end
+
   private
 
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation)
+  end
+
+  def set_admin_params
+    params.require(:user).require(:admin)
   end
 
   def only_admin

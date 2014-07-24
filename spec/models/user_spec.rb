@@ -2,11 +2,14 @@ require 'rails_helper'
 
 describe User do
   before do
-    @user = User.new(:email => "test@example.com", :password => "12345", :password_confirmation => "12345")
+    @user = User.new(:name => "Test", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
   end
 
   subject { @user }
 
+  it { should be_valid }
+
+  it { should respond_to :name }
   it { should respond_to :email }
   it { should respond_to :password }
   it { should respond_to :password_confirmation }
@@ -19,8 +22,15 @@ describe User do
   it { should respond_to :solved_problems }
   it { should respond_to :solved_tasks }
 
-  describe "when email is obviously invalid" do
-    before { @user.email = "bla bla" }
-    it { should_not be_valid }
+  context "validations" do
+    describe "when email is obviously invalid" do
+      before { @user.email = "bla bla" }
+      it { should_not be_valid }
+    end
+
+    describe "when name is empty" do
+      before { @user.name = "" }
+      it { should_not be_valid }
+    end
   end
 end

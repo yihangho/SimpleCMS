@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140722134027) do
+ActiveRecord::Schema.define(version: 20140724050503) do
 
   create_table "contests", force: true do |t|
     t.string   "title"
@@ -105,9 +105,11 @@ ActiveRecord::Schema.define(version: 20140722134027) do
     t.datetime "updated_at"
     t.string   "remember_token"
     t.boolean  "admin",           default: false
+    t.string   "name"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["name"], name: "index_users_on_name"
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", unique: true
 
 end

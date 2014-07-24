@@ -32,3 +32,12 @@
   <% end %>
 </ul>
 <% end %>
+
+<% if @contest.status != :not_started && signed_in? && @contest.participants.include?(current_user) %>
+  <h2>Problems</h2>
+  <ul>
+    <% @contest.problems.each do |problem| %>
+      <li><%= link_to problem.title, problem %></li>
+    <% end %>
+  </ul>
+<% end %>

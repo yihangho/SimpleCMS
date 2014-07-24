@@ -3,6 +3,10 @@
 <p>Name: <%= @user.name %></p>
 <p>Email: <%= @user.email %></p>
 
+<% if current_user == @user %>
+  <p><%= link_to "Edit profile", edit_user_path(@user) %></p>
+<% end %>
+
 <% if current_user && current_user.admin? %>
   <%= form_for(@user, :url => set_admin_path) do |f| %>
     <div class="checkbox">

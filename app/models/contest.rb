@@ -77,4 +77,10 @@ class Contest < ActiveRecord::Base
       :ended
     end
   end
+
+  def num_problems_solved_by(user)
+    problems.to_a.count do |problem|
+      problem.solved_between_by?(Time.at(0), self.end, user)
+    end
+  end
 end

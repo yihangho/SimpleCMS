@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Contest do
   before do
-    @contest = Contest.new(:title => "Contest", :start => "Jul 20, 2014", :end => "Jul 21, 2014", :visibility => "public", :participation => "public")
+    @contest = Contest.new(:title => "Contest", :start => 1.day.ago, :end => 1.day.from_now, :visibility => "public", :participation => "public")
   end
 
   subject { @contest }
@@ -242,6 +242,61 @@ describe Contest do
             expect(@contest.can_participate_by?(user)).to be_falsy
           end
         end
+      end
+    end
+  end
+
+  context "#num_problems_solved_by" do
+    before do
+      @contest.save
+
+      @user = User.create(:name => "test", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
+
+      @problem1 = @contest.problems.create(:title => "P1", :statement => "P1", :visibility => "public")
+      @problem2 = @contest.problems.create(:title => "P2", :statement => "P2", :visibility => "public")
+
+      @task1 = @problem1.tasks.create(:input => "12345", :output => "12345")
+      @task2 = @problem2.tasks.create(:input => "54321", :output => "54321")
+
+      @submission1 = @user.submissions.create(:input => @task1.output, :task_id => @task1.id)
+      @submission2 = @user.submissions.create(:input => @task2.output, :task_id => @task2.id)
+    end
+
+    describe "when both problems are solved" do
+      describe "and are solved before contest ends" do
+        it "should return 2" do
+          expect(@contest.num_problems_solved_by(@user)).to eq 2
+        end
+      end
+
+      describe "when one of the problems is solved before the contest started" do
+        before do
+          @submission1.update_attribute(:created_at, 1.day.until(@contest.start))
+        end
+
+        it "should return 2" do
+          expect(@contest.num_problems_solved_by(@user)).to eq 2
+        end
+      end
+
+      describe "when one of the problems is solved after the contest ended" do
+        before do
+          @submission1.update_attribute(:created_at, 1.day.since(@contest.end))
+        end
+
+        it "should return 1" do
+          expect(@contest.num_problems_solved_by(@user)).to eq 1
+        end
+      end
+    end
+
+    describe "when one of the problems is not solved" do
+      before do
+        @submission1.update_attribute(:input, @submission1.task.output + "bla")
+      end
+
+      it "should return 1" do
+        expect(@contest.num_problems_solved_by(@user)).to eq 1
       end
     end
   end

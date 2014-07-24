@@ -1,7 +1,7 @@
 class Task < ActiveRecord::Base
-  belongs_to :problem
-  has_many :submissions
-  has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_tasks"
+  belongs_to :problem, :validate => false
+  has_many :submissions, :validate => false
+  has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_tasks", :validate => false
 
   def solved_by?(user)
     solvers.include?(user)

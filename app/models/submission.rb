@@ -1,6 +1,6 @@
 class Submission < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :task
+  belongs_to :user, :validate => false
+  belongs_to :task, :validate => false
 
   before_save do
     # Should this part be moved to bg worker?

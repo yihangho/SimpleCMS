@@ -9,13 +9,11 @@ class SubmissionsController < ApplicationController
     if submission.save
       submission.update_attribute(:user_id, current_user.id)
 
-      if submission.grade
+      if submission.accepted?
         flash[:success] = "Your last submission was correct."
       else
         flash[:danger] = "Your last submission was incorrect."
       end
-
-      submission.cache_all
     end
     redirect_to submission.task.problem
   end

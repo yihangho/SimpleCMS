@@ -45,12 +45,4 @@ class Problem < ActiveRecord::Base
   def solved_by?(user)
     solvers.include?(user)
   end
-
-  def cache_solved_status(user)
-    if solved_by?(user)
-      self.solvers |= [user]
-    else
-      self.solvers.delete(user)
-    end
-  end
 end

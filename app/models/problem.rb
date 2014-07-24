@@ -43,7 +43,7 @@ class Problem < ActiveRecord::Base
   end
 
   def solved_by?(user)
-    tasks.all? { |task| task.solved_by?(user) }
+    solvers.include?(user)
   end
 
   def cache_solved_status(user)

@@ -45,4 +45,8 @@ class Problem < ActiveRecord::Base
   def solved_by?(user)
     solvers.include?(user)
   end
+
+  def solved_between_by?(time1, time2, user)
+    tasks.all? { |task| task.solved_between_by?(time1, time2, user) }
+  end
 end

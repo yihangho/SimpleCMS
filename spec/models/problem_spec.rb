@@ -152,4 +152,50 @@ describe Problem do
       end
     end
   end
+
+  context "#solved_between_by?" do
+    before do
+      @problem.save
+      @user = User.create(:name => "test", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
+      @task1 = @problem.tasks.create(:input => "12345", :output => "12345")
+      @task2 = @problem.tasks.create(:input => "54321", :output => "54321")
+
+      @submission1 = Submission.create(:input => @task1.output, :user_id => @user.id, :task_id => @task1.id)
+      @submission2 = Submission.create(:input => @task2.output, :user_id => @user.id, :task_id => @task2.id)
+
+      @start = 2.days.ago
+      @end   = 1.day.from_now
+    end
+
+    describe "both submissions happen between the given interval" do
+      before do
+        @submission1.update_attribute(:created_at, 1.day.ago)
+        @submission2.update_attribute(:created_at, 1.day.ago)
+      end
+
+      it "should return truthy" do
+        expect(@problem.solved_between_by?(@start, @end, @user)).to be_truthy
+      end
+
+      describe "but one of the submissions is wrong" do
+        before do
+          @submission1.update_attribute(:input, @submission1.input + "bla")
+        end
+
+        it "should return falsy" do
+          expect(@problem.solved_between_by?(@start, @end, @user)).to be_falsy
+        end
+      end
+    end
+
+    describe "when one of the submissions happens outside the given interval" do
+      it "should return falsy" do
+        @submission1.update_attribute(:created_at, 3.days.ago)
+        expect(@problem.solved_between_by?(@start, @end, @user)).to be_falsy
+
+        @submission1.update_attribute(:created_at, 2.days.from_now)
+        expect(@problem.solved_between_by?(@start, @end, @user)).to be_falsy
+      end
+    end
+  end
 end

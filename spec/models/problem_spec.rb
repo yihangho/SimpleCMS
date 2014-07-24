@@ -48,9 +48,9 @@ describe Problem do
 
   context "access control" do
     before do
-      @admin = User.create(:email => "admin@example.com", :password => "12345", :password_confirmation => "12345")
-      @user  = User.new(:email => "test@example.com", :password => "12345", :password_confirmation => "12345")
-      @participant = User.new(:email => "participant@example.com", :password => "12345", :password_confirmation => "12345")
+      @admin = User.create(:name => "admin", :email => "admin@example.com", :password => "12345", :password_confirmation => "12345")
+      @user  = User.new(:name => "user", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
+      @participant = User.new(:name => "participant", :email => "participant@example.com", :password => "12345", :password_confirmation => "12345")
 
       @contest = Contest.create(:title => "Test contest", :start => 1.day.ago, :end => 1.day.from_now, :visibility => "public", :participation => "public")
       @contest.participants = [@participant]

@@ -5,7 +5,7 @@ describe Submission do
     @problem = Problem.create(:title => "Test", :statement => "Test Problem", :visibility => "public")
     @task1 = @problem.tasks.create(:input => "12345", :output => "12345")
     @task2 = @problem.tasks.create(:input => "54321", :output => "54321")
-    @user1 = User.create(:email => "user1@example.com", :password => "12345", :password_confirmation => "12345")
+    @user1 = User.create(:name => "user1", :email => "user1@example.com", :password => "12345", :password_confirmation => "12345")
     @submission = @task1.submissions.create
     @submission.user = @user1
     @submission.save
@@ -97,7 +97,7 @@ describe Submission do
     end
 
     it "should not solve the problem for other user" do
-      user2 = User.create(:email => "user2@example.com", :password => "12345", :password_confirmation => "12345")
+      user2 = User.create(:name => "user2", :email => "user2@example.com", :password => "12345", :password_confirmation => "12345")
       expect(@problem.solved_by?(user2)).to be_falsy
     end
 

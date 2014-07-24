@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724050503) do
+ActiveRecord::Schema.define(version: 20140724092732) do
 
   create_table "contests", force: true do |t|
     t.string   "title"
@@ -61,6 +61,18 @@ ActiveRecord::Schema.define(version: 20140724050503) do
   end
 
   add_index "problems", ["setter_id"], name: "index_problems_on_setter_id"
+
+  create_table "sessions", force: true do |t|
+    t.string   "remember_token"
+    t.integer  "user_id"
+    t.string   "user_agent"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["remember_token", "user_id"], name: "index_sessions_on_remember_token_and_user_id"
+  add_index "sessions", ["remember_token"], name: "index_sessions_on_remember_token", unique: true
+  add_index "sessions", ["user_id", "remember_token"], name: "index_sessions_on_user_id_and_remember_token"
 
   create_table "solved_problems", id: false, force: true do |t|
     t.integer "problem_id"

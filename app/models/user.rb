@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   validates :name, :presence => true
   validates :email, :format => { :with => /\A.+?@.+?\..+\z/ }
   has_secure_password
+  has_many :sessions, :validate => false
   has_many :submissions, :validate => false
   has_many :set_problems, :class_name => "Problem", :foreign_key => "setter_id", :validate => false
   has_many :created_contests, :class_name => "Contest", :foreign_key => "creator_id", :validate => false

@@ -44,6 +44,10 @@ class ContestsController < ApplicationController
     redirect_to @contest
   end
 
+  def leaderboard
+    @contest = Contest.find(params[:id])
+  end
+
   private
 
   def contest_params

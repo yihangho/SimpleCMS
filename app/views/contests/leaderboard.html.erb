@@ -1,0 +1,17 @@
+<h1>Leaderboard for <%= @contest.title %></h1>
+
+<table class="table">
+  <thead>
+    <th>User</th>
+    <th>Problems solved</th>
+  </thead>
+
+  <tbody>
+    <% @contest.leaderboard.each do |row| %>
+      <tr>
+        <td><%= row.last.name %></td>
+        <td><%= row.first %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

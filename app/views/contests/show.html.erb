@@ -1,6 +1,7 @@
 <h1><%= @contest.title %></h1>
 
 <p>Status: <%= @contest.status %></p>
+<p><%= link_to "Leaderboard", leaderboard_path(@contest) %></p>
 
 <% if signed_in? %>
   <% if @contest.participants.include?(current_user) %>

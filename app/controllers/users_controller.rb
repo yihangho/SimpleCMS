@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_action :only_admin, :only => [:index, :set_admin]
-  before_action :only_current_user, :only => [:edit, :update]
+  before_action :not_signed_in_users_only, :only => :new
+  before_action :admin_only, :only => [:index, :set_admin]
+  before_action :current_user_only, :only => [:edit, :update]
 
   def index
     @users = User.all
@@ -51,13 +52,5 @@ class UsersController < ApplicationController
 
   def set_admin_params
     params.require(:user).require(:admin)
-  end
-
-  def only_admin
-    redirect_to problems_path unless current_user && current_user.admin?
-  end
-
-  def only_current_user
-    redirect_to problems_path unless current_user && User.find(params[:id]) == current_user
   end
 end

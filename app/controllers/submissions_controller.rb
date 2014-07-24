@@ -1,6 +1,6 @@
 class SubmissionsController < ApplicationController
   before_action :admin_only, :only => :index
-  before_action :signed_in, :only => :create
+  before_action :signed_in_users_only, :only => :create
   before_action :correct_user_or_admin, :only => :user
 
   def index
@@ -32,16 +32,8 @@ class SubmissionsController < ApplicationController
 
   private
 
-  def admin_only
-    redirect_to problems_path unless signed_in? && current_user.admin?
-  end
-
   def submission_params
     params.require(:submission).permit(:task_id, :input, :code_link)
-  end
-
-  def signed_in
-    redirect_to problems_path unless signed_in?
   end
 
   def correct_user_or_admin

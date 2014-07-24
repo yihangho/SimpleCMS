@@ -1,7 +1,7 @@
 class ContestsController < ApplicationController
-  before_action :only_admin, :only => [:new, :create, :edit, :update]
-  before_action :must_be_signed_in, :only => [:participate]
-  before_action :correct_access, :only => :show
+  before_action :admin_only, :only => [:new, :create, :edit, :update]
+  before_action :signed_in_users_only, :only => [:participate]
+  before_action :authorized_users_only, :only => :show
 
   def index
     @contests = Contest.all
@@ -50,15 +50,7 @@ class ContestsController < ApplicationController
     params.require(:contest).permit(:title, :start, :end, :visibility, :participation, { :problem_ids => [] }, { :invited_user_ids => [] })
   end
 
-  def only_admin
-    redirect_to contests_path unless signed_in? && current_user.admin?
-  end
-
-  def must_be_signed_in
-    redirect_to contests_path unless signed_in?
-  end
-
-  def correct_access
+  def authorized_users_only
     redirect_to contests_path unless Contest.find(params[:id]).visible_to?(current_user)
   end
 end

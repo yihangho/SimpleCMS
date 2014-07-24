@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_action :signed_in, :except => :destroy
+  before_action :not_signed_in_users_only, :except => :destroy
 
   def new
   end
@@ -24,9 +24,5 @@ class SessionsController < ApplicationController
 
   def session_params
     params.require(:session).permit(:email, :password)
-  end
-
-  def signed_in
-    redirect_to problems_path if signed_in?
   end
 end

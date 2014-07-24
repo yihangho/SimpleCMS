@@ -1,6 +1,6 @@
 class ProblemsController < ApplicationController
-  before_action :correct_user, :only => [:new, :create]
-  before_action :correct_access, :only => :show
+  before_action :admin_only, :only => [:new, :create]
+  before_action :authorized_users_only, :only => :show
 
   def index
     @problems = Problem.all
@@ -35,11 +35,7 @@ class ProblemsController < ApplicationController
     params.require(:problem).require(:tasks).permit!
   end
 
-  def correct_user
-    redirect_to signin_path unless signed_in? and current_user.admin?
-  end
-
-  def correct_access
+  def authorized_users_only
     redirect_to problems_path unless Problem.find(params[:id]).visible_to?(current_user)
   end
 end

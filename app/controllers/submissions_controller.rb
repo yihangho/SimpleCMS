@@ -1,5 +1,6 @@
 class SubmissionsController < ApplicationController
   before_action :signed_in, :only => [:index, :create]
+  before_action :correct_user_or_admin, :only => :user
 
   def index
   end
@@ -22,6 +23,10 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
   end
 
+  def user
+    @submissions = User.find(params[:id]).submissions.order(:created_at => :desc)
+  end
+
   private
 
   def submission_params
@@ -30,5 +35,9 @@ class SubmissionsController < ApplicationController
 
   def signed_in
     redirect_to problems_path unless signed_in?
+  end
+
+  def correct_user_or_admin
+    redirect_to problems_path unless signed_in? && (current_user?(User.find(params[:id])) || current_user.admin?)
   end
 end

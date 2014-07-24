@@ -1,0 +1,35 @@
+<h1>User Submissions</h1>
+
+<table class="table">
+  <thead>
+    <th>ID</th>
+    <th>Problem</th>
+    <th>Status</th>
+  </thead>
+  <tbody>
+    <% @submissions.each do |submission| %>
+      <tr>
+        <td><%= link_to submission.id, submission %></td>
+        <% p submission %>
+        <td>
+          <%=
+          begin
+            link_to submission.task.problem.title, submission.task.problem
+          rescue
+            "N/A"
+          end
+          %>
+        </td>
+        <td>
+          <% if submission.accepted? %>
+            <p class="text-success">Accepted</p>
+          <% elsif submission.accepted.nil? %>
+            <p class="text-warning">Ungraded</p>
+          <% else %>
+            <p class="text-danger">Wrong Answer</p>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

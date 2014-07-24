@@ -1,4 +1,10 @@
 class UsersController < ApplicationController
+  before_action :only_admin, :only => :index
+
+  def index
+    @users = User.all
+  end
+
   def new
     @user = User.new
   end
@@ -21,5 +27,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation)
+  end
+
+  def only_admin
+    redirect_to problems_path unless current_user && current_user.admin?
   end
 end

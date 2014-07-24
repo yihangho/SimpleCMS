@@ -83,4 +83,10 @@ class Contest < ActiveRecord::Base
       problem.solved_between_by?(Time.at(0), self.end, user)
     end
   end
+
+  def leaderboard
+    participants.collect do |user|
+      [num_problems_solved_by(user), user]
+    end.sort.reverse
+  end
 end

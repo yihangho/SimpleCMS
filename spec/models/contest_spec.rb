@@ -300,4 +300,30 @@ describe Contest do
       end
     end
   end
+
+  describe "leaderboard" do
+    before do
+      @user1 = User.create(:name => "test1", :email => "test1@example.com", :password => "12345", :password_confirmation => "12345")
+      @user2 = User.create(:name => "test2", :email => "test2@example.com", :password => "12345", :password_confirmation => "12345")
+      @user3 = User.create(:name => "test3", :email => "test3@example.com", :password => "12345", :password_confirmation => "12345")
+
+      @contest.participants = [@user1, @user2, @user3]
+      @contest.save
+
+      @problem1 = @contest.problems.create(:title => "P1", :statement => "P1", :visibility => "public")
+      @problem2 = @contest.problems.create(:title => "P2", :statement => "P2", :visibility => "public")
+
+      @task1 = @problem1.tasks.create(:input => "12345", :output => "12345")
+      @task2 = @problem2.tasks.create(:input => "54321", :output => "54321")
+
+      @submission11 = @user1.submissions.create(:input => @task1.output, :task_id => @task1.id)
+      @submission12 = @user1.submissions.create(:input => @task2.output, :task_id => @task2.id)
+
+      @submission21 = @user2.submissions.create(:input => @task1.output, :task_id => @task1.id)
+    end
+
+    it "should return correct leaderboard" do
+      expect(@contest.leaderboard).to eq [[2, @user1], [1, @user2], [0, @user3]]
+    end
+  end
 end

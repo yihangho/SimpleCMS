@@ -12,7 +12,7 @@
     </p>
   <% end %>
 
-  <% if @contest.can_participate_by?(current_user) %>
+  <% if @contest.can_participate_by?(current_user) && !@contest.participants.include?(current_user) %>
     <p><%= link_to "Participate", participate_contest_path(@contest), :method => :post %></p>
   <% end %>
 <% end %>

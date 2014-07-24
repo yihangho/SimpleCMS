@@ -7,6 +7,10 @@ class Task < ActiveRecord::Base
     solvers.include?(user)
   end
 
+  def solved_between_by?(time1, time2, user)
+    user.submissions.where(:task_id => id, :created_at => (time1..time2), :accepted => true).any?
+  end
+
   def attempted_by?(user)
     user.submissions.where("task_id = #{id}").any?
   end

@@ -40,8 +40,8 @@ class ContestsController < ApplicationController
 
   def participate
     @contest = Contest.find(params[:id])
-    @contest.participant_ids |= [current_user.id]
-    redirect_to @contest
+    @contest.participants << current_user unless @contest.participants.include?(current_user)
+    render 'show'
   end
 
   def unparticipate

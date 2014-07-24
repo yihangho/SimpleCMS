@@ -50,7 +50,7 @@
   <div class="form-group">
     <%= f.label :invited_user_ids, "Invited users" %>
     <%= f.select(:invited_user_ids,
-      options_for_select(User.all.map { |user| [user.email, user.id]}, @contest.invited_user_ids),
+      options_for_select(User.all.map { |user| [user.name, user.id]}, @contest.invited_user_ids),
       {},
       :class => "form-control", :multiple => true
       ) %>

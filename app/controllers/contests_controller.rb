@@ -44,6 +44,12 @@ class ContestsController < ApplicationController
     redirect_to @contest
   end
 
+  def unparticipate
+    @contest = Contest.find(params[:id])
+    @contest.participants.delete(current_user)
+    render 'show'
+  end
+
   def leaderboard
     @contest = Contest.find(params[:id])
   end

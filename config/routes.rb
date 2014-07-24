@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'signin' => 'sessions#new', :as => 'signin'
   delete 'signout' => 'sessions#destroy', :as => 'signout'
   post '/contests/:id/participate' => 'contests#participate', :as => 'participate_contest'
+  delete '/contests/:id/unparticipate' => 'contests#unparticipate', :as => 'unparticipate_contest'
   get '/contests/:id/leaderboard' => 'contests#leaderboard', :as => 'leaderboard'
   patch '/users/:id/admin' => 'users#set_admin', :as => 'set_admin'
   get '/users/:id/submissions' => 'submissions#user', :as => 'user_submissions'

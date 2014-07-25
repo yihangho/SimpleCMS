@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724093702) do
+ActiveRecord::Schema.define(version: 20140725093837) do
 
   create_table "contests", force: true do |t|
     t.string   "title"
@@ -99,6 +99,11 @@ ActiveRecord::Schema.define(version: 20140724093702) do
     t.boolean  "accepted"
     t.string   "code_link"
   end
+
+  add_index "submissions", ["accepted"], name: "index_submissions_on_accepted"
+  add_index "submissions", ["created_at"], name: "index_submissions_on_created_at"
+  add_index "submissions", ["task_id"], name: "index_submissions_on_task_id"
+  add_index "submissions", ["user_id"], name: "index_submissions_on_user_id"
 
   create_table "tasks", force: true do |t|
     t.text     "input"

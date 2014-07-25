@@ -343,4 +343,24 @@ describe Contest do
       expect(Contest.invited_but_not_participated_by(@user)).to eq [@contest1]
     end
   end
+
+  context "::upcoming and ::ongoing" do
+    before do
+      @contest1 = Contest.create(:title => "Contest 1", :start => 1.days.ago, :end => 1.day.from_now, :visibility => "public", :participation => "public")
+      @contest2 = Contest.create(:title => "Contest 2", :start => 1.day.from_now, :end => 2.days.from_now, :visibility => "public", :participation => "public")
+      @contest3 = Contest.create(:title => "Contest 3", :start => 2.days.ago, :end => 1.day.ago, :visibility => "public", :participation => "public")
+    end
+
+    describe "::upcoming" do
+      it "should return correct contests" do
+        expect(Contest.upcoming).to eq [@contest2]
+      end
+    end
+
+    describe "::ongoing" do
+      it "should return correct contests" do
+        expect(Contest.ongoing).to eq [@contest1]
+      end
+    end
+  end
 end

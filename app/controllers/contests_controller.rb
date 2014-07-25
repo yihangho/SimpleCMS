@@ -55,7 +55,7 @@ class ContestsController < ApplicationController
   end
 
   def invited
-    @contests = Contest.invited_but_not_participated_by(current_user)
+    @contests = Contest.invited_but_not_participated_by(current_user).upcoming
     render 'index'
   end
 

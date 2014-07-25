@@ -38,7 +38,7 @@
                     <a href="<%= invited_contests_path %>">
                       Invited
                       <span class="badge pull-right">
-                        <%= Contest.invited_but_not_participated_by(current_user).count %>
+                        <%= Contest.invited_but_not_participated_by(current_user).upcoming.count %>
                       </span>
                     </a>
                   </li>
@@ -77,7 +77,7 @@
                     <a href="<%= invited_contests_path %>">
                       Invited
                       <span class="badge pull-right">
-                        <%= Contest.invited_but_not_participated_by(current_user).count %>
+                        <%= Contest.invited_but_not_participated_by(current_user).upcoming.count %>
                       </span>
                     </a>
                   </li>

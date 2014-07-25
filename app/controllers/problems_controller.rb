@@ -69,7 +69,7 @@ class ProblemsController < ApplicationController
     end
 
     if new_tasks.any? || deleted_tasks.any?
-      # Recache list of solvers
+      @problem.update_solvers
     end
 
     render 'show'

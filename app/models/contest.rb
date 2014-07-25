@@ -78,6 +78,14 @@ class Contest < ActiveRecord::Base
     end
   end
 
+  def formatted_status
+    {
+      :not_started => "Not started",
+      :in_progress => "In progress",
+      :ended       => "Ended"
+    }[status]
+  end
+
   def num_problems_solved_by(user)
     problems.to_a.count do |problem|
       problem.solved_between_by?(Time.at(0), self.end, user)

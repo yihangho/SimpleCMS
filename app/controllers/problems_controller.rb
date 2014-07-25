@@ -29,8 +29,6 @@ class ProblemsController < ApplicationController
     @problem = Problem.find(params[:id])
     @problem.update_attributes(problem_params)
 
-    puts "Request to update problem #{@problem.id} (#{@problem.title})"
-
     tasks_to_be_regraded = []
     current_tasks        = []
     deleted_tasks        = []
@@ -67,8 +65,7 @@ class ProblemsController < ApplicationController
 
     # Kick all these to bg tasks
     tasks_to_be_regraded.each do |id|
-      # Not implemented yet
-      # Task.find(id).regrade
+      Task.find(id).regrade
     end
 
     if new_tasks.any? || deleted_tasks.any?

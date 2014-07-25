@@ -1,7 +1,7 @@
 class Submission < ActiveRecord::Base
   scope :correct_answer, -> { where(:accepted => true) }
-  scope :by, ->(user) { where(:user_id => user.id) }
-  scope :for, ->(task) { where(:task_id => task.id) }
+  scope :by, ->(user) { where(:user_id => user) }
+  scope :for, ->(task) { where(:task_id => task) }
 
   belongs_to :user, :validate => false
   belongs_to :task, :validate => false

@@ -1,0 +1,43 @@
+<%= form_for(@problem) do |f| %>
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, :class => "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :statement %>
+    <%= f.text_area :statement, :class => "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :visibility %>
+    <%= f.select(:visibility,
+      options_for_select(Problem.possible_visibilities.map { |k,v| [v, k]}),
+      {},
+      :class => "form-control"
+      ) %>
+  </div>
+
+  <% @problem.tasks.each do |task| %>
+    <div class="task-<%= task.id %>">
+      <button type="button" class="close" data-selector=".task-<%= task.id %>"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <input type="hidden" id="problem_tasks_<%= task.id %>_id" name="problem[tasks][<%= task.id %>][id]" value="<%= task.id %>">
+      <div class="form-group">
+        <label for="problem_tasks_<%= task.id %>_input">Input</label>
+        <textarea class="form-control" id="problem_tasks_<%= task.id %>_input" name="problem[tasks][<%= task.id %>][input]"><%= task.input %></textarea>
+      </div>
+      <div class="form-group">
+        <label for="problem_tasks_<%= task.id %>_output">Output</label>
+        <textarea class="form-control" id="problem_tasks_<%= task.id %>_output" name="problem[tasks][<%= task.id %>][output]"><%= task.output %></textarea>
+      </div>
+    </div>
+  <% end %>
+
+  <%= f.button "Add Task", :class => "btn btn-default", :id => "add-task-btn" %>
+
+  <% if @problem.id %>
+    <%= f.submit "Update", :class => "btn btn-primary" %>
+  <% else %>
+    <%= f.submit "Create", :class => "btn btn-primary" %>
+  <% end %>
+<% end %>

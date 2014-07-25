@@ -1,6 +1,6 @@
 class ContestsController < ApplicationController
   before_action :admin_only, :only => [:new, :create, :edit, :update]
-  before_action :signed_in_users_only, :only => [:participate]
+  before_action :signed_in_users_only, :only => [:participate, :invited]
   before_action :authorized_users_only, :only => :show
 
   def index
@@ -52,6 +52,11 @@ class ContestsController < ApplicationController
 
   def leaderboard
     @contest = Contest.find(params[:id])
+  end
+
+  def invited
+    @contests = current_user.invited_contests
+    render 'index'
   end
 
   private

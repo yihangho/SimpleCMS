@@ -49,4 +49,11 @@ class Problem < ActiveRecord::Base
   def solved_between_by?(time1, time2, user)
     tasks.all? { |task| task.solved_between_by?(time1, time2, user) }
   end
+
+  def update_solvers
+    task_ids = self.task_ids
+    self.solvers = User.select do |user|
+      task_ids.all? { |id| user.submissions.for(id).correct_answer.any? }
+    end
+  end
 end

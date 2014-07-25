@@ -198,4 +198,40 @@ describe Problem do
       end
     end
   end
+
+  context "#update_solvers" do
+    before do
+      @problem.save
+
+      @task1 = @problem.tasks.create(:input => "12345", :output => "12345")
+      @task2 = @problem.tasks.create(:input => "54321", :output => "54321")
+
+      @user1 = User.create(:name => "User 1", :email => "user1@example.com", :password => "12345", :password_confirmation => "12345")
+      @user2 = User.create(:name => "User 2", :email => "user2@example.com", :password => "12345", :password_confirmation => "12345")
+
+      @submission11 = @user1.submissions.create(:input => "12345", :task_id => @task1.id)
+      @submission12 = @user1.submissions.create(:input => "12345", :task_id => @task2.id)
+
+      @submission21 = @user2.submissions.create(:input => "12345", :task_id => @task1.id)
+      @submission22 = @user2.submissions.create(:input => "54321", :task_id => @task2.id)
+    end
+
+    describe "before updating" do
+      it "should have correct solvers" do
+        expect(@problem.solvers).to eq [@user2]
+      end
+    end
+
+    describe "after editing, regrading and updating" do
+      before do
+        @task2.update_attribute(:output, "12345")
+        @task2.regrade
+        @problem.update_solvers
+      end
+
+      it "should have correct_solvers" do
+        expect(@problem.solvers).to eq [@user1]
+      end
+    end
+  end
 end

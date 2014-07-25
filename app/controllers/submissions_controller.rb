@@ -4,7 +4,7 @@ class SubmissionsController < ApplicationController
   before_action :correct_user_or_admin, :only => :user
 
   def index
-    @submissions = Submission.order(:created_at => :desc)
+    @submissions = Submission.order(:created_at => :desc).paginate(:page => params[:page])
   end
 
   def create
@@ -26,7 +26,7 @@ class SubmissionsController < ApplicationController
   end
 
   def user
-    @submissions = User.find(params[:id]).submissions.order(:created_at => :desc)
+    @submissions = User.find(params[:id]).submissions.order(:created_at => :desc).paginate(:page => params[:page])
     render 'index'
   end
 

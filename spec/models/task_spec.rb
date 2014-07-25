@@ -55,4 +55,48 @@ describe Task do
       end
     end
   end
+
+  context "#regrade" do
+    before do
+      @task.input  = "1234"
+      @task.output = "1234"
+      @task.save
+
+      @user1 = User.create(:name => "User 1", :email => "test1@example.com", :password => "12345", :password_confirmation => "12345")
+      @user2 = User.create(:name => "User 2", :email => "test2@example.com", :password => "12345", :password_confirmation => "12345")
+
+      @submission1 = @user1.submissions.create(:input => "1234", :task_id => @task.id)
+      @submission2 = @user2.submissions.create(:input => "4321", :task_id => @task.id)
+    end
+
+    describe "before regrading" do
+      it "should have correct solvers" do
+        expect(@task.solvers).to eq [@user1]
+      end
+
+      it "submissions should have correct accepted status" do
+        expect(@submission1.accepted).to be_truthy
+        expect(@submission2.accepted).to be_falsy
+      end
+    end
+
+    describe "after editing and regrading" do
+      before do
+        @task.output = "4321"
+        @task.save
+        @task.regrade
+        @submission1.reload
+        @submission2.reload
+      end
+
+      it "should have correct solvers" do
+        expect(@task.solvers).to eq [@user2]
+      end
+
+      it "submissions should have correct accepted status" do
+        expect(@submission1.accepted).to be_falsy
+        expect(@submission2.accepted).to be_truthy
+      end
+    end
+  end
 end

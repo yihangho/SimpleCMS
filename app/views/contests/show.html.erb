@@ -1,5 +1,6 @@
 <h1><%= @contest.title %></h1>
 
+<p>From <%= format_datetime(@contest.start, cookies[:timezone]) %> to <%= format_datetime(@contest.end, cookies[:timezone]) %>
 <p>Status: <%= @contest.status %></p>
 <p><%= link_to "Leaderboard", leaderboard_path(@contest) %></p>
 

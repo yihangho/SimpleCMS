@@ -4,6 +4,10 @@ class Contest < ActiveRecord::Base
   validates :participation, :inclusion => { :in => ["public", "invite_only"] }
   validate :starting_and_ending_time_must_make_sense
 
+  scope :invited_but_not_participated_by, ->(user) do
+    where(:id => user.invited_contests).where.not(:id => user.participated_contests)
+  end
+
   has_and_belongs_to_many :problems, :validate => false
   belongs_to :creator, :class_name => "User", :validate => false
   has_and_belongs_to_many :invited_users, :class_name => "User", :validate => false

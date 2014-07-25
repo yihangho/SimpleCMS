@@ -326,4 +326,21 @@ describe Contest do
       expect(@contest.leaderboard).to eq [[2, @user1], [1, @user2], [0, @user3]]
     end
   end
+
+  describe "::invited_but_not_participated_by" do
+    before do
+      @contest1 = Contest.create(:title => "Contest 1", :start => 1.day.ago, :end => 1.day.from_now, :visibility => "public", :participation => "public")
+      @contest2 = Contest.create(:title => "Contest 2", :start => 1.day.ago, :end => 1.day.from_now, :visibility => "public", :participation => "public")
+
+      @user = User.create(:name => "Test", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
+
+      @contest1.invited_users = [@user]
+      @contest2.invited_users = [@user]
+      @contest2.participants = [@user]
+    end
+
+    it "should return correct contests" do
+      expect(Contest.invited_but_not_participated_by(@user)).to eq [@contest1]
+    end
+  end
 end

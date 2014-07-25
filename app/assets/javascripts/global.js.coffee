@@ -1,3 +1,6 @@
+$(document).ready ->
+  document.cookie = "timezone=#{jstz.determine_timezone().timezone.olson_tz}; path=/"
+
 $(document).on "page:fetch", ->
   $(".spinner-container").removeClass("hidden")
   $(".spinner-container").spin()

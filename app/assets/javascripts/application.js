@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.spin
+//= require detect_timezone
 //= require bootstrap/alert
 //= require bootstrap/collapse
 //= require bootstrap/dropdown

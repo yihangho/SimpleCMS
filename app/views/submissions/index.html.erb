@@ -3,6 +3,7 @@
 <table class="table">
   <thead>
     <th>ID</th>
+    <th>User</th>
     <th>Problem</th>
     <th>Status</th>
   </thead>
@@ -10,7 +11,7 @@
     <% @submissions.each do |submission| %>
       <tr>
         <td><%= link_to submission.id, submission %></td>
-        <% p submission %>
+        <td><%= link_to submission.user.name, submission.user %></td>
         <td>
           <%=
           begin

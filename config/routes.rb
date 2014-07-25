@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get '/contests/:id/leaderboard' => 'contests#leaderboard', :as => 'leaderboard'
   patch '/users/:id/admin' => 'users#set_admin', :as => 'set_admin'
   get '/users/:id/submissions' => 'submissions#user', :as => 'user_submissions'
-  resources :problems, :only => [:index, :new, :create, :show]
+  resources :problems, :only => [:index, :new, :create, :show, :edit, :update]
   resources :users, :only => [:index, :new, :create, :show, :edit, :update]
   resources :sessions, :only => :create
   resources :submissions, :only => [:index, :create, :show]

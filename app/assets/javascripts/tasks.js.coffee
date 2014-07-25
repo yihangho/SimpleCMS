@@ -13,6 +13,7 @@ $(document).on "page:load", ->
 
 
   $("#add-task-btn").click ->
+    task_count++ until($(".task-#{task_count}").length == 0)
     html = """
            <div class="task-#{task_count}">
              <button type="button" class="close" data-selector=".task-#{task_count}"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -27,5 +28,4 @@ $(document).on "page:load", ->
            </div>
            """
     $("form").append(html)
-    task_count++
     return false

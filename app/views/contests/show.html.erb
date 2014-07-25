@@ -1,7 +1,7 @@
 <h1><%= @contest.title %></h1>
 
 <p>From <%= format_datetime(@contest.start, cookies[:timezone]) %> to <%= format_datetime(@contest.end, cookies[:timezone]) %>
-<p>Status: <%= @contest.status %></p>
+<p>Status: <%= @contest.formatted_status %></p>
 <p><%= link_to "Leaderboard", leaderboard_path(@contest) %></p>
 
 <% if signed_in? %>

@@ -7,10 +7,10 @@ class Contest < ActiveRecord::Base
   scope :invited_but_not_participated_by, ->(user) do
     where(:id => user.invited_contests).where.not(:id => user.participated_contests)
   end
-  scope :upcoming, -> { where("\"contests\".\"start\" > '#{Time.now}'") }
+  scope :upcoming, -> { where("\"contests\".\"start\" > ?", Time.now) }
   scope :ongoing,  -> do
-    where("\"contests\".\"end\" > '#{Time.now}'").
-    where("\"contests\".\"start\" < '#{Time.now}'")
+    where("\"contests\".\"end\" > ?", Time.now).
+    where("\"contests\".\"start\" < ?", Time.now)
   end
 
   has_and_belongs_to_many :problems, :validate => false

@@ -9,7 +9,8 @@ $(document).on "page:load", ->
   task_count = 0
 
   $("form").on "click", "button.close", ->
-    $($(this).data("selector")).remove()
+    if confirm("Are you sure?")
+      $($(this).data("selector")).remove()
 
 
   $("#add-task-btn").click ->

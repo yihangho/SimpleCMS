@@ -52,6 +52,7 @@ class ContestsController < ApplicationController
 
   def leaderboard
     @contest = Contest.find(params[:id])
+    render :layout => false if request.xhr?
   end
 
   def invited

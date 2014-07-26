@@ -14,7 +14,7 @@
   <% end %>
 
   <% if @contest.status != :not_started %>
-    <li><a href="#leaderboard" role="tab" data-toggle="tab">Leaderboard</a></li>
+    <li><a href="#leaderboard" role="tab" data-toggle="tab" data-source="<%= leaderboard_path(@contest) %>">Leaderboard</a></li>
   <% end %>
 
   <% if signed_in? && current_user.admin? %>
@@ -51,31 +51,7 @@
   <% end %>
 
   <% if @contest.status != :not_started %>
-    <div class="tab-pane" id="leaderboard">
-      <% problems = @contest.problems %>
-
-      <table class="table table-hover">
-        <thead>
-          <th>User</th>
-          <% problems.each do |problem| %>
-            <th><%= link_to problem.title, problem %></th>
-          <% end %>
-          <th>Problems solved</th>
-        </thead>
-
-        <tbody>
-          <% @contest.leaderboard.each do |row| %>
-            <tr>
-              <td><%= row[:user].name %></td>
-              <% problems.each do |problem| %>
-                <td><% if row[:problems][problem.id] %><i class="fa fa-check"></i><% end %></td>
-              <% end %>
-              <td><%= row[:num_solved] %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+    <div class="tab-pane" id="leaderboard"></div>
   <% end %>
 
   <% if signed_in? && current_user.admin? %>

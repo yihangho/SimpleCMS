@@ -1,4 +1,6 @@
-<h1>Leaderboard for <%= @contest.title %></h1>
+<% unless request.xhr? %>
+  <h1>Leaderboard for <%= @contest.title %></h1>
+<% end %>
 
 <% problems = @contest.problems %>
 

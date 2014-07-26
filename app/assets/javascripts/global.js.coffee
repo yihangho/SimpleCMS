@@ -1,4 +1,5 @@
 $(document).ready ->
+  $(this).trigger("page:load")
   document.cookie = "timezone=#{jstz.determine_timezone().timezone.olson_tz}; path=/"
 
 $(document).on "page:fetch", ->

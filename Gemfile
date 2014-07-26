@@ -10,6 +10,7 @@ gem 'rails_12factor', group: :production
 gem 'sass-rails', '~> 4.0.3'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'spinjs-rails'
+gem 'font-awesome-sass'
 
 gem 'will_paginate', '~> 3.0.7'
 gem 'bootstrap-will_paginate', '~> 0.0.10'

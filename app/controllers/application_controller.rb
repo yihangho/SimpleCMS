@@ -7,7 +7,13 @@ class ApplicationController < ActionController::Base
   private
 
   def admin_only
-    redirect_to problems_path unless signed_in? && current_user.admin?
+    if !signed_in?
+      store_location
+      redirect_to signin_path
+    elsif !current_user.admin?
+      flash[:danger] = "You are not allowed to access that page."
+      redirect_to current_user
+    end
   end
 
   def signed_in_users_only

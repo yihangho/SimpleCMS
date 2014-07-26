@@ -32,4 +32,13 @@ module SessionsHelper
     session.delete if session
     cookies.delete(:remember_token)
   end
+
+  def store_location(loc = nil)
+    session[:return_to] = loc || (request.url if request.get?)
+  end
+
+  def redirect_to_stored_location_or(loc)
+    redirect_to(session[:return_to] || loc)
+    session.delete(:return_to)
+  end
 end

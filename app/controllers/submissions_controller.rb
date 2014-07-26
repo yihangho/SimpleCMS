@@ -37,6 +37,12 @@ class SubmissionsController < ApplicationController
   end
 
   def correct_user_or_admin
-    redirect_to problems_path unless signed_in? && (current_user?(User.find(params[:id])) || current_user.admin?)
+    if !signed_in?
+      store_location
+      redirect_to signin_path
+    elsif !(current_user?(User.find(params[:id])) || current_user.admin?)
+      flash[:danger] = "You can only view your own submissions."
+      redirect_to user_submissions_path(current_user)
+    end
   end
 end

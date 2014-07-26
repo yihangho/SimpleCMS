@@ -1,46 +1,68 @@
-<h1><%= @contest.title %></h1>
+<div>
+  <span class="h1"><%= @contest.title %></span>
 
-<p>From <%= format_datetime(@contest.start, cookies[:timezone]) %> to <%= format_datetime(@contest.end, cookies[:timezone]) %>
-<p>Status: <%= @contest.formatted_status %></p>
-<p><%= link_to "Leaderboard", leaderboard_path(@contest) %></p>
+  <% if signed_in? && current_user.admin? %>
+    <%= link_to icon("edit"), edit_contest_path(@contest), :class => "btn btn-default pull-right", :title => "Edit" %>
+  <% end %>
+</div>
 
-<% if signed_in? %>
-  <% if @contest.participants.include?(current_user) %>
-    <p>You are a participant.</p>
-  <% elsif @contest.invited_users.include?(current_user) %>
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></li>
+  <% if @contest.can_access_problems_list?(current_user) %>
+    <li><a href="#problems" role="tab" data-toggle="tab">Problems</a></li>
+  <% end %>
+  <% if signed_in? && current_user.admin? %>
+    <li><a href="#admin" role="tab" data-toggle="tab">Admin</a></li>
+  <% end %>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="home">
     <p>
-      You are invited.
+      This contest will run from
+      <b><%= format_datetime(@contest.start, cookies[:timezone]) %></b>
+      to
+      <b><%= format_datetime(@contest.end, cookies[:timezone]) %></b>.
     </p>
-  <% end %>
 
-  <% if @contest.can_participate_by?(current_user) && !@contest.participants.include?(current_user) %>
-    <p><%= link_to "Participate", participate_contest_path(@contest), :method => :post %></p>
-  <% elsif @contest.participants.include?(current_user) %>
-    <p><%= link_to "Unparticipate", unparticipate_contest_path(@contest), :method => :delete %></p>
-  <% end %>
-<% end %>
-
-<% if signed_in? and current_user == @contest.creator %>
-<h2>Invited Users</h2>
-<ul>
-  <% @contest.invited_users.each do |user| %>
-    <li><%= link_to user.name, user %></li>
-  <% end %>
-</ul>
-
-<h2>Participants</h2>
-<ul>
-  <% @contest.participants.each do |user| %>
-    <li><%= link_to user.name, user %></li>
-  <% end %>
-</ul>
-<% end %>
-
-<% if @contest.status != :not_started && signed_in? && @contest.participants.include?(current_user) %>
-  <h2>Problems</h2>
-  <ul>
-    <% @contest.problems.each do |problem| %>
-      <li><%= link_to problem.title, problem %></li>
+    <% if @contest.can_participate_by?(current_user) && !@contest.participants.include?(current_user) %>
+      <p><%= link_to "Participate", participate_contest_path(@contest), :method => :post %></p>
+    <% elsif @contest.participants.include?(current_user) %>
+      <p><%= link_to "Unparticipate", unparticipate_contest_path(@contest), :method => :delete %></p>
     <% end %>
-  </ul>
-<% end %>
+
+    <p><%= link_to "Leaderboard", leaderboard_path(@contest) %>
+  </div>
+
+  <% if @contest.can_access_problems_list?(current_user) %>
+    <div class="tab-pane" id="problems">
+      <ul>
+        <% @contest.problems.each do |problem| %>
+          <li><%= link_to problem.title, problem %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if signed_in? && current_user.admin? %>
+    <div class="tab-pane" id="admin">
+      <% if @contest.invited_users.any? %>
+        <h2>Invited Users</h2>
+        <ul>
+          <% @contest.invited_users.each do |user| %>
+            <li><%= link_to user.name, user %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <% if @contest.participants.any? %>
+        <h2>Participants</h2>
+        <ul>
+          <% @contest.participants.each do |user| %>
+            <li><%= link_to user.name, user %></li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+  <% end %>
+</div>

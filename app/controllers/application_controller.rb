@@ -22,7 +22,10 @@ class ApplicationController < ActionController::Base
   end
 
   def not_signed_in_users_only
-    redirect_to problems_path if signed_in?
+    if signed_in?
+      flash[:info] = "You have already signed in!"
+      redirect_to current_user
+    end
   end
 
   def current_user_only

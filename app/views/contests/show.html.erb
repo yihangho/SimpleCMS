@@ -8,15 +8,23 @@
 
 <ul class="nav nav-tabs" role="tablist">
   <li class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></li>
+
   <% if @contest.can_access_problems_list?(current_user) %>
     <li><a href="#problems" role="tab" data-toggle="tab">Problems</a></li>
   <% end %>
+
+  <% if @contest.status != :not_started %>
+    <li><a href="#leaderboard" role="tab" data-toggle="tab">Leaderboard</a></li>
+  <% end %>
+
   <% if signed_in? && current_user.admin? %>
     <li><a href="#admin" role="tab" data-toggle="tab">Admin</a></li>
   <% end %>
 </ul>
 
 <div class="tab-content">
+  <% # Ajax load all these stuff %>
+
   <div class="tab-pane active" id="home">
     <p>
       This contest will run from
@@ -30,8 +38,6 @@
     <% elsif @contest.participants.include?(current_user) %>
       <p><%= link_to "Unparticipate", unparticipate_contest_path(@contest), :method => :delete %></p>
     <% end %>
-
-    <p><%= link_to "Leaderboard", leaderboard_path(@contest) %>
   </div>
 
   <% if @contest.can_access_problems_list?(current_user) %>
@@ -41,6 +47,34 @@
           <li><%= link_to problem.title, problem %></li>
         <% end %>
       </ul>
+    </div>
+  <% end %>
+
+  <% if @contest.status != :not_started %>
+    <div class="tab-pane" id="leaderboard">
+      <% problems = @contest.problems %>
+
+      <table class="table table-hover">
+        <thead>
+          <th>User</th>
+          <% problems.each do |problem| %>
+            <th><%= link_to problem.title, problem %></th>
+          <% end %>
+          <th>Problems solved</th>
+        </thead>
+
+        <tbody>
+          <% @contest.leaderboard.each do |row| %>
+            <tr>
+              <td><%= row[:user].name %></td>
+              <% problems.each do |problem| %>
+                <td><% if row[:problems][problem.id] %><i class="fa fa-check"></i><% end %></td>
+              <% end %>
+              <td><%= row[:num_solved] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   <% end %>
 

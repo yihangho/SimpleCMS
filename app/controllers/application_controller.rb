@@ -11,7 +11,8 @@ class ApplicationController < ActionController::Base
   end
 
   def signed_in_users_only
-    redirect_to problems_path unless signed_in?
+    store_location
+    redirect_to signin_path unless signed_in?
   end
 
   def not_signed_in_users_only

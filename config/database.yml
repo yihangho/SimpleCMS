@@ -20,6 +20,11 @@ test:
   <<: *default
   database: db/test.sqlite3
 
+# Have to disable prepared_statements for PG as prepared statements
+# will screw up certain queries like the
+# invited_but_not_participated_by scope for Contest.
+#
+# Please re-enable prepared_statements when this nuisance is fixed.
 production:
   <<: *default
   database: postgresql

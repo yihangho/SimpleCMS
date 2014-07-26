@@ -90,6 +90,9 @@ class ProblemsController < ApplicationController
   end
 
   def authorized_users_only
-    redirect_to problems_path unless Problem.find(params[:id]).visible_to?(current_user)
+    unless Problem.find(params[:id]).visible_to?(current_user)
+      flash[:danger] = "You are not allowed to view this problem."
+      redirect_to problems_path
+    end
   end
 end

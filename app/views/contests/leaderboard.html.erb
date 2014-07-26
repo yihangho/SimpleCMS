@@ -1,16 +1,24 @@
 <h1>Leaderboard for <%= @contest.title %></h1>
 
-<table class="table">
+<% problems = @contest.problems %>
+
+<table class="table table-hover">
   <thead>
     <th>User</th>
+    <% problems.each do |problem| %>
+      <th><%= link_to problem.title, problem %></th>
+    <% end %>
     <th>Problems solved</th>
   </thead>
 
   <tbody>
     <% @contest.leaderboard.each do |row| %>
       <tr>
-        <td><%= row.last.name %></td>
-        <td><%= row.first %></td>
+        <td><%= row[:user].name %></td>
+        <% problems.each do |problem| %>
+          <td><% if row[:problems][problem.id] %><i class="fa fa-check"></i><% end %></td>
+        <% end %>
+        <td><%= row[:num_solved] %></td>
       </tr>
     <% end %>
   </tbody>

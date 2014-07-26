@@ -66,6 +66,9 @@ class ContestsController < ApplicationController
   end
 
   def authorized_users_only
-    redirect_to contests_path unless Contest.find(params[:id]).visible_to?(current_user)
+    unless Contest.find(params[:id]).visible_to?(current_user)
+      flash[:danger] = "You are not allowed to view this contest."
+      redirect_to contests_path
+    end
   end
 end

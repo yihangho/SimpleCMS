@@ -103,7 +103,15 @@ class Contest < ActiveRecord::Base
 
   def leaderboard
     participants.collect do |user|
-      [num_problems_solved_by(user), user]
-    end.sort.reverse
+      {
+        :num_solved => num_problems_solved_by(user),
+        :user       => user,
+        :problems   => problems.collect do |problem|
+                         [problem.id, problem.solved_between_by?(Time.at(0), self.end, user)]
+                       end.to_h
+      }
+    end.sort do |row1, row2|
+      row1[:num_solved] <=> row2[:num_solved]
+    end.reverse
   end
 end

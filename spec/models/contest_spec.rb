@@ -323,7 +323,31 @@ describe Contest do
     end
 
     it "should return correct leaderboard" do
-      expect(@contest.leaderboard).to eq [[2, @user1], [1, @user2], [0, @user3]]
+      expected_output = [
+        {
+          :num_solved => 2,
+          :user       => @user1,
+          :problems   => {
+            @task1.id => true,
+            @task2.id => true
+          }
+        }, {
+          :num_solved => 1,
+          :user       => @user2,
+          :problems   => {
+            @task1.id => true,
+            @task2.id => false
+          }
+        }, {
+          :num_solved => 0,
+          :user       => @user3,
+          :problems   => {
+            @task1.id => false,
+            @task2.id => false
+          }
+        }
+      ]
+      expect(@contest.leaderboard).to eq expected_output
     end
   end
 

@@ -29,6 +29,12 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_only
-    redirect_to problems_path unless signed_in? && current_user?(User.find(params[:id]))
+    if !signed_in?
+      store_location
+      redirect_to signin_path
+    elsif !current_user?(User.find(params[:id]))
+      flash[:danger] = "You are not allowed to access that page."
+      redirect_to current_user
+    end
   end
 end

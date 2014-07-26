@@ -351,6 +351,56 @@ describe Contest do
     end
   end
 
+  context "#can_access_problems_list?" do
+    before do
+      @contest.save
+      @admin = User.create(:name => "Admin", :email => "admin@example.com", :password => "12345", :password_confirmation => "12345", :admin => true)
+      @user  = User.create(:name => "User", :email => "user@example.com", :password => "12345", :password_confirmation => "12345")
+    end
+
+    describe "before contest starts" do
+      before do
+        @contest.update_attributes(:start => 1.day.from_now, :end => 2.days.from_now)
+      end
+
+      it "should return falsy for user" do
+        expect(@contest.can_access_problems_list?(@user)).to be_falsy
+      end
+
+      it "should return truthy for admin" do
+        expect(@contest.can_access_problems_list?(@admin)).to be_truthy
+      end
+    end
+
+    describe "during the contest" do
+      before do
+        @contest.update_attributes(:start => 1.day.ago, :end => 1.day.from_now)
+      end
+
+      it "should return truthy for user" do
+        expect(@contest.can_access_problems_list?(@user)).to be_truthy
+      end
+
+      it "should return truthy for admin" do
+        expect(@contest.can_access_problems_list?(@admin)).to be_truthy
+      end
+    end
+
+    describe "after the contest" do
+      before do
+        @contest.update_attributes(:start => 2.days.ago, :end => 1.day.ago)
+      end
+
+      it "should return truthy for user" do
+        expect(@contest.can_access_problems_list?(@user)).to be_truthy
+      end
+
+      it "should return truthy for admin" do
+        expect(@contest.can_access_problems_list?(@admin)).to be_truthy
+      end
+    end
+  end
+
   describe "::invited_but_not_participated_by" do
     before do
       @contest1 = Contest.create(:title => "Contest 1", :start => 1.day.ago, :end => 1.day.from_now, :visibility => "public", :participation => "public")

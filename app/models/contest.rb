@@ -67,6 +67,10 @@ class Contest < ActiveRecord::Base
     end
   end
 
+  def can_access_problems_list?(user)
+    (user && user.admin?) || (status != :not_started)
+  end
+
   def can_participate_by?(user)
     if participation == "public"
       true

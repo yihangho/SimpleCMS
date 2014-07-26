@@ -1,10 +1,16 @@
-<h1>
-  <%= @problem.title %>
+<div>
+  <span class="h1">
+    <%= @problem.title %>
 
-  <% if signed_in? and @problem.solvers.include?(current_user) %>
-    <span class="label label-success">Solved</span>
+    <% if @problem.solvers.include?(current_user) %>
+      <small><span class="text-success">(Solved)</span></small></span>
+    <% end %>
+
+  <% if signed_in? && current_user.admin? %>
+    <%= link_to icon("edit"), edit_problem_path(@problem), :class => "btn btn-default pull-right", :title => "Edit" %>
   <% end %>
-</h1>
+</div>
+
 <p><%= @problem.statement %></p>
 
 <% if signed_in? %>

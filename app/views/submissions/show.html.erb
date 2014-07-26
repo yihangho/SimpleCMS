@@ -1,8 +1,8 @@
 <h1>Submission <%= @submission.id %></h1>
 <h2>Input</h2>
-<p class="well"><pre><%= @submission.task.input %></pre></p>
+<pre><%= @submission.task.input %></pre>
 <h2>Your Answer</h2>
-<p class="well"><pre><%= @submission.input %></pre></p>
+<pre><%= @submission.input %></pre>
 
 <% unless @submission.code_link.empty? %>
   <p>

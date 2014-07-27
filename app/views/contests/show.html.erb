@@ -68,7 +68,11 @@
       <% @contest.announcements.reverse_order.each do |announcement| %>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title"><%= announcement.title %></h3>
+            <span class="h3 panel-title">
+              <%= announcement.title %>
+              <!-- <small><%= format_datetime(announcement.created_at, cookies[:timezone]) %></small> -->
+            </span>
+            <span class="pull-right"><small><%= format_datetime(announcement.created_at, cookies[:timezone]) %></small></span>
           </div>
           <div class="panel-body"><%= announcement.message %></div>
         </div>

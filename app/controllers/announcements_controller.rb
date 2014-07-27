@@ -4,6 +4,7 @@ class AnnouncementsController < ApplicationController
   def create
     @announcement = Announcement.create(announcement_params)
     @announcement.update_attribute(:sender_id, current_user.id)
+    WebsocketRails[:announcements].trigger(@announcement.contest.id.to_s, {:contest => @announcement.contest, :announcement => @announcement})
     redirect_to @announcement.contest
   end
 

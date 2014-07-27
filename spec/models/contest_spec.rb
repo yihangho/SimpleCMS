@@ -8,6 +8,7 @@ describe Contest do
   subject { @contest }
 
   it { should respond_to :title }
+  it { should respond_to :instructions }
   it { should respond_to :start }
   it { should respond_to :end }
   it { should respond_to :visibility }

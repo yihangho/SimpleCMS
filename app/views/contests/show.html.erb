@@ -65,6 +65,14 @@
 
   <% if @contest.status != :not_started %>
     <div class="tab-pane" id="announcements">
+      <% if @contest.announcements.any? %>
+        <% @contest.announcements.reverse_order.each do |announcement| %>
+          <div>
+            <h3><%= announcement.title %></h3>
+            <div><%= announcement.message %></div>
+          </div>
+        <% end %>
+      <% end %>
     </div>
   <% end %>
 

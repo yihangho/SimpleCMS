@@ -18,7 +18,7 @@
   <% end %>
 
   <% if @contest.status != :not_started %>
-    <li><a href="#communications" role="tab" data-toggle="tab">Communications</a></li>
+    <li><a href="#announcements" role="tab" data-toggle="tab">Announcements</a></li>
   <% end %>
 
   <% if signed_in? && current_user.admin? %>
@@ -64,25 +64,7 @@
   <% end %>
 
   <% if @contest.status != :not_started %>
-    <div class="tab-pane" id="communications">
-      <% if signed_in? && current_user.admin? %>
-        <h2>Send Announcement</h2>
-        <%= form_for @contest.announcements.new do |f| %>
-          <%= f.hidden_field :contest_id, :valud => @contest.id %>
-
-          <div class="form-group">
-            <%= f.label :title %>
-            <%= f.text_field :title, :class => "form-control" %>
-          </div>
-
-          <div class="form-group">
-            <%= f.label :message %>
-            <%= f.text_area :message, :class => "form-control" %>
-          </div>
-
-          <%= f.submit "Send", :class => "btn btn-default" %>
-        <% end %>
-      <% end %>
+    <div class="tab-pane" id="announcements">
     </div>
   <% end %>
 
@@ -104,6 +86,23 @@
             <li><%= link_to user.name, user %></li>
           <% end %>
         </ul>
+      <% end %>
+
+      <h2>Make Announcement</h2>
+      <%= form_for @contest.announcements.new do |f| %>
+        <%= f.hidden_field :contest_id, :valud => @contest.id %>
+
+        <div class="form-group">
+          <%= f.label :title %>
+          <%= f.text_field :title, :class => "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :message %>
+          <%= f.text_area :message, :class => "form-control" %>
+        </div>
+
+        <%= f.submit "Send", :class => "btn btn-default" %>
       <% end %>
     </div>
   <% end %>

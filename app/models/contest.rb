@@ -13,6 +13,7 @@ class Contest < ActiveRecord::Base
     where("\"contests\".\"start\" < ?", Time.now)
   end
 
+  has_many :announcements, :validate => false
   has_and_belongs_to_many :problems, :validate => false
   belongs_to :creator, :class_name => "User", :validate => false
   has_and_belongs_to_many :invited_users, :class_name => "User", :validate => false

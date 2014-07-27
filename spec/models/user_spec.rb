@@ -22,6 +22,7 @@ describe User do
   it { should respond_to :solved_problems }
   it { should respond_to :solved_tasks }
   it { should respond_to :sessions }
+  it { should respond_to :announcements }
 
   context "validations" do
     describe "when email is obviously invalid" do

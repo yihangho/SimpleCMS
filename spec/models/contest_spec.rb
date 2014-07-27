@@ -18,6 +18,7 @@ describe Contest do
   it { should respond_to :creator }
   it { should respond_to :invited_users }
   it { should respond_to :participants }
+  it { should respond_to :announcements }
 
   context "validations" do
     describe "when title is empty" do

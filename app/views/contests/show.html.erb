@@ -70,9 +70,15 @@
           <div class="panel-heading">
             <span class="h3 panel-title">
               <%= announcement.title %>
-              <!-- <small><%= format_datetime(announcement.created_at, cookies[:timezone]) %></small> -->
             </span>
-            <span class="pull-right"><small><%= format_datetime(announcement.created_at, cookies[:timezone]) %></small></span>
+            <span class="pull-right">
+              <small>
+                at
+                <%= format_datetime(announcement.created_at, cookies[:timezone]) %>
+                by
+                <%= announcement.sender.name %>
+              </small>
+            </span>
           </div>
           <div class="panel-body"><%= announcement.message %></div>
         </div>

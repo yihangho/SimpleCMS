@@ -62,5 +62,9 @@
       ) %>
   </div>
 
-  <%= f.submit "Create", :class => "btn btn-primary" %>
+  <% if @contest.id %>
+    <%= f.submit "Save", :class => "btn btn-primary" %>
+  <% else %>
+    <%= f.submit "Create", :class => "btn btn-primary" %>
+  <% end %>
 <% end %>

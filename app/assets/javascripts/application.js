@@ -21,3 +21,4 @@
 //= require bootstrap/transition
 //= require turbolinks
 //= require_tree .
+//= require websocket_rails/main

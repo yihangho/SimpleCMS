@@ -17,8 +17,16 @@ class ApplicationController < ActionController::Base
   end
 
   def signed_in_users_only
-    store_location
-    redirect_to signin_path unless signed_in?
+    unless signed_in?
+      respond_to do |format|
+        format.html do
+          store_location
+          redirect_to signin_path
+        end
+
+        format.json { render :status => :forbidden, :json => [] }
+      end
+    end
   end
 
   def not_signed_in_users_only

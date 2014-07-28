@@ -3,7 +3,7 @@ $(document).ready ->
   document.cookie = "timezone=#{jstz.determine_timezone().timezone.olson_tz}; path=/"
 
   $.get("/users/ongoing_contests", (e) ->
-    dispatcher = new WebSocketRails('localhost:3000/websocket');
+    dispatcher = new WebSocketRails("#{window.location.host}/websocket");
     channel = dispatcher.subscribe("announcements")
     e.forEach( (i) ->
       channel.bind("#{i}", (message) ->

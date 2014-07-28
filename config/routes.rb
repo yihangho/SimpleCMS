@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   delete '/contests/:id/unparticipate' => 'contests#unparticipate', :as => 'unparticipate_contest'
   get '/contests/:id/leaderboard' => 'contests#leaderboard', :as => 'leaderboard'
   get '/contests/invited' => 'contests#invited', :as => 'invited_contests'
+  get '/contests/ongoing' => 'contests#ongoing', :as => 'ongoing_contests'
   get '/users/ongoing_contests' => 'users#ongoing_contests'
   patch '/users/:id/admin' => 'users#set_admin', :as => 'set_admin'
   get '/users/:id/submissions' => 'submissions#user', :as => 'user_submissions'

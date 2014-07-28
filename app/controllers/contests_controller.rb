@@ -1,6 +1,6 @@
 class ContestsController < ApplicationController
   before_action :admin_only, :only => [:new, :create, :edit, :update]
-  before_action :signed_in_users_only, :only => [:participate, :invited]
+  before_action :signed_in_users_only, :only => [:participate, :invited, :ongoing]
   before_action :authorized_users_only, :only => :show
 
   def index
@@ -57,6 +57,11 @@ class ContestsController < ApplicationController
 
   def invited
     @contests = Contest.invited_but_not_participated_by(current_user).upcoming
+    render 'index'
+  end
+
+  def ongoing
+    @contests = current_user.participated_contests.ongoing
     render 'index'
   end
 

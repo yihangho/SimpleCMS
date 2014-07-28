@@ -54,9 +54,9 @@ class ProblemsController < ApplicationController
       end
     end
 
-    current_tasks.sort!
+    current_tasks_set = Set.new(current_tasks)
     @problem.task_ids.each do |id|
-      deleted_tasks << id unless current_tasks.bsearch { |x| x >= id }
+      deleted_tasks << id unless current_tasks_set.include?(id)
     end
 
     deleted_tasks.each do |id|

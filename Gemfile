@@ -6,7 +6,7 @@ gem 'rails', '~> 4.1.0'
 
 gem 'websocket-rails', '~> 0.7.0'
 
-gem 'pg', :group => :production
+gem 'pg'
 gem 'rails_12factor', group: :production
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
@@ -45,7 +45,6 @@ gem 'detect_timezone_rails', '~> 0.0.5'
 gem 'mustache-js-rails', '~> 0.0.9'
 
 group :development, :test do
-  gem 'sqlite3'
   gem 'rspec-rails', '~> 3.0.0'
   gem 'capybara', '~> 2.4.1'
 end

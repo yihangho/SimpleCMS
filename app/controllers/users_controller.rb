@@ -44,11 +44,6 @@ class UsersController < ApplicationController
     render 'show'
   end
 
-  # Get an array of ongoing contests participated by current user
-  def ongoing_contests
-    render :json => signed_in? ? current_user.participated_contests.ongoing.collect { |c| c.id } : []
-  end
-
   private
 
   def user_params

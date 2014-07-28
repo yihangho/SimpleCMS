@@ -5,7 +5,7 @@
 $(document).on "page:load", ->
   task_count = 0
 
-  $.Mustache.addFromDom("task-template")
+  $.Mustache.addFromDom("task-template") if $("#task-template").length
 
   $("form").on "click", "button.close", ->
     if confirm("Are you sure?")

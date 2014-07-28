@@ -57,13 +57,13 @@ class ContestsController < ApplicationController
 
   def invited
     @contests = Contest.invited_but_not_participated_by(current_user).upcoming
-    render 'index'
+    render 'index', :locals => { :title => "Invited Contests" }
   end
 
   def ongoing
     @contests = current_user.participated_contests.ongoing
     respond_to do |format|
-      format.html { render 'index' }
+      format.html { render 'index', :locals => { :title => "Ongoing Contests" } }
       format.json { render :json => @contests }
     end
   end

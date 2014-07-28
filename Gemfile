@@ -4,6 +4,8 @@ ruby '2.1.2'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.1.0'
 
+gem 'websocket-rails', '~> 0.7.0'
+
 gem 'pg', :group => :production
 gem 'rails_12factor', group: :production
 # Use SCSS for stylesheets

@@ -62,7 +62,10 @@ class ContestsController < ApplicationController
 
   def ongoing
     @contests = current_user.participated_contests.ongoing
-    render 'index'
+    respond_to do |format|
+      format.html { render 'index' }
+      format.json { render :json => @contests }
+    end
   end
 
   private

@@ -330,22 +330,22 @@ describe Contest do
           :num_solved => 2,
           :user       => @user1,
           :problems   => {
-            @task1.id => true,
-            @task2.id => true
+            @problem1.id => true,
+            @problem2.id => true
           }
         }, {
           :num_solved => 1,
           :user       => @user2,
           :problems   => {
-            @task1.id => true,
-            @task2.id => false
+            @problem1.id => true,
+            @problem2.id => false
           }
         }, {
           :num_solved => 0,
           :user       => @user3,
           :problems   => {
-            @task1.id => false,
-            @task2.id => false
+            @problem1.id => false,
+            @problem2.id => false
           }
         }
       ]

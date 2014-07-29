@@ -3,6 +3,7 @@ ruby '2.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.1.0'
+gem 'thin', '~> 1.6.2'
 
 gem 'websocket-rails', '~> 0.7.0'
 

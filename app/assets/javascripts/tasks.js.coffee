@@ -13,5 +13,5 @@ $(document).on "page:load", ->
 
   $("#add-task-btn").click ->
     task_count++ until($(".task-#{task_count}").length == 0)
-    $("form").append($.Mustache.render("task-template", {task_count: task_count}))
+    $(".tasks-forms").append($.Mustache.render("task-template", {task_count: task_count}))
     return false

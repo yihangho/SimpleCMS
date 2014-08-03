@@ -27,6 +27,7 @@ class ProblemsController < ApplicationController
   def update
     @problem = Problem.find(params[:id])
     @problem.update_attributes(problem_params)
+    @problem.set_permalink(problem_permalink_params)
 
     tasks_to_be_regraded = []
     current_tasks        = []

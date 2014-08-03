@@ -1,4 +1,6 @@
 class Problem < ActiveRecord::Base
+  include Linkable
+
   validates :title, :statement, :visibility, :presence => true
   validates :visibility, :inclusion => { :in => ["public", "unlisted", "contest_only"] }
   has_one :permalink, :as => :linkable, :dependent => :destroy

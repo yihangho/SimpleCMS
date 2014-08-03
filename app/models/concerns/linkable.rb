@@ -4,6 +4,8 @@ module Linkable
   # The permalink to link
   # Returns falsy if permalink cannot be set
   def set_permalink(url)
+    return true if url.nil? || url.empty?
+
     if permalink.nil?
       create_permalink(:url => url).valid?
     else

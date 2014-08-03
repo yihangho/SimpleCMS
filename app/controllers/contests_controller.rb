@@ -12,9 +12,8 @@ class ContestsController < ApplicationController
   end
 
   def create
-    @contest = Contest.create(contest_params)
-    if @contest.save
-      @contest.update_attribute(:creator_id, current_user.id)
+    @contest = current_user.created_contests.create(contest_params)
+    if @contest.save && @contest.set_permalink(contest_permalink_params)
       redirect_to contests_path
     else
       render 'new'
@@ -69,9 +68,12 @@ class ContestsController < ApplicationController
   end
 
   private
-
   def contest_params
     params.require(:contest).permit(:title, :instructions, :start, :end, :visibility, :participation, { :problem_ids => [] }, { :invited_user_ids => [] })
+  end
+
+  def contest_permalink_params
+    params.require(:contest).permit(:permalink)[:permalink]
   end
 
   def authorized_users_only

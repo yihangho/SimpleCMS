@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140727094315) do
+ActiveRecord::Schema.define(version: 20140803104901) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "announcements", force: true do |t|
     t.string   "title"
@@ -22,7 +25,7 @@ ActiveRecord::Schema.define(version: 20140727094315) do
     t.datetime "updated_at"
   end
 
-  add_index "announcements", ["contest_id"], name: "index_announcements_on_contest_id"
+  add_index "announcements", ["contest_id"], name: "index_announcements_on_contest_id", using: :btree
 
   create_table "contests", force: true do |t|
     t.string   "title"
@@ -36,32 +39,43 @@ ActiveRecord::Schema.define(version: 20140727094315) do
     t.text     "instructions"
   end
 
-  add_index "contests", ["creator_id"], name: "index_contests_on_creator_id"
+  add_index "contests", ["creator_id"], name: "index_contests_on_creator_id", using: :btree
 
   create_table "contests_participants", id: false, force: true do |t|
     t.integer "contest_id"
     t.integer "user_id"
   end
 
-  add_index "contests_participants", ["contest_id"], name: "index_contests_participants_on_contest_id"
-  add_index "contests_participants", ["user_id"], name: "index_contests_participants_on_user_id"
+  add_index "contests_participants", ["contest_id"], name: "index_contests_participants_on_contest_id", using: :btree
+  add_index "contests_participants", ["user_id"], name: "index_contests_participants_on_user_id", using: :btree
 
   create_table "contests_problems", id: false, force: true do |t|
     t.integer "contest_id"
     t.integer "problem_id"
   end
 
-  add_index "contests_problems", ["contest_id", "problem_id"], name: "index_contests_problems_on_contest_id_and_problem_id"
-  add_index "contests_problems", ["contest_id"], name: "index_contests_problems_on_contest_id"
-  add_index "contests_problems", ["problem_id"], name: "index_contests_problems_on_problem_id"
+  add_index "contests_problems", ["contest_id", "problem_id"], name: "index_contests_problems_on_contest_id_and_problem_id", using: :btree
+  add_index "contests_problems", ["contest_id"], name: "index_contests_problems_on_contest_id", using: :btree
+  add_index "contests_problems", ["problem_id"], name: "index_contests_problems_on_problem_id", using: :btree
 
   create_table "contests_users", id: false, force: true do |t|
     t.integer "contest_id"
     t.integer "user_id"
   end
 
-  add_index "contests_users", ["contest_id"], name: "index_contests_users_on_contest_id"
-  add_index "contests_users", ["user_id"], name: "index_contests_users_on_user_id"
+  add_index "contests_users", ["contest_id"], name: "index_contests_users_on_contest_id", using: :btree
+  add_index "contests_users", ["user_id"], name: "index_contests_users_on_user_id", using: :btree
+
+  create_table "permalinks", force: true do |t|
+    t.string   "url"
+    t.integer  "linkable_id"
+    t.string   "linkable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "permalinks", ["linkable_type", "linkable_id"], name: "index_permalinks_on_linkable_type_and_linkable_id", using: :btree
+  add_index "permalinks", ["url"], name: "index_permalinks_on_url", unique: true, using: :btree
 
   create_table "problems", force: true do |t|
     t.string   "title"
@@ -72,7 +86,7 @@ ActiveRecord::Schema.define(version: 20140727094315) do
     t.string   "visibility"
   end
 
-  add_index "problems", ["setter_id"], name: "index_problems_on_setter_id"
+  add_index "problems", ["setter_id"], name: "index_problems_on_setter_id", using: :btree
 
   create_table "sessions", force: true do |t|
     t.string   "remember_token"
@@ -82,25 +96,25 @@ ActiveRecord::Schema.define(version: 20140727094315) do
     t.datetime "updated_at"
   end
 
-  add_index "sessions", ["remember_token", "user_id"], name: "index_sessions_on_remember_token_and_user_id"
-  add_index "sessions", ["remember_token"], name: "index_sessions_on_remember_token", unique: true
-  add_index "sessions", ["user_id", "remember_token"], name: "index_sessions_on_user_id_and_remember_token"
+  add_index "sessions", ["remember_token", "user_id"], name: "index_sessions_on_remember_token_and_user_id", using: :btree
+  add_index "sessions", ["remember_token"], name: "index_sessions_on_remember_token", unique: true, using: :btree
+  add_index "sessions", ["user_id", "remember_token"], name: "index_sessions_on_user_id_and_remember_token", using: :btree
 
   create_table "solved_problems", id: false, force: true do |t|
     t.integer "problem_id"
     t.integer "user_id"
   end
 
-  add_index "solved_problems", ["problem_id"], name: "index_solved_problems_on_problem_id"
-  add_index "solved_problems", ["user_id"], name: "index_solved_problems_on_user_id"
+  add_index "solved_problems", ["problem_id"], name: "index_solved_problems_on_problem_id", using: :btree
+  add_index "solved_problems", ["user_id"], name: "index_solved_problems_on_user_id", using: :btree
 
   create_table "solved_tasks", id: false, force: true do |t|
     t.integer "task_id"
     t.integer "user_id"
   end
 
-  add_index "solved_tasks", ["task_id"], name: "index_solved_tasks_on_task_id"
-  add_index "solved_tasks", ["user_id"], name: "index_solved_tasks_on_user_id"
+  add_index "solved_tasks", ["task_id"], name: "index_solved_tasks_on_task_id", using: :btree
+  add_index "solved_tasks", ["user_id"], name: "index_solved_tasks_on_user_id", using: :btree
 
   create_table "submissions", force: true do |t|
     t.integer  "user_id"
@@ -112,10 +126,10 @@ ActiveRecord::Schema.define(version: 20140727094315) do
     t.string   "code_link"
   end
 
-  add_index "submissions", ["accepted"], name: "index_submissions_on_accepted"
-  add_index "submissions", ["created_at"], name: "index_submissions_on_created_at"
-  add_index "submissions", ["task_id"], name: "index_submissions_on_task_id"
-  add_index "submissions", ["user_id"], name: "index_submissions_on_user_id"
+  add_index "submissions", ["accepted"], name: "index_submissions_on_accepted", using: :btree
+  add_index "submissions", ["created_at"], name: "index_submissions_on_created_at", using: :btree
+  add_index "submissions", ["task_id"], name: "index_submissions_on_task_id", using: :btree
+  add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 
   create_table "tasks", force: true do |t|
     t.text     "input"
@@ -125,7 +139,7 @@ ActiveRecord::Schema.define(version: 20140727094315) do
     t.datetime "updated_at"
   end
 
-  add_index "tasks", ["problem_id"], name: "index_tasks_on_problem_id"
+  add_index "tasks", ["problem_id"], name: "index_tasks_on_problem_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email"
@@ -136,7 +150,7 @@ ActiveRecord::Schema.define(version: 20140727094315) do
     t.string   "name"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["name"], name: "index_users_on_name"
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["name"], name: "index_users_on_name", using: :btree
 
 end

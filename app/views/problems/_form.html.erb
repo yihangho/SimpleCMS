@@ -24,6 +24,11 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :permalink %>
+    <%= f.text_field :permalink, :class => "form-control" %>
+  </div>
+
+  <div class="form-group">
     <%= f.label :visibility %>
     <%= f.select(:visibility,
       options_for_select(Problem.possible_visibilities.map { |k,v| [v, k]}),

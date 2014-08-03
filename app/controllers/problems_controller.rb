@@ -11,9 +11,8 @@ class ProblemsController < ApplicationController
   end
 
   def create
-    @problem = Problem.create(problem_params)
-    if @problem.save
-      @problem.update_attribute(:setter_id, current_user.id)
+    @problem = current_user.set_problems.create(problem_params)
+    if @problem.save && @problem.set_permalink(problem_permalink_params)
       tasks_params.each { |_, v| @problem.tasks.create(v) }
       render 'show'
     else
@@ -80,13 +79,16 @@ class ProblemsController < ApplicationController
   end
 
   private
-
   def problem_params
     params.require(:problem).permit(:title, :statement, :visibility)
   end
 
   def tasks_params
     params.require(:problem).require(:tasks).permit!
+  end
+
+  def problem_permalink_params
+    params.require(:problem).permit(:permalink)[:permalink]
   end
 
   def authorized_users_only

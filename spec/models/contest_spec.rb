@@ -14,6 +14,7 @@ describe Contest do
   it { should respond_to :visibility }
   it { should respond_to :participation }
 
+  it { should respond_to :permalink }
   it { should respond_to :problems }
   it { should respond_to :creator }
   it { should respond_to :invited_users }
@@ -74,6 +75,27 @@ describe Contest do
           @contest.participation = participation
           expect(@contest).not_to be_valid
         end
+      end
+    end
+  end
+
+  context "permalink" do
+    describe "creating permalink" do
+      before { @contest.save }
+
+      it "should increase the number of permalinks" do
+        expect { @contest.create_permalink(:url => "test") }.to change { Permalink.count }.by(1)
+      end
+    end
+
+    describe "destroying the contest" do
+      before do
+        @contest.save
+        @contest.create_permalink(:url => "test")
+      end
+
+      it "should free up its permalink" do
+        expect { @contest.destroy }.to change { Permalink.count }.by(-1)
       end
     end
   end

@@ -1,6 +1,7 @@
 class Problem < ActiveRecord::Base
   validates :title, :statement, :visibility, :presence => true
   validates :visibility, :inclusion => { :in => ["public", "unlisted", "contest_only"] }
+  has_one :permalink, :as => :linkable, :dependent => :destroy
   belongs_to :setter, :class_name => "User", :validate => false
   has_many :tasks, :dependent => :destroy, :validate => false
   has_and_belongs_to_many :contests, :validate => false

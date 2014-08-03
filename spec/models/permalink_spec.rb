@@ -9,6 +9,8 @@ describe Permalink do
 
   it { should respond_to :url }
 
+  it { should respond_to :linkable }
+
   context "validations" do
     describe "URL must be present" do
       before { @permalink.url = "" }

@@ -11,6 +11,7 @@ describe Problem do
   it { should respond_to :statement }
   it { should respond_to :visibility }
 
+  it { should respond_to :permalink }
   it { should respond_to :setter }
   it { should respond_to :tasks }
   it { should respond_to :contests }
@@ -42,6 +43,27 @@ describe Problem do
           @problem.visibility = visibility
           expect(@problem).not_to be_valid
         end
+      end
+    end
+  end
+
+  context "permalink" do
+    describe "creating permalink" do
+      before { @problem.save }
+
+      it "should increase the number of permalinks" do
+        expect { @problem.create_permalink(:url => "test") }.to change { Permalink.count }.by(1)
+      end
+    end
+
+    describe "destroying the contest" do
+      before do
+        @problem.save
+        @problem.create_permalink(:url => "test")
+      end
+
+      it "should free up its permalink" do
+        expect { @problem.destroy }.to change { Permalink.count }.by(-1)
       end
     end
   end

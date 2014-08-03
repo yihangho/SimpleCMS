@@ -30,7 +30,7 @@ class ContestsController < ApplicationController
 
   def update
     @contest = Contest.find(params[:id])
-    if @contest.update_attributes(contest_params)
+    if @contest.update_attributes(contest_params) && @contest.set_permalink(contest_permalink_params)
       render 'show'
     else
       render 'edit'

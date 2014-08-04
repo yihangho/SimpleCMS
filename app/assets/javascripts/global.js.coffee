@@ -19,3 +19,8 @@ $(document).on "page:fetch", ->
 $(document).on "page:receive", ->
   $(".spinner-container").addClass("hidden")
   $(".spinner-container").spin(false)
+
+$(document).on "page:load", ->
+  # Ask MathJax to typeset all elements with data-mathjax-source attribute set
+  $("[data-mathjax-source]").toArray().forEach (element) ->
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, element]);

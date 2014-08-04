@@ -109,6 +109,10 @@
       <% end %>
 
       <h2>Make Announcement</h2>
+      <div class="panel panel-default markdown-previewer hidden">
+        <div class="panel-heading">Preview</div>
+        <div class="panel-body"></div>
+      </div>
       <%= form_for @contest.announcements.new do |f| %>
         <%= f.hidden_field :contest_id, :valud => @contest.id %>
 
@@ -124,6 +128,7 @@
         </div>
 
         <%= f.submit "Send", :class => "btn btn-default" %>
+        <%= f.button "Preview", :class => "btn btn-default preview-markdown" %>
       <% end %>
     </div>
   <% end %>

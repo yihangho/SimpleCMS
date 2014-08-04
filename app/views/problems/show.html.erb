@@ -11,7 +11,11 @@
   <% end %>
 </div>
 
-<p><%= @problem.statement %></p>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= Kramdown::Document.new(@problem.statement).to_html.html_safe %>
+  </div>
+</div>
 
 <% if signed_in? %>
   <% @problem.tasks.each do |task| %>

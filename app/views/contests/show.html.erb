@@ -80,7 +80,9 @@
               </small>
             </span>
           </div>
-          <div class="panel-body"><%= announcement.message %></div>
+          <div class="panel-body" data-mathjax-source>
+            <%= Kramdown::Document.new(announcement.message).to_html.html_safe %>
+          </div>
         </div>
       <% end %>
     </div>
@@ -117,6 +119,7 @@
 
         <div class="form-group">
           <%= f.label :message %>
+          <span class="help-block">You may use <a href="http://kramdown.gettalong.org/syntax.html">Markdown</a> to format the message.</span>
           <%= f.text_area :message, :class => "form-control" %>
         </div>
 

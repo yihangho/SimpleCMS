@@ -16,3 +16,8 @@ Run `bundle exec rake` to run all tests.
 
 ## Deployment
 This app has been deployed to Heroku. A simple `git push heroku master` should do the job. You might also need to run `heroku run rake db:schema:load` after the very first deployment, or `heroku run rake db:migrate` after an update.
+
+## Development
+### `data-` attributes
+#### `data-mathjax-source`
+Attaching this attribute to an element will cause MathJax to typeset the content of the element.

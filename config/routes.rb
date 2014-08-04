@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get '/contests/ongoing' => 'contests#ongoing', :as => 'ongoing_contests'
   patch '/users/:id/admin' => 'users#set_admin', :as => 'set_admin'
   get '/users/:id/submissions' => 'submissions#user', :as => 'user_submissions'
+  post '/preview/markdown' => 'preview#markdown', :as => 'markdown_preview'
   resources :problems, :only => [:index, :new, :create, :show, :edit, :update]
   resources :users, :only => [:index, :new, :create, :show, :edit, :update]
   resources :sessions, :only => :create

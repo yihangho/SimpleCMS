@@ -1,8 +1,15 @@
 <h1>Submission <%= @submission.id %></h1>
 <h2>Input</h2>
-<p class="well"><%= @submission.task.input %></p>
+<pre><%= @submission.task.input %></pre>
 <h2>Your Answer</h2>
-<p class="well"><%= @submission.input %></p>
+<pre><%= @submission.input %></pre>
+
+<% unless @submission.code_link.empty? %>
+  <p>
+    <%= link_to "Link to code", @submission.code_link, :target => "_blank" %>
+  </p>
+<% end %>
+
 <p>
   Status:
   <% if @submission.accepted? %>

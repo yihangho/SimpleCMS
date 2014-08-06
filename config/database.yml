@@ -1,25 +1,29 @@
-# SQLite version 3.x
-#   gem install sqlite3
+# Have to disable prepared_statements for PG as prepared statements
+# will screw up certain queries like the
+# invited_but_not_participated_by scope for Contest.
 #
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
+# Please re-enable prepared_statements when this nuisance is fixed.
 #
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  prepared_statements: false
   pool: 5
   timeout: 5000
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database: <%= ENV['PG_SIMPLECMS_DEV'] %>
+  username: <%= ENV['PG_USERNAME'] %>
+  password: <%= ENV['PG_PASSWORD'] %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: db/test.sqlite3
+  database: <%= ENV['PG_SIMPLECMS_TEST'] %>
+  username: <%= ENV['PG_USERNAME'] %>
+  password: <%= ENV['PG_PASSWORD'] %>
 
 production:
   <<: *default
-  database: db/production.sqlite3

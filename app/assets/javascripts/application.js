@@ -12,5 +12,15 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.spin
+//= require jquery.mustache
+//= require detect_timezone
+//= require mustache
+//= require bootstrap/alert
+//= require bootstrap/collapse
+//= require bootstrap/dropdown
+//= require bootstrap/tab
+//= require bootstrap/transition
 //= require turbolinks
 //= require_tree .
+//= require websocket_rails/main

@@ -1,5 +1,21 @@
-<h1><%= @problem.title %></h1>
-<p><%= @problem.statement %></p>
+<div class="header-container">
+  <span class="h1">
+    <%= @problem.title %>
+
+    <% if @problem.solvers.include?(current_user) %>
+      <small><span class="text-success">(Solved)</span></small></span>
+    <% end %>
+
+  <% if signed_in? && current_user.admin? %>
+    <%= link_to icon("edit"), edit_problem_path(@problem), :class => "btn btn-default pull-right", :title => "Edit" %>
+  <% end %>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-body" data-mathjax-source>
+    <%= Kramdown::Document.new(@problem.statement).to_html.html_safe %>
+  </div>
+</div>
 
 <% if signed_in? %>
   <% @problem.tasks.each do |task| %>
@@ -12,6 +28,11 @@
       <div class="form-group">
         <%= f.label :input, "Answer" %>
         <%= f.text_area :input, :class => "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :code_link, "Link to your code" %>
+        <%= f.text_field :code_link, :class => "form-control" %>
       </div>
 
       <%= f.submit "Submit", :class => "btn btn-primary" %>

@@ -1,0 +1,58 @@
+<h1>User Details</h1>
+
+<p>Name: <%= @user.name %></p>
+<p>Email: <%= @user.email %></p>
+
+<% if current_user == @user %>
+  <p><%= link_to "Edit profile", edit_user_path(@user) %></p>
+<% end %>
+
+<% if current_user && current_user.admin? %>
+  <%= form_for(@user, :url => set_admin_path) do |f| %>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :admin %>
+        Admin
+      </label>
+    </div>
+
+    <% if current_user == @user %>
+      <%= f.submit "Save", :class => "btn btn-default", :data => { :confirm => "Are you sure you want to modify your own admin status?" } %>
+    <% else %>
+      <%= f.submit "Save", :class => "btn btn-default" %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<h2>Problems by user</h2>
+<% if @user.set_problems.any? %>
+  <ul>
+    <% @user.set_problems.each do |problem| %>
+      <li><%= link_to problem.title, problem %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>None.</p>
+<% end %>
+
+<h2>Contests by user</h2>
+<% if @user.created_contests.any? %>
+  <ul>
+    <% @user.created_contests.each do |contest| %>
+      <li><%= link_to contest.title, contest %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>None.</p>
+<% end %>
+
+<h2>Solved problems</h2>
+<% if @user.solved_problems.any? %>
+  <ul>
+    <% @user.solved_problems.each do |problem| %>
+      <li><%= link_to problem.title, problem %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>None.</p>
+<% end %>

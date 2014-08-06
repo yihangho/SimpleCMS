@@ -1,16 +1,17 @@
-<h1>My Submissions</h1>
+<h1>Submissions</h1>
 
 <table class="table">
   <thead>
     <th>ID</th>
+    <th>User</th>
     <th>Problem</th>
     <th>Status</th>
   </thead>
   <tbody>
-    <% current_user.submissions.reverse.each do |submission| %>
+    <% @submissions.each do |submission| %>
       <tr>
         <td><%= link_to submission.id, submission %></td>
-        <% p submission %>
+        <td><%= link_to submission.user.name, submission.user %></td>
         <td>
           <%=
           begin
@@ -33,3 +34,5 @@
     <% end %>
   </tbody>
 </table>
+
+<%= will_paginate(@submissions) %>

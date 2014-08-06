@@ -1,10 +1,22 @@
 Rails.application.routes.draw do
-  get 'signin' => 'sessions#new'
-  resources :problems, :only => [:index, :new, :create, :show]
-  resources :users, :only => [:new, :create]
+  get '/' => redirect("/signin")
+  get 'signin' => 'sessions#new', :as => 'signin'
+  delete 'signout' => 'sessions#destroy', :as => 'signout'
+  post '/contests/:id/participate' => 'contests#participate', :as => 'participate_contest'
+  delete '/contests/:id/unparticipate' => 'contests#unparticipate', :as => 'unparticipate_contest'
+  get '/contests/:id/leaderboard' => 'contests#leaderboard', :as => 'leaderboard'
+  get '/contests/invited' => 'contests#invited', :as => 'invited_contests'
+  get '/contests/ongoing' => 'contests#ongoing', :as => 'ongoing_contests'
+  patch '/users/:id/admin' => 'users#set_admin', :as => 'set_admin'
+  get '/users/:id/submissions' => 'submissions#user', :as => 'user_submissions'
+  post '/preview/markdown' => 'preview#markdown', :as => 'markdown_preview'
+  resources :problems, :only => [:index, :new, :create, :show, :edit, :update]
+  resources :users, :only => [:index, :new, :create, :show, :edit, :update]
   resources :sessions, :only => :create
   resources :submissions, :only => [:index, :create, :show]
-  resources :contests, :only => [:index, :new, :create, :show]
+  resources :contests, :only => [:index, :new, :create, :show, :edit, :update]
+  resources :announcements, :only => :create
+  get '/:permalink', :to => 'permalinks#resolver', :constraints => lambda { |x| x.params[:permalink] != "websocket" }
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

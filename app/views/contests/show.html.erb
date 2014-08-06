@@ -1,12 +1,135 @@
-<h1><%= @contest.title %></h1>
+<div class="header-container">
+  <span class="h1"><%= @contest.title %></span>
 
-<p>
-  Status:
-  <% if Time.now < @contest.start %>
-    Not started
-  <% elsif Time.now >= @contest.start && Time.now <= @contest.end %>
-    In progress
-  <% elsif Time.now > @contest.end %>
-    Ended
+  <% if signed_in? && current_user.admin? %>
+    <%= link_to icon("edit"), edit_contest_path(@contest), :class => "btn btn-default pull-right", :title => "Edit" %>
   <% end %>
-</p>
+</div>
+
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></li>
+
+  <% if @contest.can_access_problems_list?(current_user) %>
+    <li><a href="#problems" role="tab" data-toggle="tab">Problems</a></li>
+  <% end %>
+
+  <% if @contest.status != :not_started %>
+    <li><a href="#leaderboard" role="tab" data-toggle="tab" data-source="<%= leaderboard_path(@contest) %>">Leaderboard</a></li>
+  <% end %>
+
+  <% if @contest.status != :not_started %>
+    <li><a href="#announcements" role="tab" data-toggle="tab">Announcements</a></li>
+  <% end %>
+
+  <% if signed_in? && current_user.admin? %>
+    <li><a href="#admin" role="tab" data-toggle="tab">Admin</a></li>
+  <% end %>
+</ul>
+
+<div class="tab-content">
+  <% # Ajax load all these stuff %>
+
+  <div class="tab-pane active" id="home">
+    <p>
+      This contest will run from
+      <b><%= format_datetime(@contest.start, cookies[:timezone]) %></b>
+      to
+      <b><%= format_datetime(@contest.end, cookies[:timezone]) %></b>.
+    </p>
+
+    <% if @contest.can_participate_by?(current_user) && !@contest.participants.include?(current_user) %>
+      <p><%= link_to "Participate", participate_contest_path(@contest), :method => :post %></p>
+    <% elsif @contest.participants.include?(current_user) %>
+      <p><%= link_to "Unparticipate", unparticipate_contest_path(@contest), :method => :delete %></p>
+    <% end %>
+
+    <% if @contest.instructions && !@contest.instructions.empty? %>
+      <h2>Instructions</h2>
+      <div data-mathjax-source><%= Kramdown::Document.new(@contest.instructions).to_html.html_safe %></div>
+    <% end %>
+  </div>
+
+  <% if @contest.can_access_problems_list?(current_user) %>
+    <div class="tab-pane" id="problems">
+      <ul>
+        <% @contest.problems.each do |problem| %>
+          <li><%= link_to problem.title, problem %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @contest.status != :not_started %>
+    <div class="tab-pane" id="leaderboard"></div>
+  <% end %>
+
+  <% if @contest.status != :not_started %>
+    <div class="tab-pane" id="announcements">
+      <% @contest.announcements.reverse_order.each do |announcement| %>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="h3 panel-title">
+              <%= announcement.title %>
+            </span>
+            <span class="pull-right">
+              <small>
+                at
+                <%= format_datetime(announcement.created_at, cookies[:timezone]) %>
+                by
+                <%= announcement.sender.name %>
+              </small>
+            </span>
+          </div>
+          <div class="panel-body" data-mathjax-source>
+            <%= Kramdown::Document.new(announcement.message).to_html.html_safe %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if signed_in? && current_user.admin? %>
+    <div class="tab-pane" id="admin">
+      <% if @contest.invited_users.any? %>
+        <h2>Invited Users</h2>
+        <ul>
+          <% @contest.invited_users.each do |user| %>
+            <li><%= link_to user.name, user %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <% if @contest.participants.any? %>
+        <h2>Participants</h2>
+        <ul>
+          <% @contest.participants.each do |user| %>
+            <li><%= link_to user.name, user %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <h2>Make Announcement</h2>
+      <div class="panel panel-default markdown-previewer hidden">
+        <div class="panel-heading">Preview</div>
+        <div class="panel-body"></div>
+      </div>
+      <%= form_for @contest.announcements.new do |f| %>
+        <%= f.hidden_field :contest_id, :valud => @contest.id %>
+
+        <div class="form-group">
+          <%= f.label :title %>
+          <%= f.text_field :title, :class => "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :message %>
+          <span class="help-block">You may use <a href="http://kramdown.gettalong.org/syntax.html">Markdown</a> to format the message.</span>
+          <%= f.text_area :message, :class => "form-control" %>
+        </div>
+
+        <%= f.submit "Send", :class => "btn btn-default" %>
+        <%= f.button "Preview", :class => "btn btn-default preview-markdown" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

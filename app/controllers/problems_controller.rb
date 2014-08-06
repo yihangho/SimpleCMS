@@ -63,9 +63,9 @@ class ProblemsController < ApplicationController
       @problem.tasks.find(id).delete
     end
 
-    # Kick all these to bg tasks
     tasks_to_be_regraded.each do |id|
-      Task.find(id).regrade
+      # Task.find(id).regrade
+      TaskRegrader.perform_async(id)
     end
 
     if new_tasks.any? || deleted_tasks.any?

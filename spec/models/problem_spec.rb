@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Problem do
   before do
-    @problem = Problem.new(:title => "Problem", :statement => "Test Problem", :visibility => "public")
+    @problem = build(:problem)
   end
 
   subject { @problem }
@@ -70,11 +70,11 @@ describe Problem do
 
   context "access control" do
     before do
-      @admin = User.create(:name => "admin", :email => "admin@example.com", :password => "12345", :password_confirmation => "12345")
-      @user  = User.new(:name => "user", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
-      @participant = User.new(:name => "participant", :email => "participant@example.com", :password => "12345", :password_confirmation => "12345")
+      @admin = @problem.setter
+      @user = build(:user)
+      @participant = create(:user)
 
-      @contest = Contest.create(:title => "Test contest", :start => 1.day.ago, :end => 1.day.from_now, :visibility => "public", :participation => "public")
+      @contest = create(:contest)
       @contest.participants = [@participant]
       @contest.problems     = [@problem]
       @contest.save
@@ -178,12 +178,10 @@ describe Problem do
   context "#solved_between_by?" do
     before do
       @problem.save
-      @user = User.create(:name => "test", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
+
+      @user = create(:user)
       @task1 = @problem.tasks.create(:input => "12345", :output => "12345")
       @task2 = @problem.tasks.create(:input => "54321", :output => "54321")
-
-      @submission1 = Submission.create(:input => @task1.output, :user_id => @user.id, :task_id => @task1.id)
-      @submission2 = Submission.create(:input => @task2.output, :user_id => @user.id, :task_id => @task2.id)
 
       @start = 2.days.ago
       @end   = 1.day.from_now
@@ -191,17 +189,22 @@ describe Problem do
 
     describe "both submissions happen between the given interval" do
       before do
-        @submission1.update_attribute(:created_at, 1.day.ago)
-        @submission2.update_attribute(:created_at, 1.day.ago)
+        @submission1 = create(:submission, :task => @task2, :user => @user, :created_at => 1.day.ago)
       end
 
-      it "should return truthy" do
-        expect(@problem.solved_between_by?(@start, @end, @user)).to be_truthy
-      end
-
-      describe "but one of the submissions is wrong" do
+      describe "with correct answers" do
         before do
-          @submission1.update_attribute(:input, @submission1.input + "bla")
+          @submission1 = create(:submission, :task => @task1, :user => @user, :created_at => 1.day.ago)
+        end
+
+        it "should return truthy" do
+          expect(@problem.solved_between_by?(@start, @end, @user)).to be_truthy
+        end
+      end
+
+      describe "one of the submissions is wrong" do
+        before do
+          @submission1 = create(:incorrect_submission, :task => @task1, :user => @user, :created_at => 1.day.ago)
         end
 
         it "should return falsy" do
@@ -211,6 +214,11 @@ describe Problem do
     end
 
     describe "when one of the submissions happens outside the given interval" do
+      before do
+        @submission1 = create(:submission, :task => @task1, :user => @user)
+        @submission2 = create(:submission, :task => @task2, :user => @user)
+      end
+
       it "should return falsy" do
         @submission1.update_attribute(:created_at, 3.days.ago)
         expect(@problem.solved_between_by?(@start, @end, @user)).to be_falsy
@@ -228,8 +236,8 @@ describe Problem do
       @task1 = @problem.tasks.create(:input => "12345", :output => "12345")
       @task2 = @problem.tasks.create(:input => "54321", :output => "54321")
 
-      @user1 = User.create(:name => "User 1", :email => "user1@example.com", :password => "12345", :password_confirmation => "12345")
-      @user2 = User.create(:name => "User 2", :email => "user2@example.com", :password => "12345", :password_confirmation => "12345")
+      @user1 = create(:user)
+      @user2 = create(:user)
 
       @submission11 = @user1.submissions.create(:input => "12345", :task_id => @task1.id)
       @submission12 = @user1.submissions.create(:input => "12345", :task_id => @task2.id)

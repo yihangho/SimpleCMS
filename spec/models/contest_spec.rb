@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Contest do
   before do
-    @contest = Contest.new(:title => "Contest", :start => 1.day.ago, :end => 1.day.from_now, :visibility => "public", :participation => "public")
+    @contest = build(:contest)
   end
 
   subject { @contest }
@@ -131,9 +131,9 @@ describe Contest do
 
   context "access control" do
     before do
-      @admin = User.create(:email => "admin@example.com", :password => "12345", :password_confirmation => "12345")
-      @user  = User.new(:email => "test@example.com", :password => "12345", :password_confirmation => "12345")
-      @invited_user = User.new(:email => "invited@example.com", :password => "12345", :password_confirmation => "12345")
+      @admin = create(:admin)
+      @user = build(:user)
+      @invited_user = build(:user)
 
       @contest.creator = @admin
       @contest.invited_users = [@invited_user]
@@ -274,20 +274,20 @@ describe Contest do
     before do
       @contest.save
 
-      @user = User.create(:name => "test", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
+      @user = create(:user)
 
-      @problem1 = @contest.problems.create(:title => "P1", :statement => "P1", :visibility => "public")
-      @problem2 = @contest.problems.create(:title => "P2", :statement => "P2", :visibility => "public")
+      @problem1 = create(:problem, :contests => [@contest])
+      @problem2 = create(:problem, :contests => [@contest])
 
-      @task1 = @problem1.tasks.create(:input => "12345", :output => "12345")
-      @task2 = @problem2.tasks.create(:input => "54321", :output => "54321")
+      @task1 = create(:task, :problem => @problem1)
+      @task2 = create(:task, :problem => @problem2)
 
-      @submission1 = @user.submissions.create(:input => @task1.output, :task_id => @task1.id)
-      @submission2 = @user.submissions.create(:input => @task2.output, :task_id => @task2.id)
+      @submission2 = create(:submission, :user => @user, :task => @task2)
     end
 
     describe "when both problems are solved" do
       describe "and are solved before contest ends" do
+        before { @submission1 = create(:submission, :user => @user, :task => @task1) }
         it "should return 2" do
           expect(@contest.num_problems_solved_by(@user)).to eq 2
         end
@@ -295,7 +295,7 @@ describe Contest do
 
       describe "when one of the problems is solved before the contest started" do
         before do
-          @submission1.update_attribute(:created_at, 1.day.until(@contest.start))
+          @submission1 = create(:submission, :user => @user, :task => @task1, :created_at => 1.day.until(@contest.start))
         end
 
         it "should return 2" do
@@ -305,7 +305,7 @@ describe Contest do
 
       describe "when one of the problems is solved after the contest ended" do
         before do
-          @submission1.update_attribute(:created_at, 1.day.since(@contest.end))
+          @submission1 = create(:submission, :user => @user, :task => @task1, :created_at => 1.day.since(@contest.end))
         end
 
         it "should return 1" do
@@ -316,7 +316,7 @@ describe Contest do
 
     describe "when one of the problems is not solved" do
       before do
-        @submission1.update_attribute(:input, @submission1.task.output + "bla")
+        @submission1 = create(:incorrect_submission, :user => @user, :task => @task1)
       end
 
       it "should return 1" do
@@ -327,23 +327,22 @@ describe Contest do
 
   describe "leaderboard" do
     before do
-      @user1 = User.create(:name => "test1", :email => "test1@example.com", :password => "12345", :password_confirmation => "12345")
-      @user2 = User.create(:name => "test2", :email => "test2@example.com", :password => "12345", :password_confirmation => "12345")
-      @user3 = User.create(:name => "test3", :email => "test3@example.com", :password => "12345", :password_confirmation => "12345")
+      @user1 = create(:user)
+      @user2 = create(:user)
+      @user3 = create(:user)
 
       @contest.participants = [@user1, @user2, @user3]
       @contest.save
 
-      @problem1 = @contest.problems.create(:title => "P1", :statement => "P1", :visibility => "public")
-      @problem2 = @contest.problems.create(:title => "P2", :statement => "P2", :visibility => "public")
+      @problem1 = create(:problem, :contests => [@contest])
+      @problem2 = create(:problem, :contests => [@contest])
 
-      @task1 = @problem1.tasks.create(:input => "12345", :output => "12345")
-      @task2 = @problem2.tasks.create(:input => "54321", :output => "54321")
+      @task1 = create(:task, :problem => @problem1)
+      @task2 = create(:task, :problem => @problem2)
 
-      @submission11 = @user1.submissions.create(:input => @task1.output, :task_id => @task1.id)
-      @submission12 = @user1.submissions.create(:input => @task2.output, :task_id => @task2.id)
-
-      @submission21 = @user2.submissions.create(:input => @task1.output, :task_id => @task1.id)
+      @submission11 = create(:submission, :user => @user1, :task => @task1)
+      @submission12 = create(:submission, :user => @user1, :task => @task2)
+      @submission21 = create(:submission, :user => @user2, :task => @task1)
     end
 
     it "should return correct leaderboard" do
@@ -378,8 +377,8 @@ describe Contest do
   context "#can_access_problems_list?" do
     before do
       @contest.save
-      @admin = User.create(:name => "Admin", :email => "admin@example.com", :password => "12345", :password_confirmation => "12345", :admin => true)
-      @user  = User.create(:name => "User", :email => "user@example.com", :password => "12345", :password_confirmation => "12345")
+      @admin = create(:admin)
+      @user = create(:user)
     end
 
     describe "before contest starts" do
@@ -427,10 +426,10 @@ describe Contest do
 
   describe "::invited_but_not_participated_by" do
     before do
-      @contest1 = Contest.create(:title => "Contest 1", :start => 1.day.ago, :end => 1.day.from_now, :visibility => "public", :participation => "public")
-      @contest2 = Contest.create(:title => "Contest 2", :start => 1.day.ago, :end => 1.day.from_now, :visibility => "public", :participation => "public")
+      @contest1 = create(:contest)
+      @contest2 = create(:contest)
 
-      @user = User.create(:name => "Test", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
+      @user = create(:user)
 
       @contest1.invited_users = [@user]
       @contest2.invited_users = [@user]
@@ -444,9 +443,9 @@ describe Contest do
 
   context "::upcoming and ::ongoing" do
     before do
-      @contest1 = Contest.create(:title => "Contest 1", :start => 1.days.ago, :end => 1.day.from_now, :visibility => "public", :participation => "public")
-      @contest2 = Contest.create(:title => "Contest 2", :start => 1.day.from_now, :end => 2.days.from_now, :visibility => "public", :participation => "public")
-      @contest3 = Contest.create(:title => "Contest 3", :start => 2.days.ago, :end => 1.day.ago, :visibility => "public", :participation => "public")
+      @contest1 = create(:contest, :start => 1.days.ago, :end => 1.day.from_now)
+      @contest2 = create(:contest, :start => 1.day.from_now, :end => 2.days.from_now)
+      @contest3 = create(:contest, :start => 2.days.ago, :end => 1.day.ago)
     end
 
     describe "::upcoming" do

@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 describe Task do
-  before { @task = Task.new }
+  before do
+    @problem = create(:problem)
+    @task    = create(:task, :problem => @problem)
+  end
 
   subject { @task }
 
@@ -12,11 +15,17 @@ describe Task do
   it { should respond_to :submissions }
   it { should respond_to :solvers }
 
+  context "validations" do
+    describe "when problem is nil" do
+      before { @task.problem = nil }
+      it { should_not be_valid }
+    end
+  end
+
   context "#solved_between_by?" do
     before do
-      @user = User.create(:name => "Test", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
-      @task = Task.create(:input => "1234", :output => "1234")
-      @submission = Submission.create(:input => @task.output, :task_id => @task.id, :user_id => @user.id)
+      @user = create(:user)
+      @submission = @task.submissions.create(:input => @task.output, :user_id => @user.id)
     end
 
     describe "solved before the starting time" do
@@ -58,20 +67,19 @@ describe Task do
 
   context "#regrade" do
     before do
-      @task.input  = "1234"
-      @task.output = "1234"
-      @task.save
-
-      @user1 = User.create(:name => "User 1", :email => "test1@example.com", :password => "12345", :password_confirmation => "12345")
-      @user2 = User.create(:name => "User 2", :email => "test2@example.com", :password => "12345", :password_confirmation => "12345")
-
-      @submission1 = @user1.submissions.create(:input => "1234", :task_id => @task.id)
-      @submission2 = @user2.submissions.create(:input => "4321", :task_id => @task.id)
+      @user1 = create(:user)
+      @user2 = create(:user)
+      @submission1 = create(:submission, :user => @user1, :task => @task)
+      @submission2 = create(:incorrect_submission, :user => @user2, :task => @task)
     end
 
     describe "before regrading" do
       it "should have correct solvers" do
         expect(@task.solvers).to eq [@user1]
+      end
+
+      it "problem should have correct solvers" do
+        expect(@task.problem.solvers).to eq [@user1]
       end
 
       it "submissions should have correct accepted status" do
@@ -82,8 +90,7 @@ describe Task do
 
     describe "after editing and regrading" do
       before do
-        @task.output = "4321"
-        @task.save
+        @task.update_attribute(:output, @submission2.input)
         @task.regrade
         @submission1.reload
         @submission2.reload
@@ -91,6 +98,10 @@ describe Task do
 
       it "should have correct solvers" do
         expect(@task.solvers).to eq [@user2]
+      end
+
+      it "problem should have correct solvers" do
+        expect(@task.problem.solvers).to eq [@user2]
       end
 
       it "submissions should have correct accepted status" do

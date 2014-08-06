@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe User do
   before do
-    @user = User.new(:name => "Test", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
+    @user = build(:user)
   end
 
   subject { @user }
@@ -37,7 +37,7 @@ describe User do
 
     describe "when email is taken" do
       before do
-        @doppelganger = User.create(:name => "Faker", :email => @user.email.upcase, :password => "12345", :password_confirmation => "12345")
+        @doppelganger = create(:user, :email => @user.email.upcase)
       end
 
       it { should_not be_valid }

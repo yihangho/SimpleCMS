@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 describe Task do
-  before { @task = Task.new }
+  before do
+    @problem = Problem.create(:title => "Title", :statement => "Test", :visibility => "public")
+    @task = @problem.tasks.create
+  end
 
   subject { @task }
 
@@ -12,11 +15,18 @@ describe Task do
   it { should respond_to :submissions }
   it { should respond_to :solvers }
 
+  context "validations" do
+    describe "when problem is nil" do
+      before { @task.problem = nil }
+      it { should_not be_valid }
+    end
+  end
+
   context "#solved_between_by?" do
     before do
       @user = User.create(:name => "Test", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
-      @task = Task.create(:input => "1234", :output => "1234")
-      @submission = Submission.create(:input => @task.output, :task_id => @task.id, :user_id => @user.id)
+      @task = @problem.tasks.create(:input => "1234", :output => "1234")
+      @submission = @task.submissions.create(:input => @task.output, :user_id => @user.id)
     end
 
     describe "solved before the starting time" do

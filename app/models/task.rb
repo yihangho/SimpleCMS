@@ -3,6 +3,8 @@ class Task < ActiveRecord::Base
   has_many :submissions, :validate => false
   has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_tasks", :validate => false
 
+  validates :problem_id, :presence => true
+
   def solved_by?(user)
     solvers.include?(user)
   end

@@ -48,6 +48,7 @@ gem 'mustache-js-rails', '~> 0.0.9'
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'
   gem 'capybara', '~> 2.4.1'
+  gem 'factory_girl_rails', '~> 4.4.1'
 end
 
 # Use unicorn as the app server

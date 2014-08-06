@@ -50,6 +50,10 @@ group :development, :test do
   gem 'capybara', '~> 2.4.1'
 end
 
+# To handle fill uploading
+gem "paperclip", "~> 4.1"
+gem "fog"
+
 # Use unicorn as the app server
 # gem 'unicorn'
 

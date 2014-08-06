@@ -11,6 +11,11 @@ This app is using PostgreSQL. Hence, it is necessary to have PostgreSQL running.
 - `PG_SIMPLECMS_DEV`
 - `PG_SIMPLECMS_TEST`
 
+### Redis
+
+## Running background worker
+`bundle exec sidekiq`
+
 ## Running Tests
 Run `bundle exec rake` to run all tests.
 

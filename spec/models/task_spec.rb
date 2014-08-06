@@ -67,20 +67,19 @@ describe Task do
 
   context "#regrade" do
     before do
-      @task.input  = "1234"
-      @task.output = "1234"
-      @task.save
-
       @user1 = create(:user)
       @user2 = create(:user)
-
-      @submission1 = @user1.submissions.create(:input => "1234", :task_id => @task.id)
-      @submission2 = @user2.submissions.create(:input => "4321", :task_id => @task.id)
+      @submission1 = create(:submission, :user => @user1, :task => @task)
+      @submission2 = create(:incorrect_submission, :user => @user2, :task => @task)
     end
 
     describe "before regrading" do
       it "should have correct solvers" do
         expect(@task.solvers).to eq [@user1]
+      end
+
+      it "problem should have correct solvers" do
+        expect(@task.problem.solvers).to eq [@user1]
       end
 
       it "submissions should have correct accepted status" do
@@ -91,8 +90,7 @@ describe Task do
 
     describe "after editing and regrading" do
       before do
-        @task.output = "4321"
-        @task.save
+        @task.update_attribute(:output, @submission2.input)
         @task.regrade
         @submission1.reload
         @submission2.reload
@@ -100,6 +98,10 @@ describe Task do
 
       it "should have correct solvers" do
         expect(@task.solvers).to eq [@user2]
+      end
+
+      it "problem should have correct solvers" do
+        expect(@task.problem.solvers).to eq [@user2]
       end
 
       it "submissions should have correct accepted status" do

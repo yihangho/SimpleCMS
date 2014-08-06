@@ -18,15 +18,17 @@ class Task < ActiveRecord::Base
   end
 
   def regrade
-    # 1. Update the accepted column for all submissions of this task
-    # 2. Update the list of solvers
-
     submissions.each do |submission|
-      submission.update_attribute(:accepted, submission.correct_input?)
+      submission.regrade
     end
 
-    self.solvers = User.select do |user|
-      user.submissions.for(self).correct_answer.any?
-    end
+    update_solvers
+    problem.update_solvers
+  end
+end
+
+def update_solvers
+  self.solvers = User.select do |user|
+    user.submissions.for(self).correct_answer.any?
   end
 end

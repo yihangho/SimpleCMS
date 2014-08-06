@@ -9,7 +9,7 @@ class Submission < ActiveRecord::Base
   validates :user_id, :task_id, :presence => true
 
   after_create do
-    update_attribute(:accepted, correct_input?)
+    regrade
 
     if accepted
       task.solvers << user unless task.solvers.include?(user)
@@ -22,5 +22,9 @@ class Submission < ActiveRecord::Base
 
   def correct_input?
     input == task.output
+  end
+
+  def regrade
+    update_attribute(:accepted, correct_input?)
   end
 end

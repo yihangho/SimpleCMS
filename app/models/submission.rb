@@ -8,21 +8,14 @@ class Submission < ActiveRecord::Base
 
   validates :user_id, :task_id, :presence => true
 
-  before_save do
-    # Should this part be moved to bg worker?
-    # One single such operation should be relatively cheap,
-    # but what happens if we have lots of submissions coming in?
-    # BTW, we do have a bg worker (sidekiq).
-    # It is currently experimental and is available on the sidekiq-bg-worker branch
+  after_create do
+    update_attribute(:accepted, correct_input?)
 
-    self.accepted = correct_input?
+    if accepted
+      task.solvers << user unless task.solvers.include?(user)
 
-    user.solved_tasks << task if accepted && !user.solved_tasks.include?(task)
-    user.save
-
-    if task.problem
-      if task.problem.tasks.all? { |t| t.solvers.include?(user) }
-        task.problem.solvers |= [user]
+      if !task.problem.solved_by?(user) && task.problem.tasks.all? { |task| task.solvers.include?(user) }
+        task.problem.solvers << user
       end
     end
   end

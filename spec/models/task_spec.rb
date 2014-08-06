@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe Task do
   before do
-    @problem = Problem.create(:title => "Title", :statement => "Test", :visibility => "public")
-    @task = @problem.tasks.create
+    @problem = create(:problem)
+    @task    = create(:task, :problem => @problem)
   end
 
   subject { @task }
@@ -24,8 +24,7 @@ describe Task do
 
   context "#solved_between_by?" do
     before do
-      @user = User.create(:name => "Test", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
-      @task = @problem.tasks.create(:input => "1234", :output => "1234")
+      @user = create(:user)
       @submission = @task.submissions.create(:input => @task.output, :user_id => @user.id)
     end
 
@@ -72,8 +71,8 @@ describe Task do
       @task.output = "1234"
       @task.save
 
-      @user1 = User.create(:name => "User 1", :email => "test1@example.com", :password => "12345", :password_confirmation => "12345")
-      @user2 = User.create(:name => "User 2", :email => "test2@example.com", :password => "12345", :password_confirmation => "12345")
+      @user1 = create(:user)
+      @user2 = create(:user)
 
       @submission1 = @user1.submissions.create(:input => "1234", :task_id => @task.id)
       @submission2 = @user2.submissions.create(:input => "4321", :task_id => @task.id)

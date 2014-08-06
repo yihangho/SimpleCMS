@@ -9,10 +9,8 @@ class SubmissionsController < ApplicationController
   end
 
   def create
-    submission = Submission.create(submission_params)
+    submission = current_user.submissions.create(submission_params)
     if submission.save
-      submission.update_attribute(:user_id, current_user.id)
-
       if submission.accepted?
         flash[:success] = "Your last submission was correct."
       else

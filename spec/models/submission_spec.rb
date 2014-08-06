@@ -6,9 +6,7 @@ describe Submission do
     @task1 = @problem.tasks.create(:input => "12345", :output => "12345")
     @task2 = @problem.tasks.create(:input => "54321", :output => "54321")
     @user1 = User.create(:name => "user1", :email => "user1@example.com", :password => "12345", :password_confirmation => "12345")
-    @submission = @task1.submissions.create
-    @submission.user = @user1
-    @submission.save
+    @submission = @task1.submissions.create(:user_id => @user1.id)
   end
 
   subject { @submission }
@@ -16,6 +14,18 @@ describe Submission do
   it { should respond_to :input }
   it { should respond_to :accepted? }
   it { should respond_to :code_link }
+
+  context "validations" do
+    describe "when user is nil" do
+      before { @submission.user = nil }
+      it { should_not be_valid }
+    end
+
+    describe "when task is nil" do
+      before { @submission.task = nil }
+      it { should_not be_valid }
+    end
+  end
 
   describe "when answer is incorrect" do
     before do

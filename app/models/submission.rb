@@ -6,6 +6,8 @@ class Submission < ActiveRecord::Base
   belongs_to :user, :validate => false
   belongs_to :task, :validate => false
 
+  validates :user_id, :task_id, :presence => true
+
   before_save do
     # Should this part be moved to bg worker?
     # One single such operation should be relatively cheap,
@@ -15,14 +17,12 @@ class Submission < ActiveRecord::Base
 
     self.accepted = correct_input?
 
-    if user && task
-      user.solved_tasks << task if accepted && !user.solved_tasks.include?(task)
-      user.save
+    user.solved_tasks << task if accepted && !user.solved_tasks.include?(task)
+    user.save
 
-      if task.problem
-        if task.problem.tasks.all? { |t| t.solvers.include?(user) }
-          task.problem.solvers |= [user]
-        end
+    if task.problem
+      if task.problem.tasks.all? { |t| t.solvers.include?(user) }
+        task.problem.solvers |= [user]
       end
     end
   end

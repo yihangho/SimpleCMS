@@ -10,11 +10,11 @@ class Task < ActiveRecord::Base
   end
 
   def solved_between_by?(time1, time2, user)
-    user.submissions.where(:task_id => id, :created_at => (time1..time2), :accepted => true).any?
+    user.submissions.for(self).correct_answer.where(:created_at => (time1..time2)).any?
   end
 
   def attempted_by?(user)
-    user.submissions.where("task_id = #{id}").any?
+    user.submissions.for(self).any?
   end
 
   def regrade

@@ -9,12 +9,12 @@ default: &default
   prepared_statements: false
   pool: 5
   timeout: 5000
+  username: <%= ENV['PG_USERNAME'] %>
+  password: <%= ENV['PG_PASSWORD'] %>
 
 development:
   <<: *default
   database: <%= ENV['PG_SIMPLECMS_DEV'] %>
-  username: <%= ENV['PG_USERNAME'] %>
-  password: <%= ENV['PG_PASSWORD'] %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -22,8 +22,7 @@ development:
 test:
   <<: *default
   database: <%= ENV['PG_SIMPLECMS_TEST'] %>
-  username: <%= ENV['PG_USERNAME'] %>
-  password: <%= ENV['PG_PASSWORD'] %>
 
 production:
   <<: *default
+  database: <%= ENV['PG_SIMPLECMS_PROD'] %>

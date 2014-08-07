@@ -19,6 +19,7 @@ describe Problem do
 
   it { should respond_to :last_submissions_by }
   it { should respond_to :total_points }
+  it { should respond_to :points_for }
 
   context "validations" do
     describe "when title is empty" do
@@ -308,6 +309,25 @@ describe Problem do
 
     it "should return correct total points" do
       expect(@problem.total_points).to eq 30
+    end
+  end
+
+  describe "#points_for" do
+    before do
+      @problem.save
+
+      @task1 = create(:task, :problem => @problem, :point => 10)
+      @task2 = create(:task, :problem => @problem, :point => 20)
+
+      @user = create(:user)
+
+      create(:incorrect_submission, :user => @user, :task => @task1)
+      create(:submission, :user => @user, :task => @task1)
+      create(:incorrect_submission, :user => @user, :task => @task2)
+    end
+
+    it "should return correct points" do
+      expect(@problem.points_for(@user)).to eq 10
     end
   end
 end

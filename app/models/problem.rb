@@ -70,4 +70,10 @@ class Problem < ActiveRecord::Base
   def total_points
     tasks.inject(0) { |sum, task| sum + task.point }
   end
+
+  def points_for(user)
+    tasks.inject(0) do |sum, task|
+      task.solved_by?(user) ? sum + task.point : sum
+    end
+  end
 end

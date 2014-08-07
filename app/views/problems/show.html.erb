@@ -21,7 +21,6 @@
   <% @problem.tasks.each do |task| %>
     <div class="well">
     <%= form_for(:submission, :url => submissions_path) do |f| %>
-      <pre><%= task.input %></pre>
       <a href='/tasks/<%= task.id %>' target='_blank'>Download task input file</a>
       <%= f.hidden_field(:task_id, :value => task.id) %>
 

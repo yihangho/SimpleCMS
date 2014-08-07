@@ -16,7 +16,7 @@
   <tbody>
     <% @contest.leaderboard.each do |row| %>
       <tr>
-        <td><%= row[:user].name %></td>
+        <td><%= row[:user].username %></td>
         <% problems.each do |problem| %>
           <td><% if row[:problems][problem.id] %><i class="fa fa-check"></i><% end %></td>
         <% end %>

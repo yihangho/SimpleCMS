@@ -12,7 +12,7 @@ class Task < ActiveRecord::Base
   def input= arg
     if self.input_file
       self.input_file.contents_to_be_uploaded = arg
-      self.save
+      self.input_file.save
     else
       self.create_input_file contents_to_be_uploaded: arg
     end
@@ -25,7 +25,7 @@ class Task < ActiveRecord::Base
   def output= arg
     if self.output_file
       self.output_file.contents_to_be_uploaded = arg
-      self.save
+      self.output_file.save
     else
       self.create_output_file contents_to_be_uploaded: arg
     end

@@ -18,9 +18,13 @@
 </div>
 
 <% if signed_in? %>
+  <% user_submissions = @problem.last_submissions_by(current_user) %>
   <% @problem.tasks.each do |task| %>
+    <%
+      submission = user_submissions[task.id] || Submission.new
+    %>
     <div class="well">
-    <%= form_for(:submission, :url => submissions_path) do |f| %>
+    <%= form_for(submission, :url => submissions_path) do |f| %>
       <pre><%= task.input %></pre>
 
       <%= f.hidden_field(:task_id, :value => task.id) %>

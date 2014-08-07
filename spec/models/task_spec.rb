@@ -21,6 +21,16 @@ describe Task do
       before { @task.problem = nil }
       it { should_not be_valid }
     end
+
+    describe "when point is negative" do
+      before { @task.point = -1 }
+      it { should_not be_valid }
+    end
+
+    describe "when point is not an integer" do
+      before { @task.point = 1.5 }
+      it { should_not be_valid }
+    end
   end
 
   context "#solved_between_by?" do

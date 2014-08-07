@@ -20,6 +20,7 @@ describe Problem do
   it { should respond_to :last_submissions_by }
   it { should respond_to :total_points }
   it { should respond_to :points_for }
+  it { should respond_to :points_for_between }
 
   context "validations" do
     describe "when title is empty" do
@@ -328,6 +329,29 @@ describe Problem do
 
     it "should return correct points" do
       expect(@problem.points_for(@user)).to eq 10
+    end
+  end
+
+  describe "#points_for_between" do
+    before do
+      @problem.save
+
+      @task1 = create(:task, :problem => @problem, :point => 10)
+      @task2 = create(:task, :problem => @problem, :point => 20)
+
+      @user = create(:user)
+
+      create(:submission, :user => @user, :task => @task1)
+      create(:incorrect_submission, :user => @user, :task => @task2)
+    end
+
+    it "should count submission that happens inside the interval" do
+      expect(@problem.points_for_between(@user, 1.day.ago, 1.day.from_now)).to eq 10
+    end
+
+    it "should not count submission that happens outside the interval" do
+      expect(@problem.points_for_between(@user, 2.days.ago, 1.day.ago)).to eq 0
+      expect(@problem.points_for_between(@user, 1.day.from_now, 2.days.from_now)).to eq 0
     end
   end
 end

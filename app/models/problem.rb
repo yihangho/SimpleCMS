@@ -76,4 +76,10 @@ class Problem < ActiveRecord::Base
       task.solved_by?(user) ? sum + task.point : sum
     end
   end
+
+  def points_for_between(user, time1, time2)
+    tasks.inject(0) do |sum, task|
+      task.solved_between_by?(time1, time2, user) ? sum + task.point : sum
+    end
+  end
 end

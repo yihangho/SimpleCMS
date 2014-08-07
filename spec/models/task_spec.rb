@@ -10,6 +10,7 @@ describe Task do
 
   it { should respond_to :input }
   it { should respond_to :output }
+  it { should respond_to :point }
 
   it { should respond_to :problem }
   it { should respond_to :submissions }

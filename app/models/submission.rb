@@ -1,4 +1,5 @@
 class Submission < ActiveRecord::Base
+  has_one :attachment , -> { where :attachmentable_type => "submission" }, class_name: "Attachment", foreign_key: "attachmentable_id" , validate: false
   scope :correct_answer, -> { where(:accepted => true) }
   scope :by, ->(user) { where(:user_id => user) }
   scope :for, ->(task) { where(:task_id => task) }
@@ -28,6 +29,7 @@ class Submission < ActiveRecord::Base
   end
 
   def correct_input?
-    input == task.output
+    input == task.correct_answer
   end
 end
+

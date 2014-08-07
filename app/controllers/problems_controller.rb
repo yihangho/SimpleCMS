@@ -44,6 +44,7 @@ class ProblemsController < ApplicationController
 
         task.input  = v[:input]
         task.output = v[:output]
+        task.point  = v[:point]
         task.save
         current_tasks << task.id
       else

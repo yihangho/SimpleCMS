@@ -34,7 +34,9 @@ class SubmissionsController < ApplicationController
   private
 
   def submission_params
-    params.require(:submission).permit(:task_id, :input, :code_link)
+    hash = params.require(:submission).permit(:task_id, :input, :code_link , :input_file)
+    hash[:input] = hash[:input_file].read unless hash[:input_file].nil?
+    hash.permit(:task_id , :input , :code_link)
   end
 
   def correct_user_or_admin

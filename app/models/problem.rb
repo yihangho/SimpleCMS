@@ -66,4 +66,8 @@ class Problem < ActiveRecord::Base
       [task.id, user.submissions.for(task).last]
     end.to_h
   end
+
+  def total_points
+    tasks.inject(0) { |sum, task| sum + task.point }
+  end
 end

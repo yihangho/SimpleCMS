@@ -5,12 +5,17 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(:email => session_params[:email])
+    if session_params[:identifier]["@"] # Supplied email
+      user = User.find_by(:email => session_params[:identifier])
+    else
+      user = User.find_by(:username => session_params[:identifier])
+    end
+
     if user && user.authenticate(session_params[:password])
       sign_in(user)
       redirect_to_stored_location_or user
     else
-      flash.now[:danger] = "Email/password combination incorrect."
+      flash.now[:danger] = "Wrong email/password and/or password."
       render 'new'
     end
   end
@@ -23,6 +28,6 @@ class SessionsController < ApplicationController
   private
 
   def session_params
-    params.require(:session).permit(:email, :password)
+    params.require(:session).permit(:identifier, :password)
   end
 end

@@ -20,7 +20,17 @@ This app is using PostgreSQL. Hence, it is necessary to have PostgreSQL running.
 Run `bundle exec rake` to run all tests.
 
 ## Deployment
-This app has been deployed to Heroku. A simple `git push heroku master` should do the job. You might also need to run `heroku run rake db:schema:load` after the very first deployment, or `heroku run rake db:migrate` after an update.
+See SERVER_SETUP for more information on setting up a production server.
+
+After the initial setup, each deployment (updates):
+```bash
+# Kill existing Thin and Sidekiq processes
+bundle exec rake assets:precompile
+bundle exec rake assets:clean
+bundle exec rake db:migrate
+bundle exec sidekiq -e production &
+bundle exec thin start -e production &
+```
 
 ## Development
 ### `data-` attributes

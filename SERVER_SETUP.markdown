@@ -28,7 +28,7 @@ vim /etc/postgresql/9.3/main/pg_hba.conf
 # Look for the line 'local all all peer' and change it to 'local all all md5'
 exit
 sudo service postgresql restart
-vim .bash_profile # Set PG_USERNAME, PG_PASSWORD, PG_SIMPLECMS_PROD
+vim .bash_profile # Set PG_USERNAME, PG_PASSWORD, PG_SIMPLECMS_PROD and SECRET_KEY_BASE
 source .bash_profile
 ```
 
@@ -43,6 +43,4 @@ cd simple-cms
 git checkout sidekiq-bg-worker
 bundle
 RAILS_ENV=production bundle exec rake db:schema:load
-bundle exec thin start -e production
-bundle exec sidekiq -e production
 ```

@@ -29,7 +29,7 @@ class Submission < ActiveRecord::Base
   end
 
   def correct_input?
-    input == task.correct_answer
+    input == task.output
   end
 end
 

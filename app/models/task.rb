@@ -31,10 +31,6 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def correct_answer
-    self.output
-  end
-
   def solved_by?(user)
     solvers.include?(user)
   end

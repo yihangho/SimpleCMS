@@ -47,6 +47,7 @@ gem 'mustache-js-rails', '~> 0.0.9'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'
+  gem 'rspec-mocks' 
   gem 'capybara', '~> 2.4.1'
 end
 

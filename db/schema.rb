@@ -36,14 +36,6 @@ ActiveRecord::Schema.define(version: 20140807085234) do
     t.string   "file_name"
   end
 
-  create_table "aws_communications", force: true do |t|
-    t.string   "name"
-    t.integer  "awscommunicationable_id"
-    t.string   "awscommunicationable_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "contests", force: true do |t|
     t.string   "title"
     t.datetime "created_at"

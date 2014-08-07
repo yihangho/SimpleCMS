@@ -76,7 +76,7 @@
                 at
                 <%= format_datetime(announcement.created_at, cookies[:timezone]) %>
                 by
-                <%= announcement.sender.name %>
+                <%= announcement.sender.username %>
               </small>
             </span>
           </div>
@@ -94,7 +94,7 @@
         <h2>Invited Users</h2>
         <ul>
           <% @contest.invited_users.each do |user| %>
-            <li><%= link_to user.name, user %></li>
+            <li><%= link_to user.username, user %></li>
           <% end %>
         </ul>
       <% end %>
@@ -103,7 +103,7 @@
         <h2>Participants</h2>
         <ul>
           <% @contest.participants.each do |user| %>
-            <li><%= link_to user.name, user %></li>
+            <li><%= link_to user.username, user %></li>
           <% end %>
         </ul>
       <% end %>

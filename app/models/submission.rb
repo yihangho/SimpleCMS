@@ -28,6 +28,19 @@ class Submission < ActiveRecord::Base
     end
   end
 
+  def input
+    self.attachment.contents
+  end
+
+  def input= arg
+    if self.attachment
+      self.attachment.contents_to_be_uploaded = arg
+      self.save
+    else
+      self.create_attachment :contents_to_be_uploaded => arg
+    end 
+  end
+
   def correct_input?
     input == task.output
   end

@@ -1,7 +1,7 @@
 class Attachment < ActiveRecord::Base
   belongs_to :attachmentable
   attr_accessor :contents_to_be_uploaded , :previous_record
-  validate :attachmentable_type , :inclusion => { :in => ["task-input" , "task-output" , "task-submission"] }
+  validate :attachmentable_type , :inclusion => { :in => ["task-input" , "task-output" , "submission"] }
 
   before_save do
     self.contents_to_be_uploaded ||= ""
@@ -11,11 +11,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def contents #returns nil if file doesn't exist, empty string if file is empty
-    if self.file
-      self.file.body 
-    else
-      nil
-    end
+    self.file ? self.file.body : nil
   end
 
   def create_at_upstream

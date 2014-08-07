@@ -53,6 +53,10 @@ class Problem < ActiveRecord::Base
     tasks.all? { |task| task.solved_between_by?(time1, time2, user) }
   end
 
+  def attempted_by?(user)
+    tasks.any? { |task| task.attempted_by?(user) }
+  end
+
   def update_solvers
     task_ids = self.task_ids
     self.solvers = User.select do |user|

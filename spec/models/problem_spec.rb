@@ -17,6 +17,7 @@ describe Problem do
   it { should respond_to :contests }
   it { should respond_to :solvers }
 
+  it { should respond_to :attempted_by? }
   it { should respond_to :last_submissions_by }
   it { should respond_to :total_points }
   it { should respond_to :points_for }
@@ -352,6 +353,35 @@ describe Problem do
     it "should not count submission that happens outside the interval" do
       expect(@problem.points_for_between(@user, 2.days.ago, 1.day.ago)).to eq 0
       expect(@problem.points_for_between(@user, 1.day.from_now, 2.days.from_now)).to eq 0
+    end
+  end
+
+  describe "#attempted_by?" do
+    before do
+      @problem.save
+
+      @task1 = create(:task, :problem => @problem)
+      @task2 = create(:task, :problem => @problem)
+      @task3 = create(:task, :problem => @problem)
+
+      @user = create(:user)
+    end
+
+    describe "before submitting" do
+      it "should return falsy" do
+        expect(@problem.attempted_by?(@user)).to be_falsy
+      end
+    end
+
+    describe "after submitting" do
+      before do
+        create(:submission, :user => @user, :task => @task1)
+        create(:submission, :user => @user, :task => @task2)
+      end
+
+      it "should return truthy" do
+        expect(@problem.attempted_by?(@user)).to be_truthy
+      end
     end
   end
 end

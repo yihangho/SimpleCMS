@@ -59,4 +59,11 @@ class Problem < ActiveRecord::Base
       task_ids.all? { |id| user.submissions.for(id).correct_answer.any? }
     end
   end
+
+  def last_submissions_by(user)
+    user ||= User.new
+    tasks.collect do |task|
+      [task.id, user.submissions.for(task).last]
+    end.to_h
+  end
 end

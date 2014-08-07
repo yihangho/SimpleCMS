@@ -17,6 +17,8 @@ describe Problem do
   it { should respond_to :contests }
   it { should respond_to :solvers }
 
+  it { should respond_to :last_submissions_by }
+
   context "validations" do
     describe "when title is empty" do
       before { @problem.title = "" }
@@ -262,6 +264,36 @@ describe Problem do
       it "should have correct_solvers" do
         expect(@problem.solvers).to eq [@user1]
       end
+    end
+  end
+
+  describe "#last_submissions_by" do
+    before do
+      @problem.save
+
+      @task1 = create(:task, :problem => @problem)
+      @task2 = create(:task, :problem => @problem)
+      @task3 = create(:task, :problem => @problem)
+
+      @user1 = create(:user)
+      @user2 = create(:user)
+
+      @submission111 = create(:submission, :task => @task1, :user => @user1)
+      @submission112 = create(:submission, :task => @task1, :user => @user1)
+      @submission121 = create(:submission, :task => @task2, :user => @user1)
+
+      @submission211 = create(:submission, :task => @task1, :user => @user2)
+      @submission221 = create(:submission, :task => @task2, :user => @user2)
+      @submission231 = create(:submission, :task => @task3, :user => @user2)
+    end
+
+    it "should return correct array" do
+      expected_output = {
+        @task1.id => @submission112,
+        @task2.id => @submission121,
+        @task3.id => nil
+      }
+      expect(@problem.last_submissions_by(@user1)).to eq expected_output
     end
   end
 end

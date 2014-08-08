@@ -10,6 +10,8 @@ This app is using PostgreSQL. Hence, it is necessary to have PostgreSQL running.
 - `PG_PASSWORD`
 - `PG_SIMPLECMS_DEV`
 - `PG_SIMPLECMS_TEST`
+- `AWS_ID`
+- `AWS_SECRET_KEY`
 
 ## Running Tests
 Run `bundle exec rake` to run all tests.

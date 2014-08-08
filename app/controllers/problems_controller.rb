@@ -82,7 +82,7 @@ class ProblemsController < ApplicationController
 
   private
   def problem_params
-    params.require(:problem).permit(:title, :statement, :visibility)
+    params.require(:problem).permit(:title, :statement, :contest_only)
   end
 
   def tasks_params

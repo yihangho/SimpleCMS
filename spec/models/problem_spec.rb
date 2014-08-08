@@ -9,7 +9,7 @@ describe Problem do
 
   it { should respond_to :title }
   it { should respond_to :statement }
-  it { should respond_to :visibility }
+  it { should respond_to :contest_only? }
 
   it { should respond_to :permalink }
   it { should respond_to :setter }
@@ -32,24 +32,6 @@ describe Problem do
     describe "when statement is empty" do
       before { @problem.statement = "" }
       it { should_not be_valid }
-    end
-
-    describe "when visibility is valid" do
-      it "should be valid" do
-        Problem.possible_visibilities.each_key do |visibility|
-          @problem.visibility = visibility.to_s
-          expect(@problem).to be_valid
-        end
-      end
-    end
-
-    describe "when visibility is invalid" do
-      it "should be invalid" do
-        [nil, "bla"].each do |visibility|
-          @problem.visibility = visibility
-          expect(@problem).not_to be_valid
-        end
-      end
     end
   end
 
@@ -89,39 +71,9 @@ describe Problem do
       @problem.save
     end
 
-    describe "public problem" do
+    describe "non-contest-only problem" do
       before do
-        @problem.visibility = "public"
-        @problem.save
-      end
-
-      it "should be listed to everyone" do
-        [@admin, @user, @participant].each do |user|
-          expect(@problem.listed_to?(user)).to be_truthy
-        end
-      end
-
-      it "should be visible to everyone" do
-        [@admin, @user, @participant].each do |user|
-          expect(@problem.visible_to?(user)).to be_truthy
-        end
-      end
-    end
-
-    describe "unlisted problem" do
-      before do
-        @problem.visibility = "unlisted"
-        @problem.save
-      end
-
-      it "should be listed to its setter" do
-        expect(@problem.listed_to?(@admin)).to be_truthy
-      end
-
-      it "should not be listed to everyone else" do
-        [@user, @participant].each do |user|
-          expect(@problem.listed_to?(user)).to be_falsy
-        end
+        @problem.update_attribute(:contest_only, false)
       end
 
       it "should be visible to everyone" do
@@ -133,21 +85,10 @@ describe Problem do
 
     describe "contest-only problem" do
       before do
-        @problem.visibility = "contest_only"
-        @problem.save
+        @problem.update_attribute(:contest_only, true)
       end
 
-      it "should be listed to its setter" do
-        expect(@problem.listed_to?(@admin)).to be_truthy
-      end
-
-      it "should not be listed to everyone else" do
-        [@user, @participant].each do |user|
-          expect(@problem.listed_to?(user)).to be_falsy
-        end
-      end
-
-      it "should be visible to its setter" do
+      it "should be visible to admin" do
         expect(@problem.visible_to?(@admin)).to be_truthy
       end
 

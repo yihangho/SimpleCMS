@@ -50,6 +50,10 @@ class Task < ActiveRecord::Base
       :unlimited
     end
   end
+
+  def allowed_to_submit?(user)
+    ![0, :not_allowed].include?(submissions_left_for(user))
+  end
 end
 
 def update_solvers

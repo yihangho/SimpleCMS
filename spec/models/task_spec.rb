@@ -135,8 +135,7 @@ describe Task do
     end
   end
 
-  # Returns number, or symbols
-  describe "#submissions_left_for" do
+  describe "#submissions_left_for and #allowed_to_submit?" do
     before do
       @contest = create(:contest, :problems => [@problem])
 
@@ -154,6 +153,11 @@ describe Task do
         expect(@task.submissions_left_for(@user)).to eq :unlimited
         expect(@task.submissions_left_for(@participant)).to eq :unlimited
       end
+
+      it "should return truthy for everyone" do
+        expect(@task.allowed_to_submit?(@user)).to be_truthy
+        expect(@task.allowed_to_submit?(@participant)).to be_truthy
+      end
     end
 
     describe "task belonging to contest-only problem" do
@@ -163,12 +167,20 @@ describe Task do
         expect(@task.submissions_left_for(@user)).to eq :not_allowed
       end
 
+      it "should return falsy for non-participant" do
+        expect(@task.allowed_to_submit?(@user)).to be_falsy
+      end
+
       describe "task with tokens set to 0" do
         before { @task.tokens = 0 }
         it "should always return :unlimited for participants" do
           expect(@task.submissions_left_for(@participant)).to eq :unlimited
           create(:submission, :user => @participant, :task => @task)
           expect(@task.submissions_left_for(@participant)).to eq :unlimited
+        end
+
+        it "should return truthy for participants" do
+          expect(@task.allowed_to_submit?(@participant)).to be_truthy
         end
       end
 
@@ -179,11 +191,13 @@ describe Task do
           before do
             @contest.start = 1.day.from_now
             @contest.end   = 2.days.from_now
+            @contest.save
           end
           it "should return the correct number" do
-            expect(@task.submissions_left_for(@participant)).to eq 5
-            create(:submission, :user => @participant, :task => @task)
-            expect(@task.submissions_left_for(@participant)).to eq 4
+            expect(@task.submissions_left_for(@participant)).to eq :not_allowed
+          end
+          it "should return falsy" do
+            expect(@task.allowed_to_submit?(@participant)).to be_falsy
           end
         end
 
@@ -198,6 +212,9 @@ describe Task do
             create(:submission, :user => @participant, :task => @task)
             expect(@task.submissions_left_for(@participant)).to eq 4
           end
+          it "should return truthy" do
+            expect(@task.allowed_to_submit?(@participant)).to be_truthy
+          end
         end
 
         describe "after the contest" do
@@ -211,8 +228,10 @@ describe Task do
             create(:submission, :user => @participant, :task => @task)
             expect(@task.submissions_left_for(@participant)).to eq :unlimited
           end
+          it "should return truthy" do
+            expect(@task.allowed_to_submit?(@participant)).to be_truthy
+          end
         end
-
       end
     end
   end

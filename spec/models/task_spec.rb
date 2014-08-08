@@ -11,6 +11,7 @@ describe Task do
   it { should respond_to :input }
   it { should respond_to :output }
   it { should respond_to :point }
+  it { should respond_to :tokens }
 
   it { should respond_to :problem }
   it { should respond_to :submissions }
@@ -29,6 +30,16 @@ describe Task do
 
     describe "when point is not an integer" do
       before { @task.point = 1.5 }
+      it { should_not be_valid }
+    end
+
+    describe "when tokens is negative" do
+      before { @task.tokens = -1 }
+      it { should_not be_valid }
+    end
+
+    describe "when tokens is not an integer" do
+      before { @task.tokens = 1.5 }
       it { should_not be_valid }
     end
   end

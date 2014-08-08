@@ -43,10 +43,10 @@
         </p>
       <% end %>
 
-      <% if [0, :not_allowed].include?(task.submissions_left_for(current_user)) %>
-        <%= f.submit "Submit", :class => "btn btn-primary disabled" %>
-      <% else %>
+      <% if task.allowed_to_submit?(current_user) %>
         <%= f.submit "Submit", :class => "btn btn-primary" %>
+      <% else %>
+        <%= f.submit "Submit", :class => "btn btn-primary disabled" %>
       <% end %>
 
       <% if task.solved_by?(current_user) %>

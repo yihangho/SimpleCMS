@@ -9,7 +9,7 @@ describe User do
 
   it { should be_valid }
 
-  it { should respond_to :name }
+  it { should respond_to :username }
   it { should respond_to :email }
   it { should respond_to :password }
   it { should respond_to :password_confirmation }
@@ -30,8 +30,21 @@ describe User do
       it { should_not be_valid }
     end
 
-    describe "when name is empty" do
-      before { @user.name = "" }
+    describe "when username is empty" do
+      before { @user.username = "" }
+      it { should_not be_valid }
+    end
+
+    describe "when username contains invalid characters" do
+      before { @user.username = "!@$YO LO" }
+      it { should_not be_valid }
+    end
+
+    describe "when username is taken" do
+      before do
+        @doppelganger = create(:user, :username => @user.username.upcase)
+      end
+
       it { should_not be_valid }
     end
 

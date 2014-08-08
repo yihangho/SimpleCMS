@@ -337,8 +337,8 @@ describe Contest do
       @problem1 = create(:problem, :contests => [@contest])
       @problem2 = create(:problem, :contests => [@contest])
 
-      @task1 = create(:task, :problem => @problem1)
-      @task2 = create(:task, :problem => @problem2)
+      @task1 = create(:task, :problem => @problem1, :point => 10)
+      @task2 = create(:task, :problem => @problem2, :point => 20)
 
       @submission11 = create(:submission, :user => @user1, :task => @task1)
       @submission12 = create(:submission, :user => @user1, :task => @task2)
@@ -348,25 +348,25 @@ describe Contest do
     it "should return correct leaderboard" do
       expected_output = [
         {
-          :num_solved => 2,
-          :user       => @user1,
-          :problems   => {
-            @problem1.id => true,
-            @problem2.id => true
+          :points   => 30,
+          :user     => @user1,
+          :problems => {
+            @problem1.id => 10,
+            @problem2.id => 20
           }
         }, {
-          :num_solved => 1,
-          :user       => @user2,
-          :problems   => {
-            @problem1.id => true,
-            @problem2.id => false
+          :points   => 10,
+          :user     => @user2,
+          :problems => {
+            @problem1.id => 10,
+            @problem2.id => 0
           }
         }, {
-          :num_solved => 0,
-          :user       => @user3,
-          :problems   => {
-            @problem1.id => false,
-            @problem2.id => false
+          :points   => 0,
+          :user     => @user3,
+          :problems => {
+            @problem1.id => 0,
+            @problem2.id => 0
           }
         }
       ]

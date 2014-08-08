@@ -8,19 +8,19 @@
   <thead>
     <th>User</th>
     <% problems.each do |problem| %>
-      <th><%= link_to problem.title, problem %></th>
+      <th><%= link_to "#{problem.title} (#{problem.total_points})", problem %></th>
     <% end %>
-    <th>Problems solved</th>
+    <th>Total points</th>
   </thead>
 
   <tbody>
     <% @contest.leaderboard.each do |row| %>
       <tr>
-        <td><%= row[:user].name %></td>
+        <td><%= row[:user].username %></td>
         <% problems.each do |problem| %>
-          <td><% if row[:problems][problem.id] %><i class="fa fa-check"></i><% end %></td>
+          <td><%= row[:problems][problem.id] %></td>
         <% end %>
-        <td><%= row[:num_solved] %></td>
+        <td><%= row[:points] %></td>
       </tr>
     <% end %>
   </tbody>

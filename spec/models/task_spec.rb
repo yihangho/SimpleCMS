@@ -10,6 +10,7 @@ describe Task do
 
   it { should respond_to :input }
   it { should respond_to :output }
+  it { should respond_to :point }
 
   it { should respond_to :problem }
   it { should respond_to :submissions }
@@ -18,6 +19,16 @@ describe Task do
   context "validations" do
     describe "when problem is nil" do
       before { @task.problem = nil }
+      it { should_not be_valid }
+    end
+
+    describe "when point is negative" do
+      before { @task.point = -1 }
+      it { should_not be_valid }
+    end
+
+    describe "when point is not an integer" do
+      before { @task.point = 1.5 }
       it { should_not be_valid }
     end
   end

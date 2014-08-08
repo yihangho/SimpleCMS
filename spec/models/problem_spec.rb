@@ -17,6 +17,12 @@ describe Problem do
   it { should respond_to :contests }
   it { should respond_to :solvers }
 
+  it { should respond_to :attempted_by? }
+  it { should respond_to :last_submissions_by }
+  it { should respond_to :total_points }
+  it { should respond_to :points_for }
+  it { should respond_to :points_for_between }
+
   context "validations" do
     describe "when title is empty" do
       before { @problem.title = "" }
@@ -261,6 +267,120 @@ describe Problem do
 
       it "should have correct_solvers" do
         expect(@problem.solvers).to eq [@user1]
+      end
+    end
+  end
+
+  describe "#last_submissions_by" do
+    before do
+      @problem.save
+
+      @task1 = create(:task, :problem => @problem)
+      @task2 = create(:task, :problem => @problem)
+      @task3 = create(:task, :problem => @problem)
+
+      @user1 = create(:user)
+      @user2 = create(:user)
+
+      @submission111 = create(:submission, :task => @task1, :user => @user1)
+      @submission112 = create(:submission, :task => @task1, :user => @user1)
+      @submission121 = create(:submission, :task => @task2, :user => @user1)
+
+      @submission211 = create(:submission, :task => @task1, :user => @user2)
+      @submission221 = create(:submission, :task => @task2, :user => @user2)
+      @submission231 = create(:submission, :task => @task3, :user => @user2)
+    end
+
+    it "should return correct array" do
+      expected_output = {
+        @task1.id => @submission112,
+        @task2.id => @submission121,
+        @task3.id => nil
+      }
+      expect(@problem.last_submissions_by(@user1)).to eq expected_output
+    end
+  end
+
+  describe "#total_points" do
+    before do
+      @problem.save
+
+      @task1 = create(:task, :problem => @problem, :point => 10)
+      @task2 = create(:task, :problem => @problem, :point => 20)
+    end
+
+    it "should return correct total points" do
+      expect(@problem.total_points).to eq 30
+    end
+  end
+
+  describe "#points_for" do
+    before do
+      @problem.save
+
+      @task1 = create(:task, :problem => @problem, :point => 10)
+      @task2 = create(:task, :problem => @problem, :point => 20)
+
+      @user = create(:user)
+
+      create(:incorrect_submission, :user => @user, :task => @task1)
+      create(:submission, :user => @user, :task => @task1)
+      create(:incorrect_submission, :user => @user, :task => @task2)
+    end
+
+    it "should return correct points" do
+      expect(@problem.points_for(@user)).to eq 10
+    end
+  end
+
+  describe "#points_for_between" do
+    before do
+      @problem.save
+
+      @task1 = create(:task, :problem => @problem, :point => 10)
+      @task2 = create(:task, :problem => @problem, :point => 20)
+
+      @user = create(:user)
+
+      create(:submission, :user => @user, :task => @task1)
+      create(:incorrect_submission, :user => @user, :task => @task2)
+    end
+
+    it "should count submission that happens inside the interval" do
+      expect(@problem.points_for_between(@user, 1.day.ago, 1.day.from_now)).to eq 10
+    end
+
+    it "should not count submission that happens outside the interval" do
+      expect(@problem.points_for_between(@user, 2.days.ago, 1.day.ago)).to eq 0
+      expect(@problem.points_for_between(@user, 1.day.from_now, 2.days.from_now)).to eq 0
+    end
+  end
+
+  describe "#attempted_by?" do
+    before do
+      @problem.save
+
+      @task1 = create(:task, :problem => @problem)
+      @task2 = create(:task, :problem => @problem)
+      @task3 = create(:task, :problem => @problem)
+
+      @user = create(:user)
+    end
+
+    describe "before submitting" do
+      it "should return falsy" do
+        expect(@problem.attempted_by?(@user)).to be_falsy
+      end
+    end
+
+    describe "after submitting" do
+      before do
+        create(:submission, :user => @user, :task => @task1)
+        create(:submission, :user => @user, :task => @task2)
+      end
+
+      it "should return truthy" do
+        expect(@problem.attempted_by?(@user)).to be_truthy
       end
     end
   end

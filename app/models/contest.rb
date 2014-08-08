@@ -109,17 +109,23 @@ class Contest < ActiveRecord::Base
     end
   end
 
+  def total_points_for(user)
+    problems.inject(0) do |sum, problem|
+      sum + problem.points_for_between(user, Time.at(0), self.end)
+    end
+  end
+
   def leaderboard
     participants.collect do |user|
       {
-        :num_solved => num_problems_solved_by(user),
+        :points     => total_points_for(user),
         :user       => user,
         :problems   => problems.collect do |problem|
-                         [problem.id, problem.solved_between_by?(Time.at(0), self.end, user)]
+                         [problem.id, problem.points_for_between(user, Time.at(0), self.end)]
                        end.to_h
       }
     end.sort do |row1, row2|
-      row1[:num_solved] <=> row2[:num_solved]
+      row1[:points] <=> row2[:points]
     end.reverse
   end
 end

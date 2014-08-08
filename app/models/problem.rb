@@ -53,10 +53,37 @@ class Problem < ActiveRecord::Base
     tasks.all? { |task| task.solved_between_by?(time1, time2, user) }
   end
 
+  def attempted_by?(user)
+    tasks.any? { |task| task.attempted_by?(user) }
+  end
+
   def update_solvers
     task_ids = self.task_ids
     self.solvers = User.select do |user|
       task_ids.all? { |id| user.submissions.for(id).correct_answer.any? }
+    end
+  end
+
+  def last_submissions_by(user)
+    user ||= User.new
+    tasks.collect do |task|
+      [task.id, user.submissions.for(task).last]
+    end.to_h
+  end
+
+  def total_points
+    tasks.inject(0) { |sum, task| sum + task.point }
+  end
+
+  def points_for(user)
+    tasks.inject(0) do |sum, task|
+      task.solved_by?(user) ? sum + task.point : sum
+    end
+  end
+
+  def points_for_between(user, time1, time2)
+    tasks.inject(0) do |sum, task|
+      task.solved_between_by?(time1, time2, user) ? sum + task.point : sum
     end
   end
 end

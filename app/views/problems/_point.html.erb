@@ -1,0 +1,20 @@
+<%
+  if defined?(contest) && contest
+    points = problem.points_for_between(user, contest.start, contest.end)
+  else
+    points = problem.points_for(user)
+  end
+  total_points = problem.total_points
+%>
+
+<% if problem.attempted_by?(user) %>
+  <% if points == total_points %>
+    <span class="text-success">
+  <% elsif points == 0 %>
+    <span class="text-danger">
+  <% else %>
+    <span class="text-warning">
+  <% end %>
+    (<%= points %> / <%= total_points %>)
+  </span>
+<% end %>

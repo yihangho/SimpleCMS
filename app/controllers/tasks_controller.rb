@@ -4,8 +4,10 @@ class TasksController < ApplicationController
 
   def show
     input_contents = @task.input
-    download_file = File.new("/tmp/simple-cms/input-#{@task.id}-#{(Time.now.to_f*1000).to_i}" , "w" ){ |f| f.write(input_contents) }
-    send_data download_file , filename: "input-#{@task.id}.in"
+    puts input_contents
+    download_file = File.new("/tmp/simple-cms/input-#{@task.id}-#{(Time.now.to_f*1000).to_i}" , "w+" ){ |f| f.write(input_contents) }
+    send_data input_contents , filename: "input-#{@task.id}.txt"
+    download_file.close
   end
 
   private

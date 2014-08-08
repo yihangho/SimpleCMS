@@ -14,6 +14,8 @@ class Contest < ActiveRecord::Base
     where("\"contests\".\"end\" > ?", Time.now).
     where("\"contests\".\"start\" < ?", Time.now)
   end
+  scope :ended, -> { where("\"contests\".\"end\" < ?", Time.now) }
+  scope :participated_by, ->(user) { where(:id => user.participated_contests) }
 
   has_one :permalink, :as => :linkable, :dependent => :destroy
   has_many :announcements, :validate => false

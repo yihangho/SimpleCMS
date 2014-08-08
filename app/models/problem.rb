@@ -8,6 +8,8 @@ class Problem < ActiveRecord::Base
   has_and_belongs_to_many :contests, :validate => false
   has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_problems", :validate => false
 
+  scope :contest_problems, -> { where(:contest_only => true) }
+
   def visible_to?(user)
     user ||= User.new(:admin => false)
 

@@ -2,7 +2,7 @@
 
 <ul>
     <% @problems.each do |problem| %>
-      <% if problem.listed_to?(current_user) %>
+      <% if problem.visible_to?(current_user) %>
         <li>
           <%= link_to problem.title, problem %>
           <%= render :partial => "point", :locals => { :problem => problem, :user => current_user } %>

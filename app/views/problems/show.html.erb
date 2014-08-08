@@ -37,7 +37,17 @@
         <%= f.text_field :code_link, :class => "form-control" %>
       </div>
 
-      <%= f.submit "Submit", :class => "btn btn-primary" %>
+      <% if task.submissions_left_for(current_user).is_a? Numeric %>
+        <p class="help-block">
+          You have <%= pluralize(task.submissions_left_for(current_user), "submission") %> left.
+        </p>
+      <% end %>
+
+      <% if [0, :not_allowed].include?(task.submissions_left_for(current_user)) %>
+        <%= f.submit "Submit", :class => "btn btn-primary disabled" %>
+      <% else %>
+        <%= f.submit "Submit", :class => "btn btn-primary" %>
+      <% end %>
 
       <% if task.solved_by?(current_user) %>
         <span class="label label-success">Solved!</span>

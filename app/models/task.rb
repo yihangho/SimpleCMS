@@ -30,6 +30,26 @@ class Task < ActiveRecord::Base
     update_solvers
     problem.update_solvers
   end
+
+  def submissions_left_for(user)
+    user ||= User.new
+
+    if problem.contest_only?
+      if problem.contests.participated_by(user).any?
+        if tokens == 0 || problem.contests.ended.participated_by(user).any?
+          :unlimited
+        elsif problem.contests.ongoing.participated_by(user).any?
+          [0, tokens - user.submissions.for(self).count].max
+        else
+          :not_allowed
+        end
+      else
+        :not_allowed
+      end
+    else
+      :unlimited
+    end
+  end
 end
 
 def update_solvers

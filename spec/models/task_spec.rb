@@ -17,6 +17,8 @@ describe Task do
   it { should respond_to :submissions }
   it { should respond_to :solvers }
 
+  it { should respond_to :submissions_left_for }
+
   context "validations" do
     describe "when problem is nil" do
       before { @task.problem = nil }
@@ -129,6 +131,88 @@ describe Task do
       it "submissions should have correct accepted status" do
         expect(@submission1.accepted).to be_falsy
         expect(@submission2.accepted).to be_truthy
+      end
+    end
+  end
+
+  # Returns number, or symbols
+  describe "#submissions_left_for" do
+    before do
+      @contest = create(:contest, :problems => [@problem])
+
+      @participant = create(:user, :participated_contests => [@contest])
+      @user = create(:user)
+    end
+
+    describe "task belonging to non-contest-only problem set to non-0" do
+      before do
+        @problem.update_attribute(:contest_only, false)
+        @task.update_attribute(:tokens, 5)
+      end
+
+      it "should return :unlimited to everyone" do
+        expect(@task.submissions_left_for(@user)).to eq :unlimited
+        expect(@task.submissions_left_for(@participant)).to eq :unlimited
+      end
+    end
+
+    describe "task belonging to contest-only problem" do
+      before { @problem.update_attribute(:contest_only, true) }
+
+      it "should return :not_allowed for non-participant" do
+        expect(@task.submissions_left_for(@user)).to eq :not_allowed
+      end
+
+      describe "task with tokens set to 0" do
+        before { @task.tokens = 0 }
+        it "should always return :unlimited for participants" do
+          expect(@task.submissions_left_for(@participant)).to eq :unlimited
+          create(:submission, :user => @participant, :task => @task)
+          expect(@task.submissions_left_for(@participant)).to eq :unlimited
+        end
+      end
+
+      describe "task with tokens not set to 0" do
+        before { @task.tokens = 5 }
+
+        describe "before the contest" do
+          before do
+            @contest.start = 1.day.from_now
+            @contest.end   = 2.days.from_now
+          end
+          it "should return the correct number" do
+            expect(@task.submissions_left_for(@participant)).to eq 5
+            create(:submission, :user => @participant, :task => @task)
+            expect(@task.submissions_left_for(@participant)).to eq 4
+          end
+        end
+
+        describe "during the contest" do
+          before do
+            @contest.start = 1.day.ago
+            @contest.end   = 1.day.from_now
+            @contest.save
+          end
+          it "should return the correct number" do
+            expect(@task.submissions_left_for(@participant)).to eq 5
+            create(:submission, :user => @participant, :task => @task)
+            expect(@task.submissions_left_for(@participant)).to eq 4
+          end
+        end
+
+        describe "after the contest" do
+          before do
+            @contest.start = 2.days.ago
+            @contest.end   = 1.day.ago
+            @contest.save
+          end
+          it "should always return :unlimited" do
+            expect(@task.submissions_left_for(@participant)).to eq :unlimited
+            create(:submission, :user => @participant, :task => @task)
+            expect(@task.submissions_left_for(@participant)).to eq :unlimited
+          end
+        end
+
       end
     end
   end

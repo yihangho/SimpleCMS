@@ -5,14 +5,22 @@
     <label for="problem_tasks_{{task_count}}_input">Input</label>
     <textarea class="form-control" id="problem_tasks_{{task_count}}_input" name="problem[tasks][{{task_count}}][input]"></textarea>
   </div>
+  <div class='form-group'>
+    <label for="problem_tasks_{{task_count}}_input_file">Input File (Will be prioritized over the text field above)</label>
+    <input id='problem_tasks_{{task_count}}_input_file' name='problem[tasks][{{task_count}}][input_file]' type='file'/>
+  </div>
   <div class="form-group">
     <label for="problem_tasks_{{task_count}}_output">Output</label>
     <textarea class="form-control" id="problem_tasks_{{task_count}}_output" name="problem[tasks][{{task_count}}][output]"></textarea>
   </div>
+  <div class='form-group'>
+    <label for="problem_tasks_{{task_count}}_output_file">Output File (Will be prioritized over the text field above)</label>
+    <input id='problem_tasks_{{task_count}}_output_file' name='problem[tasks][{{task_count}}][output_file]' type='file'/>
+  </div>
 </div>
 </script>
 
-<%= form_for(@problem) do |f| %>
+<%= form_for(@problem , html: { multipart: true }) do |f| %>
   <div class="form-group">
     <%= f.label :title %>
     <%= f.text_field :title, :class => "form-control" %>
@@ -47,9 +55,17 @@
           <label for="problem_tasks_<%= task.id %>_input">Input</label>
           <textarea class="form-control" id="problem_tasks_<%= task.id %>_input" name="problem[tasks][<%= task.id %>][input]"><%= task.input %></textarea>
         </div>
+        <div class='form-group'>
+          <label for="problem_tasks_<%= task.id %>_input_file">Input File (Will be prioritized over the text field above)</label>
+          <input id='problem_tasks_<%= task.id %>_input_file' name='problem[tasks][<%= task.id %>][input_file]' type='file'/>
+        </div>
         <div class="form-group">
           <label for="problem_tasks_<%= task.id %>_output">Output</label>
           <textarea class="form-control" id="problem_tasks_<%= task.id %>_output" name="problem[tasks][<%= task.id %>][output]"><%= task.output %></textarea>
+        </div>
+        <div class='form-group'>
+          <label for="problem_tasks_<%= task.id %>_output_file">Output File (Will be prioritized over the text field above)</label>
+          <input id='problem_tasks_<%= task.id %>_output_file' name='problem[tasks][<%= task.id %>][output_file]' type='file'/>
         </div>
       </div>
     <% end %>

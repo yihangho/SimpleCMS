@@ -10,6 +10,7 @@ class Task < ActiveRecord::Base
   end
 
   def input= arg
+    # MEMO => normalize the input here eg: arg = arg.normalize
     if self.input_file
       self.input_file.contents_to_be_uploaded = arg
       self.input_file.save
@@ -23,6 +24,7 @@ class Task < ActiveRecord::Base
   end
 
   def output= arg
+    # MEMO => normalize the ouput here eg: arg = arg.normalize
     if self.output_file
       self.output_file.contents_to_be_uploaded = arg
       self.output_file.save

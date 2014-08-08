@@ -49,7 +49,7 @@ class ProblemsController < ApplicationController
         task.save
         current_tasks << task.id
       else
-        task = @problem.tasks.create(:input => v[:input], :output => v[:output])
+        task = @problem.tasks.create(:input => v[:input], :output => v[:output], :point => v[:point], :tokens => v[:tokens])
 
         current_tasks << task.id
         new_tasks     << task.id

@@ -30,10 +30,10 @@ class Task < ActiveRecord::Base
     update_solvers
     problem.update_solvers
   end
-end
 
-def update_solvers
-  self.solvers = User.select do |user|
-    user.submissions.for(self).correct_answer.any?
+  def update_solvers
+    self.solvers = User.select do |user|
+      user.submissions.for(self).correct_answer.any?
+    end
   end
 end

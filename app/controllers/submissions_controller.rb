@@ -1,6 +1,7 @@
 class SubmissionsController < ApplicationController
   before_action :admin_only, :only => :index
   before_action :signed_in_users_only, :only => :create
+  before_action :users_allowed_to_submit_only, :only => :create
   before_action :correct_user_or_admin, :only => :user
   before_action :owner_or_admin, :only => :show
 
@@ -30,9 +31,15 @@ class SubmissionsController < ApplicationController
   end
 
   private
-
   def submission_params
     params.require(:submission).permit(:task_id, :input, :code_link)
+  end
+
+  def users_allowed_to_submit_only
+    unless Task.find(submission_params[:task_id]).allowed_to_submit?(current_user)
+      flash[:danger] = "You are not allowed to submit an answer for this task."
+      redirect_to Task.find(submission_params[:task_id]).problem
+    end
   end
 
   def correct_user_or_admin

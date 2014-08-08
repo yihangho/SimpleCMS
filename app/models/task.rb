@@ -4,7 +4,7 @@ class Task < ActiveRecord::Base
   has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_tasks", :validate => false
 
   validates :problem_id, :presence => true
-  validates :point, :numericality => { :greater_than_or_equal_to => 0, :only_integer => true }
+  validates :point, :tokens, :numericality => { :greater_than_or_equal_to => 0, :only_integer => true }
 
   after_initialize do
     self.point ||= 0
@@ -29,6 +29,30 @@ class Task < ActiveRecord::Base
 
     update_solvers
     problem.update_solvers
+  end
+
+  def submissions_left_for(user)
+    user ||= User.new
+
+    if problem.contest_only?
+      if problem.contests.participated_by(user).any?
+        if tokens == 0 || problem.contests.ended.participated_by(user).any?
+          :unlimited
+        elsif problem.contests.ongoing.participated_by(user).any?
+          [0, tokens - user.submissions.for(self).count].max
+        else
+          :not_allowed
+        end
+      else
+        :not_allowed
+      end
+    else
+      :unlimited
+    end
+  end
+
+  def allowed_to_submit?(user)
+    ![0, :not_allowed].include?(submissions_left_for(user))
   end
 
   def update_solvers

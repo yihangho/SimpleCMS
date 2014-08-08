@@ -6,6 +6,10 @@
     <input class="form-control" type="number" id="problem_tasks_{{task_count}}_point" name="problem[tasks][{{task_count}}][point]" min="0" value="0">
   </div>
   <div class="form-group">
+    <label for="problem_tasks_{{task_count}}_tokens">Tokens</label>
+    <input class="form-control" type="number" id="problem_tasks_{{task_count}}_tokens" name="problem[tasks][{{task_count}}][tokens]" min="0" value="0">
+  </div>
+  <div class="form-group">
     <label for="problem_tasks_{{task_count}}_input">Input</label>
     <textarea class="form-control" id="problem_tasks_{{task_count}}_input" name="problem[tasks][{{task_count}}][input]"></textarea>
   </div>
@@ -47,6 +51,10 @@
         <div class="form-group">
           <label for="problem_tasks_<%= task.id %>_point">Point</label>
           <input class="form-control" type="number" id="problem_tasks_<%= task.id %>_point" name="problem[tasks][<%= task.id %>][point]" min="0" value="<%= task.point || 0 %>">
+        </div>
+        <div class="form-group">
+          <label for="problem_tasks_<%= task.id %>_tokens">Tokens</label>
+          <input class="form-control" type="number" id="problem_tasks_<%= task.id %>_tokens" name="problem[tasks][<%= task.id %>][tokens]" min="0" value="<%= task.tokens || 0 %>">
         </div>
         <div class="form-group">
           <label for="problem_tasks_<%= task.id %>_input">Input</label>

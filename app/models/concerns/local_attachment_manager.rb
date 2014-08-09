@@ -1,11 +1,8 @@
 module LocalAttachmentManager
   require 'fileutils'
-  # TASK_INPUT_DIRECTORY = ENV["SIMPLECMS_INPUT"] || "$HOME/.simplecms/input";
-  # TASK_OUTPUT_DIRECTORY = ENV["SIMPLECMS_OUTPUT"] || "$HOME/.simplecms/output";
-  # SUBMISSION_DIRECTORY = ENV["SIMPLECMS_SUBMISSION"] || "$HOME/.simplecms/submission";
-  TASK_INPUT_DIRECTORY = "#{ENV["HOME"]}/.simplecms/input";
-  TASK_OUTPUT_DIRECTORY = "#{ENV["HOME"]}/.simplecms/output";
-  SUBMISSION_DIRECTORY = "#{ENV["HOME"]}/.simplecms/submission";
+  TASK_INPUT_DIRECTORY = ENV["SIMPLECMS_INPUT"] || "#{ENV["HOME"]}/.simplecms/input";
+  TASK_OUTPUT_DIRECTORY = ENV["SIMPLECMS_OUTPUT"] || "#{ENV["HOME"]}/.simplecms/output";
+  SUBMISSION_DIRECTORY = ENV["SIMPLECMS_SUBMISSION"] || "#{ENV["HOME"]}/.simplecms/submission";
 
   def upload arg
     contents_to_be_uploaded = arg.to_s

@@ -89,6 +89,7 @@ class ProblemsController < ApplicationController
     # note , output_file will be favoured over output!
     tasks_hash = params.require(:problem).permit(:tasks => [:input , :output , :id , :input_file , :output_file])[:tasks]
     tasks_arr = Array.new
+    return [] if tasks_hash.nil? || tasks_hash.empty? #handling edge cases when there are no tasks submitted
     tasks_hash.each do |_ , task|
       task[:input] = task[:input_file].read unless task[:input_file].nil?
       task[:output] = task[:output_file].read unless task[:output_file].nil?

@@ -7,11 +7,13 @@ class Attachment < ActiveRecord::Base
   # No matter what module is used, please do add two vital methods:
   # upload(args) => Upload contents to that attachment
   # contents => Obtaint the content of the downloaded file as a string
-  ENV["SIMPLECMS_STORAGE_TYPE"] ||= "AWS"
+
   case ENV["SIMPLECMS_STORAGE_TYPE"]
   when "AWS"
     include AwsAttachmentCommunication
   when "local"
     include LocalAttachmentManager
+  else
+    include AwsAttachmentCommunication
   end
 end

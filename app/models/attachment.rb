@@ -14,6 +14,6 @@ class Attachment < ActiveRecord::Base
   when "local"
     include LocalAttachmentManager
   else
-    include AwsAttachmentCommunication
+    include LocalAttachmentManager
   end
 end

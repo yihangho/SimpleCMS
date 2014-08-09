@@ -48,7 +48,7 @@ module AwsAttachmentCommunication
         :provider                 => 'AWS',
         :aws_access_key_id        => ENV['AWS_ID'],
         :aws_secret_access_key    => ENV['AWS_SECRET_KEY'],
-        :region                   => ENV["AWS_REGION"]
+        :region                   => (ENV["AWS_REGION"] || "ap-southeast-1")
       })
 
       @task_input_directory = aws_connection.directories.get(ENV["SIMPLECMS_INPUT"])

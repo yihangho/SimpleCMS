@@ -87,13 +87,16 @@ class ProblemsController < ApplicationController
   def tasks_params
     # Parse the parameters to form input and output
     # note , output_file will be favoured over output!
-    tasks_hash = params.require(:problem).require(:tasks)
+    tasks_hash = params.require(:problem).permit(:tasks => [:input , :output , :id , :input_file , :output_file])[:tasks]
+    puts "the task_hash is"
+    puts tasks_hash
     tasks_arr = Array.new
     tasks_hash.each do |_ , task|
       task[:input] = task[:input_file].read unless task[:input_file].nil?
       task[:output] = task[:output_file].read unless task[:output_file].nil?
       tasks_arr << { input: task[:input] , output: task[:output] , id: task[:id] }
     end
+    p tasks_arr
     tasks_arr
   end
 

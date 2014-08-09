@@ -35,12 +35,9 @@ class Submission < ActiveRecord::Base
 
   def input= arg
     # memo => NORMALIZE THE INPUT HERE , eg: @cache_input = normalize(arg)
-    if self.attachment
-      self.attachment.contents_to_be_uploaded = arg
-      self.save
-    else
-      self.create_attachment :contents_to_be_uploaded => arg
-    end 
+    self.create_attachment if self.attachment.nil?
+    self.attachment.upload arg
+    self.attachment.save
   end
 
   def correct_input?

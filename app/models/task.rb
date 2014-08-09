@@ -11,12 +11,9 @@ class Task < ActiveRecord::Base
 
   def input= arg
     # MEMO => normalize the input here eg: arg = arg.normalize
-    if self.input_file
-      self.input_file.contents_to_be_uploaded = arg
-      self.input_file.save
-    else
-      self.create_input_file contents_to_be_uploaded: arg
-    end
+    self.create_input_file if self.input_file.nil?
+    self.input_file.upload arg
+    self.input_file.save
   end
 
   def output
@@ -24,13 +21,9 @@ class Task < ActiveRecord::Base
   end
 
   def output= arg
-    # MEMO => normalize the ouput here eg: arg = arg.normalize
-    if self.output_file
-      self.output_file.contents_to_be_uploaded = arg
-      self.output_file.save
-    else
-      self.create_output_file contents_to_be_uploaded: arg
-    end
+    self.create_output_file if self.output_file.nil?
+    self.output_file.upload arg
+    self.output_file.save
   end
 
   def solved_by?(user)

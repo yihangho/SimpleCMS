@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140807111934) do
+ActiveRecord::Schema.define(version: 20140809140711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,7 +28,6 @@ ActiveRecord::Schema.define(version: 20140807111934) do
   add_index "announcements", ["contest_id"], name: "index_announcements_on_contest_id", using: :btree
 
   create_table "attachments", force: true do |t|
-    t.string   "name"
     t.integer  "attachmentable_id"
     t.string   "attachmentable_type"
     t.datetime "created_at"

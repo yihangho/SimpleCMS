@@ -52,7 +52,6 @@ group :development, :test do
 end
 
 # To handle fill uploading
-gem "paperclip", "~> 4.1"
 gem "fog"
 
 # Use unicorn as the app server

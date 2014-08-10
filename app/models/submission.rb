@@ -30,11 +30,11 @@ class Submission < ActiveRecord::Base
 
   def input
     return @cache_input unless @cache_input.nil?
-    self.attachment.contents
+    self.attachment ? self.attachment.contents : nil
   end
 
   def input= arg
-    # memo => NORMALIZE THE INPUT HERE , eg: @cache_input = normalize(arg)
+    # memo => NORMALIZE THE INPUT HERE , eg: @cache_input = normalize(arg) , INPUT caching here too , after normalizing
     self.create_attachment if self.attachment.nil?
     self.attachment.upload arg
     self.attachment.save

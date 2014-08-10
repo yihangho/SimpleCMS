@@ -6,7 +6,7 @@ class Task < ActiveRecord::Base
   has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_tasks", :validate => false
 
   def input
-    self.input_file.contents
+    self.input_file ? self.input_file.contents : nil
   end
 
   def input= arg
@@ -17,7 +17,7 @@ class Task < ActiveRecord::Base
   end
 
   def output
-    self.output_file.contents
+    self.output_file ? self.output_file.contents : nil
   end
 
   def output= arg

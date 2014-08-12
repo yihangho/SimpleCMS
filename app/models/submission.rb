@@ -1,5 +1,5 @@
 class Submission < ActiveRecord::Base
-  has_one :attachment , -> { where :attachmentable_type => "submission" }, class_name: "Attachment", foreign_key: "attachmentable_id" , validate: false
+  has_one :attachment , -> { where :attachmentable_type => "submission" , :active => true }, class_name: "Attachment", foreign_key: "attachmentable_id" , validate: false , autosave: true
   scope :correct_answer, -> { where(:accepted => true) }
   scope :by, ->(user) { where(:user_id => user) }
   scope :for, ->(task) { where(:task_id => task) }
@@ -35,9 +35,8 @@ class Submission < ActiveRecord::Base
 
   def input= arg
     # memo => NORMALIZE THE INPUT HERE , eg: @cache_input = normalize(arg) , INPUT caching here too , after normalizing
-    self.create_attachment if self.attachment.nil?
+    self.build_attachment if self.attachment.nil?
     self.attachment.upload arg
-    self.attachment.save
   end
 
   def correct_input?

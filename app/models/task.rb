@@ -1,6 +1,6 @@
 class Task < ActiveRecord::Base
-  has_one :input_file , -> { where :attachmentable_type => "task-input" }, class_name: "Attachment", foreign_key: "attachmentable_id" , validate: false , autosave: true
-  has_one :output_file , -> { where :attachmentable_type => "task-output" }, class_name: "Attachment", foreign_key: "attachmentable_id" , validate: false , autosave: true
+  has_one :input_file , -> { where :attachmentable_type => "task-input" , :active => true }, class_name: "Attachment", foreign_key: "attachmentable_id" , validate: false , autosave: true
+  has_one :output_file , -> { where :attachmentable_type => "task-output" , :active => true }, class_name: "Attachment", foreign_key: "attachmentable_id" , validate: false , autosave: true
   belongs_to :problem, :validate => false
   has_many :submissions, :validate => false
   has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_tasks", :validate => false
@@ -11,9 +11,8 @@ class Task < ActiveRecord::Base
 
   def input= arg
     # MEMO => normalize the input here eg: arg = arg.normalize
-    self.create_input_file if self.input_file.nil?
+    self.build_input_file if self.input_file.nil?
     self.input_file.upload arg
-    self.input_file.save
   end
 
   def output
@@ -21,9 +20,8 @@ class Task < ActiveRecord::Base
   end
 
   def output= arg
-    self.create_output_file if self.output_file.nil?
+    self.build_output_file if self.output_file.nil?
     self.output_file.upload arg
-    self.output_file.save
   end
 
   def solved_by?(user)

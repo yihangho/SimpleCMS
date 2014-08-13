@@ -1,6 +1,4 @@
 class Problem < ActiveRecord::Base
-  include Linkable
-
   validates :title, :statement, :presence => true
   has_one :permalink, :as => :linkable, :dependent => :destroy
   belongs_to :setter, :class_name => "User", :validate => false

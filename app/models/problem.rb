@@ -9,6 +9,7 @@ class Problem < ActiveRecord::Base
   has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_problems", :validate => false
 
   accepts_nested_attributes_for :tasks, :allow_destroy => true
+  accepts_nested_attributes_for :permalink, :update_only => true, :reject_if => :all_blank, :allow_destroy => true
 
   scope :contest_problems, -> { where(:contest_only => true) }
 

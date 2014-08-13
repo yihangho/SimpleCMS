@@ -47,9 +47,13 @@ gem 'mustache-js-rails', '~> 0.0.9'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'
+  gem 'rspec-mocks' 
   gem 'capybara', '~> 2.4.1'
   gem 'factory_girl_rails', '~> 4.4.1'
 end
+
+# To handle fill uploading
+gem "fog"
 
 # Use unicorn as the app server
 # gem 'unicorn'

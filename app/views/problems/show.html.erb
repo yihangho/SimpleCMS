@@ -22,9 +22,8 @@
   <% @problem.tasks.each do |task| %>
     <% submission = user_submissions[task.id] || Submission.new %>
     <div class="well">
-    <%= form_for(submission, :url => submissions_path, :method => :post) do |f| %>
-      <pre><%= task.input %></pre>
-
+    <%= form_for(:submission, :url => submissions_path) do |f| %>
+      <a href='/tasks/<%= task.id %>' target='_blank'>Download task input file</a>
       <%= f.hidden_field(:task_id, :value => task.id) %>
 
       <div class="form-group">
@@ -35,6 +34,10 @@
       <div class="form-group">
         <%= f.label :code_link, "Link to your code" %>
         <%= f.text_field :code_link, :class => "form-control" %>
+      </div>
+      <div class='form-group'>
+        <%= f.label :answer_file, "Upload Your answer (favoured over answer in the text field above)" %>
+        <%= f.file_field :input_file %>
       </div>
 
       <%= f.submit "Submit", :class => "btn btn-primary" %>

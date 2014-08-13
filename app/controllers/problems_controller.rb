@@ -13,7 +13,7 @@ class ProblemsController < ApplicationController
   def create
     @problem = current_user.set_problems.create(problem_params)
     if @problem.save && @problem.set_permalink(problem_permalink_params)
-      tasks_params.each { |_, v| @problem.tasks.create(v) }
+      tasks_params.each { |v| @problem.tasks.create(v) }
       render 'show'
     else
       render 'new'
@@ -34,7 +34,7 @@ class ProblemsController < ApplicationController
     deleted_tasks        = []
     new_tasks            = []
 
-    tasks_params.each do |_, v|
+    tasks_params.each do |v|
       if v[:id] && @problem.task_ids.include?(v[:id].to_i)
         task = @problem.tasks.find(v[:id])
 
@@ -86,7 +86,17 @@ class ProblemsController < ApplicationController
   end
 
   def tasks_params
-    params.require(:problem).require(:tasks).permit!
+    # Parse the parameters to form input and output
+    # note , output_file will be favoured over output!
+    tasks_hash = params.require(:problem).permit(:tasks => [:input , :output , :id , :input_file , :output_file])[:tasks]
+    tasks_arr = Array.new
+    return [] if tasks_hash.nil? || tasks_hash.empty? #handling edge cases when there are no tasks submitted
+    tasks_hash.each do |_ , task|
+      task[:input] = task[:input_file].read unless task[:input_file].nil?
+      task[:output] = task[:output_file].read unless task[:output_file].nil?
+      tasks_arr << { input: task[:input] , output: task[:output] , id: task[:id] }
+    end
+    tasks_arr
   end
 
   def problem_permalink_params

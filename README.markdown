@@ -11,6 +11,28 @@ This app is using PostgreSQL. Hence, it is necessary to have PostgreSQL running.
 - `PG_SIMPLECMS_DEV`
 - `PG_SIMPLECMS_TEST`
 
+### Storage type
+This app stores data of task inputs, outputs and submissions locally or remotely. Configure the environment variables below as necessary. Storage options defaults to local storage
+
+#### Using AWS
+Configure buckets to store the three types of files
+
+- `SIMPLECMS_STORAGE_TYPE` is set to "AWS"
+- `AWS_ID`
+- `AWS_SECRET_KEY`
+- `AWS_REGION`
+- `SIMPLECMS_INPUT`
+- `SIMPLECMS_OUTPUT`
+- `SIMPLECMS_SUBMISSION`
+
+#### Using local storage
+Configure the ABSOLUTE PATH respect to root directory , default to `$HOME/.simplecms/input` , `$HOME/.simplecms/output` and `$HOME/.simplecms/submission`
+
+- `SIMPLECMS_STORAGE_TYPE` is set to "local"
+- `SIMPLECMS_INPUT`
+- `SIMPLECMS_OUTPUT`
+- `SIMPLECMS_SUBMISSION`
+
 ## Running Tests
 Run `bundle exec rake` to run all tests.
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140807144128) do
+ActiveRecord::Schema.define(version: 20140813034010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,20 @@ ActiveRecord::Schema.define(version: 20140807144128) do
   end
 
   add_index "announcements", ["contest_id"], name: "index_announcements_on_contest_id", using: :btree
+
+  create_table "attachments", force: true do |t|
+    t.integer  "attachmentable_id"
+    t.string   "attachmentable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "file_name"
+    t.boolean  "active",              default: true
+    t.integer  "parent_id"
+  end
+
+  add_index "attachments", ["attachmentable_id"], name: "index_attachments_on_attachmentable_id", using: :btree
+  add_index "attachments", ["attachmentable_type"], name: "index_attachments_on_attachmentable_type", using: :btree
+  add_index "attachments", ["parent_id"], name: "index_attachments_on_parent_id", using: :btree
 
   create_table "contests", force: true do |t|
     t.string   "title"
@@ -119,7 +133,6 @@ ActiveRecord::Schema.define(version: 20140807144128) do
   create_table "submissions", force: true do |t|
     t.integer  "user_id"
     t.integer  "task_id"
-    t.text     "input"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "accepted"
@@ -132,8 +145,6 @@ ActiveRecord::Schema.define(version: 20140807144128) do
   add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 
   create_table "tasks", force: true do |t|
-    t.text     "input"
-    t.text     "output"
     t.integer  "problem_id"
     t.datetime "created_at"
     t.datetime "updated_at"

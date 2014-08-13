@@ -9,7 +9,13 @@ class Attachment < ActiveRecord::Base
   # upload(args) => Upload contents to that attachment
   # contents => Obtaint the content of the downloaded file as a string
 
-  before_save do
+  # before_save do
+  #   if self.active && self.id
+  #     archives.build :file_name => file_name , :active => false , :attachmentable_id => attachmentable_id , :attachmentable_type => attachmentable_type 
+  #   end
+  # end
+
+  def archive_contents
     if self.active && self.id
       archives.build :file_name => file_name , :active => false , :attachmentable_id => attachmentable_id , :attachmentable_type => attachmentable_type 
     end

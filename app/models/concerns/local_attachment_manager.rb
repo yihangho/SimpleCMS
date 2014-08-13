@@ -5,6 +5,8 @@ module LocalAttachmentManager
   SUBMISSION_DIRECTORY = ENV["SIMPLECMS_SUBMISSION"] || "#{ENV["HOME"]}/.simplecms/submission";
 
   def upload arg
+    # Archie the stuff first
+    archive_contents()
     contents_to_be_uploaded = arg.to_s
     pathname = AttachmentParser.generate_file contents_to_be_uploaded , self.attachmentable_type , self.id
     FileUtils.mv(pathname , directory)

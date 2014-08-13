@@ -25,13 +25,22 @@ class ProblemsController < ApplicationController
 
   def update
     @problem = Problem.find(params[:id])
-    if @problem.update_attributes(problem_params)
-      render 'show'
+    original_outputs = @problem.tasks.map do |task|
+      [task.id, task.output]
+    end.to_h
 
-      # TODO Implement some smart logic to determine which tasks should get regraded
-      @problem.tasks.each { |task| task.regrade }
-      # TODO Implement some smart logic to see determine whether we need to perform this
-      @problem.update_solvers
+    if @problem.update_attributes(problem_params)
+      @problem.tasks.each do |task|
+        if original_outputs.has_key?(task.id) && original_outputs[task.id] != task.output
+          task.regrade
+        end
+      end
+
+      if original_outputs.keys.sort != @problem.task_ids.sort
+        @problem.update_solvers
+      end
+
+      render 'show'
     else
       render 'edit'
     end

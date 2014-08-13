@@ -1,7 +1,14 @@
 <h1>User Details</h1>
 
 <p>Name: <%= @user.username %></p>
-<p>Email: <%= @user.email %></p>
+
+<% unless @user.school.to_s.empty? %>
+  <p>School: <%= @user.school %></p>
+<% end %>
+
+<% if current_user && (current_user == @user || current_user.admin?) %>
+  <p>Email: <%= @user.email %></p>
+<% end %>
 
 <% if current_user == @user %>
   <p><%= link_to "Edit profile", edit_user_path(@user) %></p>

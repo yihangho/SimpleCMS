@@ -23,13 +23,13 @@
 <%= form_for(@problem) do |f| %>
   <div class="form-group">
     <%= f.label :title %>
-    <%= f.text_field :title, :class => "form-control" %>
+    <%= f.text_field :title, :class => "form-control", :required => true %>
   </div>
 
   <div class="form-group">
     <%= f.label :statement %>
     <span class="help-block">You may use <a href="http://kramdown.gettalong.org/syntax.html">Markdown</a> to format the statement.</span>
-    <%= f.text_area :statement, :class => "form-control" %>
+    <%= f.text_area :statement, :class => "form-control", :required => true %>
   </div>
 
   <div class="form-group">

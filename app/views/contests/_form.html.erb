@@ -7,13 +7,13 @@
 <%= form_for(@contest) do |f| %>
   <div class="form-group">
     <%= f.label :title %>
-    <%= f.text_field :title, :class => "form-control" %>
+    <%= f.text_field :title, :class => "form-control", :required => true %>
   </div>
 
   <div class="form-group">
     <%= f.label :instructions %>
     <span class="help-block">You may use <a href="http://kramdown.gettalong.org/syntax.html">Markdown</a> to format the instructions.</span>
-    <%= f.text_area :instructions, :class => "form-control" %>
+    <%= f.text_area :instructions, :class => "form-control", :required => true %>
   </div>
 
   <div class="form-group">
@@ -23,12 +23,12 @@
 
   <div class="form-group">
     <%= f.label :start %>
-    <%= f.datetime_field :start, :class => "form-control" %>
+    <%= f.datetime_field :start, :class => "form-control", :required => true %>
   </div>
 
   <div class="form-group">
     <%= f.label :end %>
-    <%= f.datetime_field :end, :class => "form-control" %>
+    <%= f.datetime_field :end, :class => "form-control", :required => true %>
   </div>
 
   <div class="form-group">
@@ -36,7 +36,7 @@
     <%= f.select(:visibility,
           options_for_select(Contest.possible_visibilities.map { |k,v| [v, k]}, [@contest.visibility]),
           {},
-          :class => "form-control"
+          :class => "form-control", :required => true
         ) %>
   </div>
 
@@ -45,7 +45,7 @@
     <%= f.select(:participation,
           options_for_select(Contest.possible_participations.map { |k,v| [v, k]}, [@contest.participation]),
           {},
-          :class => "form-control"
+          :class => "form-control", :required => true
         ) %>
   </div>
 

@@ -12,8 +12,7 @@ class ProblemsController < ApplicationController
 
   def create
     @problem = current_user.set_problems.create(problem_params)
-    if @problem.save && @problem.set_permalink(problem_permalink_params)
-      tasks_params.each { |_, v| @problem.tasks.create(v) }
+    if @problem.save
       render 'show'
     else
       render 'new'
@@ -26,55 +25,16 @@ class ProblemsController < ApplicationController
 
   def update
     @problem = Problem.find(params[:id])
-    @problem.update_attributes(problem_params)
-    @problem.set_permalink(problem_permalink_params)
+    if @problem.update_attributes(problem_params)
+      render 'show'
 
-    tasks_to_be_regraded = []
-    current_tasks        = []
-    deleted_tasks        = []
-    new_tasks            = []
-
-    tasks_params.each do |_, v|
-      if v[:id] && @problem.task_ids.include?(v[:id].to_i)
-        task = @problem.tasks.find(v[:id])
-
-        if task.output != v[:output].to_s
-          tasks_to_be_regraded << task.id
-        end
-
-        task.input  = v[:input]
-        task.output = v[:output]
-        task.point  = v[:point]
-        task.tokens = v[:tokens]
-        task.save
-        current_tasks << task.id
-      else
-        task = @problem.tasks.create(:input => v[:input], :output => v[:output], :point => v[:point], :tokens => v[:tokens])
-
-        current_tasks << task.id
-        new_tasks     << task.id
-      end
-    end
-
-    current_tasks_set = Set.new(current_tasks)
-    @problem.task_ids.each do |id|
-      deleted_tasks << id unless current_tasks_set.include?(id)
-    end
-
-    deleted_tasks.each do |id|
-      @problem.tasks.find(id).delete
-    end
-
-    # Kick all these to bg tasks
-    tasks_to_be_regraded.each do |id|
-      Task.find(id).regrade
-    end
-
-    if new_tasks.any? || deleted_tasks.any?
+      # TODO Implement some smart logic to determine which tasks should get regraded
+      @problem.tasks.each { |task| task.regrade }
+      # TODO Implement some smart logic to see determine whether we need to perform this
       @problem.update_solvers
+    else
+      render 'edit'
     end
-
-    render 'show'
   end
 
   def show
@@ -83,15 +43,7 @@ class ProblemsController < ApplicationController
 
   private
   def problem_params
-    params.require(:problem).permit(:title, :statement, :contest_only)
-  end
-
-  def tasks_params
-    params.require(:problem).require(:tasks).permit!
-  end
-
-  def problem_permalink_params
-    params.require(:problem).permit(:permalink)[:permalink]
+    params.require(:problem).permit(:title, :statement, :contest_only, :permalink_attributes => [:url, :_destroy], :tasks_attributes => [:id, :point, :tokens, :input, :output, :_destroy])
   end
 
   def authorized_users_only

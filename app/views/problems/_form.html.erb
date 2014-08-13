@@ -1,6 +1,6 @@
 <script id="task-template" type="x-tmpl-mustache">
 <div class="task-{{task_count}}">
-  <button type="button" class="close" data-selector=".task-{{task_count}}"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <button type="button" class="close" data-target=".task-{{task_count}}" data-dismiss="task-form"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
   <div class="form-group">
     <label for="problem_tasks_{{task_count}}_point">Point</label>
     <input class="form-control" type="number" id="problem_tasks_{{task_count}}_point" name="problem[tasks][{{task_count}}][point]" min="0" value="0">
@@ -46,7 +46,7 @@
   <div class="tasks-forms">
     <% @problem.tasks.each do |task| %>
       <div class="task-<%= task.id %>">
-        <button type="button" class="close" data-selector=".task-<%= task.id %>"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-target=".task-<%= task.id %>" data-dismiss="task-form"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <input type="hidden" id="problem_tasks_<%= task.id %>_id" name="problem[tasks][<%= task.id %>][id]" value="<%= task.id %>">
         <div class="form-group">
           <label for="problem_tasks_<%= task.id %>_point">Point</label>

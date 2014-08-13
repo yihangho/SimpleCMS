@@ -7,9 +7,9 @@ $(document).on "page:load", ->
 
   $.Mustache.addFromDom("task-template") if $("#task-template").length
 
-  $("form").on "click", "button.close", ->
+  $("form").on "click", '[data-dismiss="task-form"]', ->
     if confirm("Are you sure?")
-      $($(this).data("selector")).remove()
+      $($(this).data("target")).remove()
 
   $("#add-task-btn").click ->
     task_count++ until($(".task-#{task_count}").length == 0)

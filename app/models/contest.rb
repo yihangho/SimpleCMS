@@ -24,6 +24,8 @@ class Contest < ActiveRecord::Base
   has_and_belongs_to_many :invited_users, :class_name => "User", :validate => false
   has_and_belongs_to_many :participants, :class_name => "User", :join_table => "contests_participants", :validate => false
 
+  accepts_nested_attributes_for :permalink, :update_only => true, :reject_if => :all_blank, :allow_destroy => true
+
   def starting_and_ending_time_must_make_sense
     if self.start && self.end && self.start > self.end
       errors.add(:start, "can't happen after end")

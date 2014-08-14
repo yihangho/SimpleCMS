@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Problem do
   before do
-    @problem = build(:problem)
+    @problem = create(:problem)
   end
 
   subject { @problem }
@@ -37,8 +37,6 @@ describe Problem do
 
   context "permalink" do
     describe "creating permalink" do
-      before { @problem.save }
-
       it "should increase the number of permalinks" do
         expect { @problem.create_permalink(:url => "test") }.to change { Permalink.count }.by(1)
       end
@@ -46,7 +44,6 @@ describe Problem do
 
     describe "destroying the contest" do
       before do
-        @problem.save
         @problem.create_permalink(:url => "test")
       end
 
@@ -66,9 +63,6 @@ describe Problem do
       @contest.participants = [@participant]
       @contest.problems     = [@problem]
       @contest.save
-
-      @problem.setter = @admin
-      @problem.save
     end
 
     describe "non-contest-only problem" do
@@ -93,25 +87,19 @@ describe Problem do
       end
 
       it "should not be visible to contestant before the contest starts" do
-        @contest.start = 1.day.from_now
-        @contest.end   = 2.days.from_now
-        @contest.save
+        @contest.update_attributes(:start => 1.day.from_now, :end => 2.days.from_now)
 
         expect(@problem.visible_to?(@participant)).to be_falsy
       end
 
       it "should be visible to contestant during the contest" do
-        @contest.start = 1.day.ago
-        @contest.end   = 1.day.from_now
-        @contest.save
+        @contest.update_attributes(:start => 1.day.ago, :end => 1.day.from_now)
 
         expect(@problem.visible_to?(@participant)).to be_truthy
       end
 
       it "should be visible to contestant after the contest" do
-        @contest.start = 2.days.ago
-        @contest.end   = 1.day.ago
-        @contest.save
+        @contest.update_attributes(:start => 2.days.ago, :end => 1.day.ago)
 
         expect(@problem.visible_to?(@participant)).to be_truthy
       end
@@ -124,8 +112,6 @@ describe Problem do
 
   context "#solved_between_by?" do
     before do
-      @problem.save
-
       @user = create(:user)
       @task1 = @problem.tasks.create(:input => "12345", :output => "12345")
       @task2 = @problem.tasks.create(:input => "54321", :output => "54321")
@@ -178,8 +164,6 @@ describe Problem do
 
   context "#update_solvers" do
     before do
-      @problem.save
-
       @task1 = @problem.tasks.create(:input => "12345", :output => "12345")
       @task2 = @problem.tasks.create(:input => "54321", :output => "54321")
 
@@ -214,8 +198,6 @@ describe Problem do
 
   describe "#last_submissions_by" do
     before do
-      @problem.save
-
       @task1 = create(:task, :problem => @problem)
       @task2 = create(:task, :problem => @problem)
       @task3 = create(:task, :problem => @problem)
@@ -244,8 +226,6 @@ describe Problem do
 
   describe "#total_points" do
     before do
-      @problem.save
-
       @task1 = create(:task, :problem => @problem, :point => 10)
       @task2 = create(:task, :problem => @problem, :point => 20)
     end
@@ -257,8 +237,6 @@ describe Problem do
 
   describe "#points_for" do
     before do
-      @problem.save
-
       @task1 = create(:task, :problem => @problem, :point => 10)
       @task2 = create(:task, :problem => @problem, :point => 20)
 
@@ -276,8 +254,6 @@ describe Problem do
 
   describe "#points_for_between" do
     before do
-      @problem.save
-
       @task1 = create(:task, :problem => @problem, :point => 10)
       @task2 = create(:task, :problem => @problem, :point => 20)
 
@@ -299,8 +275,6 @@ describe Problem do
 
   describe "#attempted_by?" do
     before do
-      @problem.save
-
       @task1 = create(:task, :problem => @problem)
       @task2 = create(:task, :problem => @problem)
       @task3 = create(:task, :problem => @problem)

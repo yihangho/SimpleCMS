@@ -52,7 +52,7 @@
   <div class="form-group">
     <%= f.fields_for(:permalink, @problem.permalink || Permalink.new) do |ff| %>
       <%= ff.label :url, "Permalink" %>
-      <%= ff.text_field :url, :class => "form-control" %>
+      <%= ff.text_field :url, :class => "form-control permalink-field" %>
       <%= ff.hidden_field :_destroy %>
     <% end %>
   </div>

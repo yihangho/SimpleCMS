@@ -7,10 +7,6 @@ $(document).on "page:load", ->
 
   $.Mustache.addFromDom("task-template") if $("#task-template").length
 
-  $("form").submit ->
-    unless $(this).find("#problem_permalink_attributes_url").val().length
-      $(this).find("#problem_permalink_attributes__destroy").val("true")
-
   $("form").on "click", '[data-dismiss="task-form"]', ->
     if confirm("Are you sure?")
       $($(this).data("target")).remove()

@@ -13,7 +13,7 @@ class ContestsController < ApplicationController
 
   def create
     @contest = current_user.created_contests.create(contest_params)
-    if @contest.save && @contest.set_permalink(contest_permalink_params)
+    if @contest.save
       redirect_to contests_path
     else
       render 'new'
@@ -30,7 +30,7 @@ class ContestsController < ApplicationController
 
   def update
     @contest = Contest.find(params[:id])
-    if @contest.update_attributes(contest_params) && @contest.set_permalink(contest_permalink_params)
+    if @contest.update_attributes(contest_params)
       render 'show'
     else
       render 'edit'
@@ -69,7 +69,7 @@ class ContestsController < ApplicationController
 
   private
   def contest_params
-    params.require(:contest).permit(:title, :instructions, :start, :end, :visibility, :participation, { :problem_ids => [] }, { :invited_user_ids => [] })
+    params.require(:contest).permit(:title, :instructions, :start, :end, :visibility, :participation, :permalink_attributes => [:url, :_destroy], :problem_ids => [], :invited_user_ids => [])
   end
 
   def contest_permalink_params

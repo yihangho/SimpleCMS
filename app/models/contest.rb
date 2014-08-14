@@ -1,6 +1,4 @@
 class Contest < ActiveRecord::Base
-  include Linkable
-
   validates :title, :start, :end, :visibility, :participation, :presence => true
   validates :visibility, :inclusion => { :in => ["public", "unlisted", "invite_only"] }
   validates :participation, :inclusion => { :in => ["public", "invite_only"] }

@@ -98,6 +98,17 @@ describe Contest do
         expect { @contest.destroy }.to change { Permalink.count }.by(-1)
       end
     end
+
+    describe "updating using permalink_attributes" do
+      before do
+        @contest.save
+        @contest.create_permalink(:url => "test")
+      end
+
+      it "should not create new permalink instace" do
+        expect { @contest.update_attributes(:permalink_attributes => { :url => "hello"}) }.not_to change { Permalink.count }
+      end
+    end
   end
 
   context "status" do

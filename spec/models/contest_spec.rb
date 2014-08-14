@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Contest do
   before do
-    @contest = build(:contest)
+    @contest = create(:contest)
   end
 
   subject { @contest }
@@ -81,8 +81,6 @@ describe Contest do
 
   context "permalink" do
     describe "creating permalink" do
-      before { @contest.save }
-
       it "should increase the number of permalinks" do
         expect { @contest.create_permalink(:url => "test") }.to change { Permalink.count }.by(1)
       end
@@ -90,7 +88,6 @@ describe Contest do
 
     describe "destroying the contest" do
       before do
-        @contest.save
         @contest.create_permalink(:url => "test")
       end
 
@@ -101,7 +98,6 @@ describe Contest do
 
     describe "updating using permalink_attributes" do
       before do
-        @contest.save
         @contest.create_permalink(:url => "test")
       end
 
@@ -142,20 +138,17 @@ describe Contest do
 
   context "access control" do
     before do
-      @admin = create(:admin)
+      @admin = @contest.creator
       @user = build(:user)
       @invited_user = build(:user)
 
-      @contest.creator = @admin
       @contest.invited_users = [@invited_user]
-      @contest.save
     end
 
     context "contests list" do
       describe "public contest" do
         before do
-          @contest.visibility = "public"
-          @contest.save
+          @contest.update_attribute(:visibility, "public")
         end
 
         it "should be listed to everyone" do
@@ -167,8 +160,7 @@ describe Contest do
 
       describe "unlisted contest" do
         before do
-          @contest.visibility = "unlisted"
-          @contest.save
+          @contest.update_attribute(:visibility, "unlisted")
         end
 
         it "should be listed to its creator" do
@@ -186,8 +178,7 @@ describe Contest do
 
       describe "invite-only contest" do
         before do
-          @contest.visibility = "invite_only"
-          @contest.save
+          @contest.update_attribute(:visibility, "invite_only")
         end
 
         it "should be listed to its creator" do
@@ -207,8 +198,7 @@ describe Contest do
     context "visibility" do
       describe "public contest" do
         before do
-          @contest.visibility = "public"
-          @contest.save
+          @contest.update_attribute(:visibility, "public")
         end
 
         it "should be listed to everyone" do
@@ -220,8 +210,7 @@ describe Contest do
 
       describe "unlisted contest" do
         before do
-          @contest.visibility = "unlisted"
-          @contest.save
+          @contest.update_attribute(:visibility, "unlisted")
         end
 
         it "should be listed to everyone" do
@@ -233,8 +222,7 @@ describe Contest do
 
       describe "invite-only contest" do
         before do
-          @contest.visibility = "invite_only"
-          @contest.save
+          @contest.update_attribute(:visibility, "invite_only")
         end
 
         it "should be listed to its creator" do
@@ -254,8 +242,7 @@ describe Contest do
     context "participation" do
       describe "public" do
         before do
-          @contest.participation = "public"
-          @contest.save
+          @contest.update_attribute(:participation, "public")
         end
 
         it "should be able to be participated by everyone" do
@@ -267,8 +254,7 @@ describe Contest do
 
       describe "invite-only" do
         before do
-          @contest.participation = "invite_only"
-          @contest.save
+          @contest.update_attribute(:participation, "invite_only")
         end
 
         it "should be able to be participated by invited users only" do
@@ -283,8 +269,6 @@ describe Contest do
 
   context "#num_problems_solved_by" do
     before do
-      @contest.save
-
       @user = create(:user)
 
       @problem1 = create(:problem, :contests => [@contest])
@@ -343,7 +327,6 @@ describe Contest do
       @user3 = create(:user)
 
       @contest.participants = [@user1, @user2, @user3]
-      @contest.save
 
       @problem1 = create(:problem, :contests => [@contest])
       @problem2 = create(:problem, :contests => [@contest])
@@ -387,7 +370,6 @@ describe Contest do
 
   context "#can_access_problems_list?" do
     before do
-      @contest.save
       @admin = create(:admin)
       @user = create(:user)
     end
@@ -454,7 +436,7 @@ describe Contest do
 
   context "::upcoming and ::ongoing" do
     before do
-      @contest1 = create(:contest, :start => 1.days.ago, :end => 1.day.from_now)
+      @contest1 = @contest
       @contest2 = create(:contest, :start => 1.day.from_now, :end => 2.days.from_now)
       @contest3 = create(:contest, :start => 2.days.ago, :end => 1.day.ago)
     end

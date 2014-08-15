@@ -54,6 +54,8 @@ end
 group :test do
   gem 'cucumber-rails', '~> 1.4.1',  :require => false
   gem 'database_cleaner'
+  gem 'capybara-screenshot'
+  gem 'selenium-webdriver'
 end
 
 # Use unicorn as the app server

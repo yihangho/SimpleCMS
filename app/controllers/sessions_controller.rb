@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
       sign_in(user)
       redirect_to_stored_location_or user
     else
-      flash.now[:danger] = "Wrong email/password and/or password."
+      flash.now[:danger] = "Wrong email/username and/or password."
       render 'new'
     end
   end

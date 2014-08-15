@@ -1,3 +1,5 @@
+World(FactoryGirl::Syntax::Methods)
+
 Given(/^I am visiting "(.*?)"$/) do |path|
   visit path
 end
@@ -21,6 +23,14 @@ Given(/^I am a signed\-in user$/) do
   step "I am a registered user"
   step %Q(I am visiting "/signin")
   step "I submit the signin form with my username and password"
+end
+
+Given(/^A non-contest-only problem with these tasks:$/) do |table|
+  @problem = create(:problem, :contest_only => false)
+  @tasks   = table.hashes.map do |row|
+    row[:problem] = @problem
+    create(:task, row)
+  end
 end
 
 When(/^I submit the user registration form with valid information$/) do
@@ -52,6 +62,17 @@ When(/^I submit the signin form with incorrect (.*?)$/) do |field|
   click_button 'Sign In'
 end
 
+When(/^I submit the (in|)correct answer for task (\d+)$/) do |incorrect, index|
+  incorrect = (incorrect == "in")
+  index = index.to_i
+
+  visit problem_path(@problem)
+  within page.all('form')[index-1] do
+    fill_in "Answer", :with => @tasks[index-1].output + (incorrect ? "bla" : "")
+    click_button "Submit"
+  end
+end
+
 Then(/^I should be on "(.*?)"$/) do |path|
   expect(current_path).to eq path
 end
@@ -62,4 +83,8 @@ end
 
 Then(/^I should be on my profile page$/) do
   step %(I should be on "#{user_path(@user)}")
+end
+
+Then(/^I should not see "(.*?)"$/) do |content|
+  expect(page).not_to have_content(content)
 end

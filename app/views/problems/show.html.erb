@@ -1,3 +1,9 @@
+<%
+if signed_in?
+  u = User.find(current_user.id)
+  current_user = u
+end
+%>
 <div class="header-container">
   <span class="h1">
     <%= @problem.title %>

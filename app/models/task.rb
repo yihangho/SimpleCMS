@@ -19,7 +19,7 @@ class Task < ActiveRecord::Base
   end
 
   def attempted_by?(user)
-    user.submissions.for(self).any?
+    user && user.submissions.for(self).any?
   end
 
   def regrade

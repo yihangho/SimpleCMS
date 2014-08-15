@@ -282,6 +282,12 @@ describe Problem do
       @user = create(:user)
     end
 
+    describe "nil user" do
+      it "should return falsy" do
+        expect(@problem.attempted_by?(nil)).to be_falsy
+      end
+    end
+
     describe "before submitting" do
       it "should return falsy" do
         expect(@problem.attempted_by?(@user)).to be_falsy

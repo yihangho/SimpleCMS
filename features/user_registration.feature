@@ -24,3 +24,8 @@ Feature: User registration
     Given I am visiting "/users/new"
     When  I submit the user registration form with unmatching password and password confirmation
     Then  I should see "Password confirmation doesn't match Password"
+
+  Scenario: Signed-in user trying to access the user registration page
+    Given I am a signed-in user
+    When  I am visiting "/users/new"
+    Then  I should be on my profile page

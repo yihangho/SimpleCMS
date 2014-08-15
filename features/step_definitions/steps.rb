@@ -17,6 +17,12 @@ Given(/^I am a registered user$/) do
   @user = User.create(:username => "test", :email => "test@example.com", :password => "12345", :password_confirmation => "12345")
 end
 
+Given(/^I am a signed\-in user$/) do
+  step "I am a registered user"
+  step %Q(I am visiting "/signin")
+  step "I submit the signin form with my username and password"
+end
+
 When(/^I submit the user registration form with valid information$/) do
   fill_in 'Username', :with => "test"
   fill_in 'Email', :with => "test@example.com"

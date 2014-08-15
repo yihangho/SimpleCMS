@@ -32,3 +32,8 @@ Feature: Signin
     And   I am visiting "/signin"
     When  I submit the signin form with incorrect password
     Then  I should see "Wrong email/username and/or password."
+
+  Scenario: Signed-in user trying to access sign in page
+    Given I am a signed-in user
+    When  I am visiting "/signin"
+    Then  I should be on my profile page

@@ -33,6 +33,27 @@ Given(/^A non-contest-only problem with these tasks:$/) do |table|
   end
 end
 
+Given(/^an? (invite\-only )?contest$/) do |invite_only|
+  p invite_only
+  @contest = create(:contest, :participation => "invite_only")
+end
+
+Given(/^I am invited to the contest$/) do
+  @contest.invited_users << @user
+end
+
+Given(/^I have participated in the contest$/) do
+  @contest.participants << @user
+end
+
+Given(/^the contest has not started$/) do
+  @contest.update_attributes(:start => 1.day.from_now, :end => 2.days.from_now)
+end
+
+Given(/^I am visiting the contest page$/) do
+  step %Q(I am visiting "#{contest_path(@contest)}")
+end
+
 When(/^I submit the user registration form with valid information$/) do
   fill_in 'Username', :with => "test"
   fill_in 'Email', :with => "test@example.com"
@@ -87,4 +108,12 @@ end
 
 Then(/^I should not see "(.*?)"$/) do |content|
   expect(page).not_to have_content(content)
+end
+
+Then(/^I should see the link "(.*?)"$/) do |title|
+  expect(page).to have_link(title)
+end
+
+Then(/^I should not see the link "(.*?)"$/) do |title|
+  expect(page).not_to have_link(title)
 end

@@ -44,6 +44,7 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'detect_timezone_rails', '~> 0.0.5'
 gem 'mustache-js-rails', '~> 0.0.9'
+gem 'zeroclipboard-rails', '~> 0.1.0'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'

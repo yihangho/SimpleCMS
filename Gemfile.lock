@@ -28,6 +28,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     addressable (2.3.6)
+    angularjs-rails (1.2.21)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.7)
     bootstrap-sass (3.2.0.1)
@@ -218,6 +219,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  angularjs-rails (~> 1.2.21)
   bcrypt (~> 3.1.7)
   bootstrap-sass (~> 3.2.0)
   bootstrap-will_paginate (~> 0.0.10)

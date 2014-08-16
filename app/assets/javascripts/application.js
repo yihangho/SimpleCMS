@@ -16,6 +16,7 @@
 //= require jquery.mustache
 //= require detect_timezone
 //= require mustache
+//= require angular
 //= require bootstrap/alert
 //= require bootstrap/collapse
 //= require bootstrap/dropdown

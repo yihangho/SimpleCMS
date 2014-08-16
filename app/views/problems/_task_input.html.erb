@@ -1,0 +1,28 @@
+<% begin %>
+  <% if task.json? %>
+    <% arr = JSON.parse(task.input) %>
+
+    <% arr.each_with_index do |obj, index| %>
+      <div class="form-group input-group">
+        <span class="input-group-addon"><%= obj["label"] %></span>
+
+        <% if obj["multiline"] %>
+          <textarea class="form-control" id="input_<%= task.id %>_<%= index %>" readonly><%= obj["content"] %></textarea>
+        <% else %>
+          <input type="text" class="form-control" id="input_<%= task.id %>_<%= index %>" value="<%= obj["content"] %>" readonly>
+        <% end %>
+
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" data-clipboard-target="input_<%= task.id %>_<%= index %>">Copy</button>
+        </span>
+      </div>
+    <% end %>
+  <% else %>
+    <% raise %>
+  <% end %>
+<% rescue %>
+  <pre id="input-<%= task.id %>"><%= task.input %></pre>
+  <button type="button" class="btn btn-default" data-clipboard-target="input-<%= task.id %>">
+    Copy
+  </button>
+<% end %>

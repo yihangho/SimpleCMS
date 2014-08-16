@@ -30,7 +30,9 @@
     <% submission = user_submissions[task.id] || Submission.new %>
     <div class="well">
     <%= form_for(submission, :url => submissions_path, :method => :post) do |f| %>
-      <pre><%= task.input %></pre>
+      <pre id="input-<%= task.id %>"><%= task.input %></pre>
+
+      <button class="btn btn-default" data-clipboard-target="input-<%= task.id %>"><i class="fa fa-files-o"></i></button>
 
       <%= f.hidden_field(:task_id, :value => task.id) %>
 

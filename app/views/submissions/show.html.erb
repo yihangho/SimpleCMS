@@ -1,6 +1,6 @@
 <h1>Submission <%= @submission.id %></h1>
 <h2>Input</h2>
-<pre><%= @submission.task.input %></pre>
+<%= render :partial => 'problems/task_input', :locals => { :task => @submission.task } %>
 <h2>Your Answer</h2>
 <pre><%= @submission.input %></pre>
 

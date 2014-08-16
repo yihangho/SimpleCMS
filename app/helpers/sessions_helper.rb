@@ -19,7 +19,12 @@ module SessionsHelper
 
   def current_user
     remember_token = cookies[:remember_token]
-    @current_user ||= Session.get_user(remember_token)
+    Session.get_user(remember_token)
+
+    # This line is supposed to be the better approach, but it causes
+    # a weird bug when using ActiveRecord 4.1.4.
+    # TODO check if this bug is still there when newer Rails come out
+    # @current_user ||= Session.get_user(remember_token)
   end
 
   def current_user?(user)

@@ -24,3 +24,6 @@ This app has been deployed to Heroku. A simple `git push heroku master` should d
 ### `data-` attributes
 #### `data-mathjax-source`
 Attaching this attribute to an element will cause MathJax to typeset the content of the element.
+
+## JSON Input
+For tasks that are using JSON input, the JSON string should represent an array of objects. Each object should have three keys defined: `label`, `multiline` and `content`. It is important to ensure that the JSON string is valid.

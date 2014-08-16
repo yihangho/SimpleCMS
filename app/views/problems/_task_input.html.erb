@@ -6,7 +6,7 @@
       <div class="form-group input-group">
         <span class="input-group-addon"><%= obj["label"] %></span>
 
-        <% if obj["multiline"] %>
+        <% if obj["content"].strip.include?("\n") %>
           <textarea class="form-control task-input" id="input_<%= task.id %>_<%= index %>" readonly><%= obj["content"] %></textarea>
         <% else %>
           <input type="text" class="form-control task-input" id="input_<%= task.id %>_<%= index %>" value="<%= obj["content"] %>" readonly>

@@ -7,9 +7,9 @@
         <span class="input-group-addon"><%= obj["label"] %></span>
 
         <% if obj["multiline"] %>
-          <textarea class="form-control" id="input_<%= task.id %>_<%= index %>" readonly><%= obj["content"] %></textarea>
+          <textarea class="form-control task-input" id="input_<%= task.id %>_<%= index %>" readonly><%= obj["content"] %></textarea>
         <% else %>
-          <input type="text" class="form-control" id="input_<%= task.id %>_<%= index %>" value="<%= obj["content"] %>" readonly>
+          <input type="text" class="form-control task-input" id="input_<%= task.id %>_<%= index %>" value="<%= obj["content"] %>" readonly>
         <% end %>
 
         <span class="input-group-btn">

@@ -7,4 +7,12 @@ $(document).on "page:load", ->
     e.preventDefault()
     )
 
-  new ZeroClipboard($("[data-clipboard-target]"))
+  ZCClient = new ZeroClipboard($("[data-clipboard-target"))
+
+  ZCClient.on('aftercopy', (e) ->
+      $(e.target).text("Copied")
+      $(e.target).blur()
+      setTimeout(->
+        $(e.target).text("Copy")
+      , 2000)
+    )

@@ -13,9 +13,15 @@ class ProblemsController < ApplicationController
   def create
     @problem = current_user.set_problems.create(problem_params)
     if @problem.save
-      render 'show'
+      respond_to do |res|
+        res.html { render 'show' }
+        res.json { render :json => @problem.to_h }
+      end
     else
-      render 'new'
+      respond_to do |res|
+        res.html { render 'new' }
+        res.json { render :json => @problem.to_h }
+      end
     end
   end
 
@@ -40,14 +46,25 @@ class ProblemsController < ApplicationController
         @problem.update_solvers
       end
 
-      render 'show'
+      respond_to do |res|
+        res.html { render 'show' }
+        res.json { render :json => @problem.to_h }
+      end
     else
-      render 'edit'
+      respond_to do |res|
+        res.html { render 'new' }
+        res.json { render :json => @problem.to_h }
+      end
     end
   end
 
   def show
     @problem = Problem.find(params[:id])
+
+    respond_to do |res|
+      res.html {}
+      res.json { render :json => @problem.to_h(:tasks, :permalink) }
+    end
   end
 
   private

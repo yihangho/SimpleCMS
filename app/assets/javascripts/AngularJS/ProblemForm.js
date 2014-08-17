@@ -1,12 +1,8 @@
 var app = angular.module('ProblemFormApp', []);
 
-app.controller('ProblemFormController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemDefaultSetter', function($scope, $http, $window, ProblemDefaultSetter) {
     // Default values for a new problem
-    $scope.problem = {
-        contest_only: true,
-        permalink_attributes: {},
-        tasks_attributes: []
-    };
+    $scope.problem = ProblemDefaultSetter({});
 
     $scope.saveProblem = function($event) {
         $event.preventDefault();
@@ -24,7 +20,7 @@ app.controller('ProblemFormController', ['$scope', '$http', '$window', function(
         }
 
         savePromise.success(function(data) {
-            $scope.problem = data;
+            $scope.problem = ProblemDefaultSetter(data);
 
             if (!data.errors || data.errors.length == 0) {
                 $window.location.pathname = "/problems/" + data.id;
@@ -48,14 +44,14 @@ app.controller('ProblemFormController', ['$scope', '$http', '$window', function(
     };
 }]);
 
-app.directive('problemId', ['$http', function($http) {
+app.directive('problemId', ['$http', 'ProblemDefaultSetter', function($http, ProblemDefaultSetter) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
             var problemId = attrs['problemId'];
             if (problemId !== undefined && problemId !== null) {
                 $http.get('/problems/' + problemId + '.json').success(function(data) {
-                    scope.problem = data;
+                    scope.problem = ProblemDefaultSetter(data);
                 });
             }
         }
@@ -69,4 +65,21 @@ app.directive('authenticityToken', function() {
             scope["authenticity_token"] = attrs['authenticityToken'];
         }
     };
-})
+});
+
+app.service('ProblemDefaultSetter', function() {
+    return function(obj) {
+        var defaults = {
+            contest_only: true,
+            permalink_attributes: {},
+            tasks_attributes: []
+        };
+
+        for (var key in defaults) {
+            if (obj[key] === undefined || obj[key] === null) {
+                obj[key] = defaults[key]
+            }
+        }
+        return obj;
+    }
+});

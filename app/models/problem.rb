@@ -64,4 +64,14 @@ class Problem < ActiveRecord::Base
       task.solved_between_by?(time1, time2, user) ? sum + task.point : sum
     end
   end
+
+  def to_h(*args)
+    hash = attributes.dup
+    hash[:tasks_attributes] = tasks
+    hash[:permalink_attributes] = permalink
+    if errors.any?
+      hash[:errors] = errors.full_messages
+    end
+    hash
+  end
 end

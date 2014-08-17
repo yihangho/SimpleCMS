@@ -30,6 +30,11 @@
 
   <div class="tasks-forms">
     <div ng-repeat="task in problem.tasks_attributes">
+      <button type="button" class="close" ng-show="task.id===undefined || task.id===null" ng-click="removeTask($index)">
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only">Close</span>
+      </button>
+
       <input type="hidden" ng-model="task.id">
 
       <div class="form-group">

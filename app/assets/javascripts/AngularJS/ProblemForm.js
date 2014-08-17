@@ -42,6 +42,10 @@ app.controller('ProblemFormController', ['$scope', '$http', '$window', function(
     $scope.addTask = function() {
         $scope.problem.tasks_attributes.push({});
     };
+
+    $scope.removeTask = function(index) {
+        $scope.problem.tasks_attributes.splice(index, 1);
+    };
 }]);
 
 app.directive('problemId', ['$http', function($http) {

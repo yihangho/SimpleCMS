@@ -24,3 +24,7 @@ $(document).on "page:load", ->
   # Ask MathJax to typeset all elements with data-mathjax-source attribute set
   $("[data-mathjax-source]").toArray().forEach (element) ->
     MathJax.Hub.Queue(["Typeset", MathJax.Hub, element]);
+
+  $('[ng-app]').each ->
+    try
+      angular.bootstrap($(this), [$(this).attr('ng-app')])

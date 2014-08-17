@@ -7,7 +7,16 @@ $(document).on "page:load", ->
     e.preventDefault()
     )
 
-  ZCClient = new ZeroClipboard($("[data-clipboard-target"))
+  ZCClient = new ZeroClipboard($("[data-clipboard-target]"))
+
+  ZeroClipboard.on 'error', (e) ->
+    if ['flash-disabled', 'flash-outdated', 'flash-unavailable', 'flash-deactivated'].indexOf(e.name) != -1
+      $("[data-clipboard-target]").each ->
+        level = parseInt($(this).data('remove-level'))
+        if level == 0
+          $(this).remove()
+        else
+          $(this).parents().eq(level-1).remove()
 
   ZCClient.on 'ready', ->
     ZCClient.on('aftercopy', (e) ->

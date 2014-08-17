@@ -13,7 +13,7 @@
         <% end %>
 
         <span class="input-group-btn">
-          <button class="btn btn-default" type="button" data-clipboard-target="input_<%= task.id %>_<%= index %>">Copy</button>
+          <button class="btn btn-default" type="button" data-clipboard-target="input_<%= task.id %>_<%= index %>" data-remove-level="1">Copy</button>
         </span>
       </div>
     <% end %>
@@ -22,7 +22,7 @@
   <% end %>
 <% rescue %>
   <pre id="input-<%= task.id %>"><%= task.input %></pre>
-  <button type="button" class="btn btn-default" data-clipboard-target="input-<%= task.id %>">
+  <button type="button" class="btn btn-default" data-clipboard-target="input-<%= task.id %>" data-remove-level="0">
     Copy
   </button>
 <% end %>

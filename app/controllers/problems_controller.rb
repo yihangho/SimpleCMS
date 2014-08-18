@@ -69,7 +69,7 @@ class ProblemsController < ApplicationController
 
   private
   def problem_params
-    params.require(:problem).permit(:title, :statement, :contest_only, :permalink_attributes => [:url, :_destroy], :tasks_attributes => [:id, :point, :tokens, :input, :output, :_destroy, :json])
+    params.require(:problem).permit(:title, :statement, :contest_only, :permalink_attributes => [:url, :_destroy], :tasks_attributes => [:id, :point, :tokens, :input, :output, :_destroy, :json, :order])
   end
 
   def authorized_users_only

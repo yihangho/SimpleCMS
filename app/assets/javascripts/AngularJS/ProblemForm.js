@@ -12,7 +12,7 @@ app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemD
         }
 
         // Stringify JSON
-        angular.forEach($scope.problem.tasks_attributes, function(task) {
+        angular.forEach($scope.problem.tasks_attributes, function(task, index) {
             if (task.json) {
                 var newArr = [];
                 angular.forEach(task.input_fields, function(field) {
@@ -22,6 +22,8 @@ app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemD
                 }, newArr);
                 task.input = angular.toJson(newArr, true);
             }
+
+            task.order = index;
         });
 
         if ($scope.problem.id !== undefined && $scope.problem.id !== null) {

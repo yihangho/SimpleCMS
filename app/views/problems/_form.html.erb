@@ -28,9 +28,13 @@
     </label>
   </div>
 
+  <hr>
+
+  <span class="help-block" ng-show="problem.tasks_attributes.length > 1">Hint: Drag the tasks around to reorder the tasks.</span>
+
   <div ui-sortable ng-model="problem.tasks_attributes" class="tasks-forms">
     <div ng-repeat="task in problem.tasks_attributes">
-      <hr>
+      <hr ng-show="$index">
 
       <button type="button" class="close" ng-show="task.id===undefined || task.id===null" ng-click="removeTask($index)">
         <span aria-hidden="true">&times;</span>

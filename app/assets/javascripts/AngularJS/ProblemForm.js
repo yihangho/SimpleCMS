@@ -1,4 +1,4 @@
-var app = angular.module('ProblemFormApp', []);
+var app = angular.module('ProblemFormApp', ['ui.sortable']);
 
 app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemDefaultSetter', 'TaskJSONInputParser', function($scope, $http, $window, ProblemDefaultSetter, TaskJSONInputParser) {
     // Default values for a new problem

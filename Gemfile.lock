@@ -28,6 +28,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     addressable (2.3.6)
+    angularjs-rails (1.2.21)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.7)
     bootstrap-sass (3.2.0.1)
@@ -111,8 +112,6 @@ GEM
     minitest (5.4.0)
     multi_json (1.10.1)
     multi_test (0.1.1)
-    mustache-js-rails (0.0.9)
-      railties (>= 3.1, <= 5.0)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     pg (0.17.1)
@@ -220,6 +219,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  angularjs-rails (~> 1.2.21)
   bcrypt (~> 3.1.7)
   bootstrap-sass (~> 3.2.0)
   bootstrap-will_paginate (~> 0.0.10)
@@ -235,7 +235,6 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   kramdown (~> 1.4.0)
-  mustache-js-rails (~> 0.0.9)
   pg
   rails (~> 4.1.0)
   rails_12factor

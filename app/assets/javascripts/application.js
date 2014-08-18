@@ -13,10 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.spin
-//= require jquery.mustache
 //= require detect_timezone
-//= require mustache
 //= require zeroclipboard
+//= require angular
 //= require bootstrap/alert
 //= require bootstrap/collapse
 //= require bootstrap/dropdown

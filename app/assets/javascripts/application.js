@@ -12,6 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui/core
+//= require jquery-ui/widget
+//= require jquery-ui/mouse
+//= require jquery-ui/sortable
 //= require jquery.spin
 //= require detect_timezone
 //= require zeroclipboard
@@ -23,4 +27,5 @@
 //= require bootstrap/transition
 //= require turbolinks
 //= require_tree .
+//= require_tree ../../../vendor/assets/javascripts
 //= require websocket_rails/main

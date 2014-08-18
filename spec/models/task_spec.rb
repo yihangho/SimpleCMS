@@ -13,6 +13,7 @@ describe Task do
   it { should respond_to :point }
   it { should respond_to :tokens }
   it { should respond_to :json? }
+  it { should respond_to :order }
 
   it { should respond_to :problem }
   it { should respond_to :submissions }

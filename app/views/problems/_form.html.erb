@@ -51,7 +51,25 @@
 
       <div class="form-group">
         <label>Input</label>
-        <textarea class="form-control" ng-model="task.input"></textarea>
+
+        <div ng-hide="task.json">
+          <textarea class="form-control" ng-model="task.input"></textarea>
+        </div>
+
+        <div ng-show="task.json">
+          <div ng-repeat="field in task.input_fields">
+            <div class="form-group">
+              <label>Label</label>
+              <input type="text" class="form-control" ng-model="field.label">
+            </div>
+
+            <div class="form-group">
+              <label>Content</label>
+              <textarea class="form-control" ng-model="field.content"></textarea>
+            </div>
+          </div>
+          <button type="button" class="btn btn-default" ng-click="taskAddInputField($index)">Add Field</button>
+        </div>
       </div>
 
       <div class="form-group">
@@ -67,7 +85,7 @@
 
       <div class="checkbox">
         <label>
-          <input type="checkbox" ng-model="task.json"> JSON Input
+          <input type="checkbox" ng-model="task.json"> Multifields Input
         </label>
       </div>
     </div>

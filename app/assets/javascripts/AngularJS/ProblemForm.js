@@ -1,6 +1,6 @@
 var app = angular.module('ProblemFormApp', []);
 
-app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemDefaultSetter', function($scope, $http, $window, ProblemDefaultSetter) {
+app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemDefaultSetter', 'TaskJSONInputParser', function($scope, $http, $window, ProblemDefaultSetter, TaskJSONInputParser) {
     // Default values for a new problem
     $scope.problem = ProblemDefaultSetter({});
 
@@ -10,6 +10,19 @@ app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemD
         if (!$scope.problem.permalink_attributes.url || $scope.problem.permalink_attributes.url.trim().length == 0) {
             $scope.problem.permalink_attributes["_destroy"] = true;
         }
+
+        // Stringify JSON
+        angular.forEach($scope.problem.tasks_attributes, function(task) {
+            if (task.json) {
+                var newArr = [];
+                angular.forEach(task.input_fields, function(field) {
+                    if (field.label && field.label.length) {
+                        this.push(field);
+                    }
+                }, newArr);
+                task.input = angular.toJson(newArr, true);
+            }
+        });
 
         if ($scope.problem.id !== undefined && $scope.problem.id !== null) {
             var endPoint = "/problems/" + $scope.problem.id + ".json";
@@ -21,6 +34,7 @@ app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemD
 
         savePromise.success(function(data) {
             $scope.problem = ProblemDefaultSetter(data);
+            TaskJSONInputParser($scope.problem.tasks_attributes);
 
             if (!data.errors || data.errors.length == 0) {
                 $window.location.pathname = "/problems/" + data.id;
@@ -42,9 +56,13 @@ app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemD
     $scope.removeTask = function(index) {
         $scope.problem.tasks_attributes.splice(index, 1);
     };
+
+    $scope.taskAddInputField = function(index) {
+        $scope.problem.tasks_attributes[index].input_fields.push({});
+    };
 }]);
 
-app.directive('problemId', ['$http', 'ProblemDefaultSetter', function($http, ProblemDefaultSetter) {
+app.directive('problemId', ['$http', 'ProblemDefaultSetter', 'TaskJSONInputParser', function($http, ProblemDefaultSetter, TaskJSONInputParser) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
@@ -52,6 +70,7 @@ app.directive('problemId', ['$http', 'ProblemDefaultSetter', function($http, Pro
             if (problemId !== undefined && problemId !== null) {
                 $http.get('/problems/' + problemId + '.json').success(function(data) {
                     scope.problem = ProblemDefaultSetter(data);
+                    TaskJSONInputParser(scope.problem.tasks_attributes);
                 });
             }
         }
@@ -81,5 +100,16 @@ app.service('ProblemDefaultSetter', function() {
             }
         }
         return obj;
+    }
+});
+
+app.service('TaskJSONInputParser', function(){
+    return function(tasks) {
+        for (var i in tasks) {
+            try {
+                tasks[i].input_fields = angular.fromJson(tasks[i].input)
+            } catch(_) {}
+        }
+        return tasks;
     }
 });

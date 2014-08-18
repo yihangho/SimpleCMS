@@ -94,6 +94,10 @@ When(/^I submit the (in|)correct answer for task (\d+)$/) do |incorrect, index|
   end
 end
 
+When(/^I visit the problem page$/) do
+  step %Q(I am visiting "#{problem_path(@problem)}")
+end
+
 Then(/^I should be on "(.*?)"$/) do |path|
   expect(current_path).to eq path
 end
@@ -116,4 +120,11 @@ end
 
 Then(/^I should not see the link "(.*?)"$/) do |title|
   expect(page).not_to have_link(title)
+end
+
+Then(/^I should see the following, in that order:$/) do |snippets|
+  snippets = snippets.raw.flatten
+  pattern = snippets.collect(&Regexp.method(:quote)).join('.*?')
+  pattern = Regexp.compile(pattern)
+  page.text.should =~ pattern
 end

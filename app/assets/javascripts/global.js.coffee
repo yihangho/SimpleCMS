@@ -1,3 +1,11 @@
+@startSpinner = ->
+  $(".spinner-container").removeClass("hidden")
+  $(".spinner-container").spin()
+
+@stopSpinner = ->
+  $(".spinner-container").addClass("hidden")
+  $(".spinner-container").spin(false)
+
 $(document).ready ->
   $(this).trigger("page:load")
   document.cookie = "timezone=#{jstz.determine_timezone().timezone.olson_tz}; path=/"
@@ -12,13 +20,9 @@ $(document).ready ->
       )
   )
 
-$(document).on "page:fetch", ->
-  $(".spinner-container").removeClass("hidden")
-  $(".spinner-container").spin()
+$(document).on "page:fetch", startSpinner
 
-$(document).on "page:receive", ->
-  $(".spinner-container").addClass("hidden")
-  $(".spinner-container").spin(false)
+$(document).on "page:receive", stopSpinner
 
 $(document).on "page:load", ->
   # Ask MathJax to typeset all elements with data-mathjax-source attribute set

@@ -26,6 +26,7 @@ app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemD
             task.order = index;
         });
 
+        startSpinner();
         if ($scope.problem.id !== undefined && $scope.problem.id !== null) {
             var endPoint = "/problems/" + $scope.problem.id + ".json";
             var savePromise = $http.put(endPoint, $scope.getSubmissionParams());
@@ -41,6 +42,8 @@ app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemD
             if (!data.errors || data.errors.length == 0) {
                 $window.location.pathname = "/problems/" + data.id;
             }
+        }).finally(function() {
+            stopSpinner();
         });
     };
 
@@ -70,9 +73,12 @@ app.directive('problemId', ['$http', 'ProblemDefaultSetter', 'TaskJSONInputParse
         link: function(scope, element, attrs) {
             var problemId = attrs['problemId'];
             if (problemId !== undefined && problemId !== null) {
+                startSpinner();
                 $http.get('/problems/' + problemId + '.json').success(function(data) {
                     scope.problem = ProblemDefaultSetter(data);
                     TaskJSONInputParser(scope.problem.tasks_attributes);
+                }).finally(function() {
+                    stopSpinner();
                 });
             }
         }

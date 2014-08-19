@@ -60,7 +60,6 @@ class ProblemsController < ApplicationController
 
   def show
     @problem = Problem.find(params[:id])
-
     respond_to do |res|
       res.html {}
       res.json { render :json => @problem.to_h(:tasks, :permalink) }

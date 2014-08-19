@@ -25,6 +25,7 @@ See SERVER_SETUP for more information on setting up a production server.
 After the initial setup, each deployment (updates):
 ```bash
 # Kill existing Thin and Sidekiq processes
+export RAILS_ENV=production
 bundle exec rake assets:precompile
 bundle exec rake assets:clean
 bundle exec rake db:migrate

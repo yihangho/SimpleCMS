@@ -8,7 +8,7 @@
 
 $(document).ready ->
   $(this).trigger("page:load")
-  document.cookie = "timezone=#{jstz.determine_timezone().timezone.olson_tz}; path=/"
+  document.cookie = "timezone=#{jstz.determine().name()}; path=/"
 
   $.get("/contests/ongoing.json", (e) ->
     dispatcher = new WebSocketRails("#{window.location.host}/websocket");

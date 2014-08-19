@@ -10,22 +10,7 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
 //= require jquery_ujs
-//= require jquery-ui/core
-//= require jquery-ui/widget
-//= require jquery-ui/mouse
-//= require jquery-ui/sortable
-//= require jquery.spin
-//= require detect_timezone
-//= require zeroclipboard
-//= require angular
-//= require bootstrap/alert
-//= require bootstrap/collapse
-//= require bootstrap/dropdown
-//= require bootstrap/tab
-//= require bootstrap/transition
 //= require turbolinks
 //= require_tree .
-//= require_tree ../../../vendor/assets/javascripts
 //= require websocket_rails/main

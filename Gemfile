@@ -12,7 +12,6 @@ gem 'rails_12factor', group: :production
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 gem 'bootstrap-sass', '~> 3.2.0'
-gem 'spinjs-rails'
 gem 'font-awesome-sass'
 
 gem 'will_paginate', '~> 3.0.7'
@@ -29,7 +28,7 @@ gem 'coffee-rails', '~> 4.0.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-gem 'jquery-ui-rails', '~> 5.0.0'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -42,10 +41,6 @@ gem 'spring',        group: :development
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
-
-gem 'detect_timezone_rails', '~> 0.0.5'
-gem 'zeroclipboard-rails', '~> 0.1.0'
-gem 'angularjs-rails', '~> 1.2.21'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'

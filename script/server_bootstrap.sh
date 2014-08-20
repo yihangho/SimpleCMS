@@ -45,7 +45,7 @@ read -sp "Enter the PostgreSQL password: " pg_password; echo
 
 echo "Setting environment variables"
 echo "export PG_USERNAME=simplecms" >> ~/.profile
-echo "export PG_PASSWORD=\"$pg_password\"" >> ~/.profile
+echo "export PG_PASSWORD='$pg_password'" >> ~/.profile
 echo "export PG_SIMPLECMS_PROD=simplecms_production" >> ~/.profile
 echo "export SECRET_KEY_BASE=`bundle exec rake secret`" >> ~/.profile
 source ~/.profile

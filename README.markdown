@@ -18,7 +18,23 @@ We are using `capybara-webkit` to run our integration tests. This gem depends on
 Run `bundle exec rake` to run all tests.
 
 ## Deployment
-This app has been deployed to Heroku. A simple `git push heroku master` should do the job. You might also need to run `heroku run rake db:schema:load` after the very first deployment, or `heroku run rake db:migrate` after an update.
+### Heroku
+A simple `git push heroku master` should do the job. You might also need to run `heroku run rake db:schema:load` after the very first deployment, or `heroku run rake db:migrate` after an update.
+
+### Ubuntu
+This method is tested on Ubuntu Server 14.04.1. Run
+
+```bash
+source <(curl -sS https://raw.githubusercontent.com/yihangho/SimpleCMS/master/script/server_bootstrap.sh)
+```
+
+to bootstrap the server. On your development repository, run
+
+```bash
+git add remote production <username>@<host>:SimpleCMS.git
+```
+
+Replace `<username>` with the user on the server that ran the setup script and `<host>` with the IP/domain of the server. To deploy, just push to the `master` branch of `production` remote.
 
 ## Development
 ### `data-` attributes

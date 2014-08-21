@@ -7,7 +7,7 @@
   <% if show_label %>
     <label>Python Code</label>
   <% end %>
-  <textarea class="form-control replit-input"><%= code %></textarea>
+  <div data-ace-editor class="replit-input"><%= code %></div>
   <ul class="list-unstyled replit-output"></ul>
   <button type="button" class="btn btn-default disabled replit-run">Run</button>
 </div>

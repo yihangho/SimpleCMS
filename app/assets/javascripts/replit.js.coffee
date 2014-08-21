@@ -11,6 +11,7 @@ $(document).on "page:load", ->
       $(".replit-run").removeClass("disabled")
 
     $(".replit-run").click ->
+      code = $('.replit-input').data('ace-editor').getValue()
       $(".code-input").each ->
-        $(this).val($(".replit-input").val())
-      jsrepl.eval($(".replit-input").val())
+        $(this).val(code)
+      jsrepl.eval(code)

@@ -3,14 +3,11 @@ $(document).on "page:load", ->
   $(".replit-run").each ->
     id = $(this).data("id")
 
-    writeToStdout = (content) ->
-      $("ul.replit-output[data-id=#{id}]").append("<li><samp>#{content}</samp></li>")
-
     jsrepl = new JSREPL(
       input: (fn) -> fn()
-      output: writeToStdout
-      result: writeToStdout
-      error:  writeToStdout
+      output: (content) -> $("ul.replit-output[data-id=#{id}]").append("<li><samp>#{content}</samp></li>")
+      result: (content) -> $("ul.replit-output[data-id=#{id}]").append("<li><samp>=> #{content}</samp></li>")
+      error:  (content) -> $("ul.replit-output[data-id=#{id}]").append("<li class=\"text-danger\"><samp>#{content}</samp></li>")
       )
 
     jsrepl.loadLanguage("python", $.proxy ->

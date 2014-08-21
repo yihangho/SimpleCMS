@@ -32,7 +32,7 @@ class SubmissionsController < ApplicationController
 
   private
   def submission_params
-    params.require(:submission).permit(:task_id, :input, :code_link)
+    params.require(:submission).permit(:task_id, :input, :code)
   end
 
   def users_allowed_to_submit_only

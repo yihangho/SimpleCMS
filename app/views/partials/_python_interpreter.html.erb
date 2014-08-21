@@ -1,5 +1,12 @@
+<%
+  show_label = true unless local_assigns.has_key?(:show_label)
+  code       = ""   unless local_assigns.has_key?(:code)
+%>
+
 <div class="form-group">
-  <label>Python Code</label>
+  <% if show_label %>
+    <label>Python Code</label>
+  <% end %>
   <textarea class="form-control replit-input"><%= code %></textarea>
   <ul class="list-unstyled replit-output"></ul>
   <button type="button" class="btn btn-default disabled replit-run">Run</button>

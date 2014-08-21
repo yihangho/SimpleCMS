@@ -6,7 +6,7 @@
 
 <% unless @submission.code.empty? %>
   <h2>Code</h2>
-  <pre><%= @submission.code %></pre>
+  <%= render :partial => "partials/python_interpreter", :locals => { :code => @submission.code, :show_label => false } %>
 <% end %>
 
 <p>

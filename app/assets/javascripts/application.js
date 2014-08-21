@@ -27,5 +27,6 @@
 //= require bootstrap/transition
 //= require turbolinks
 //= require_tree .
-//= require_tree ../../../vendor/assets/javascripts
+//= require ../../../vendor/assets/javascripts/angular.ui.sortable.js
+//= require ../../../vendor/assets/javascripts/jsrepl/jsrepl.js
 //= require websocket_rails/main

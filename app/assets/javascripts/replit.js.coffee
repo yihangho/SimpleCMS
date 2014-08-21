@@ -1,21 +1,16 @@
 $(document).on "page:load", ->
-
-  $(".replit-run").each ->
-    id = $(this).data("id")
-
+  if $(".replit-run").length
     jsrepl = new JSREPL(
       input: (fn) -> fn()
-      output: (content) -> $("ul.replit-output[data-id=#{id}]").append("<li><samp>#{content}</samp></li>")
-      result: (content) -> $("ul.replit-output[data-id=#{id}]").append("<li><samp>=> #{content}</samp></li>")
-      error:  (content) -> $("ul.replit-output[data-id=#{id}]").append("<li class=\"text-danger\"><samp>#{content}</samp></li>")
-      )
+      output: (content) -> $("ul.replit-output").append("<li><samp>#{content}</samp></li>")
+      result: (content) -> $("ul.replit-output").append("<li><samp>=> #{content}</samp></li>")
+      error:  (content) -> $("ul.replit-output").append("<li class=\"text-danger\"><samp>#{content}</samp></li>")
+    )
 
-    jsrepl.loadLanguage("python", $.proxy ->
-      $(this).removeClass("disabled")
-    , this)
+    jsrepl.loadLanguage "python", ->
+      $(".replit-run").removeClass("disabled")
 
-    $(this).data("replit", jsrepl)
-
-  $(".replit-run").click ->
-    id = $(this).data("id")
-    $(this).data("replit").eval($(".replit-input[data-id=#{id}]").val())
+    $(".replit-run").click ->
+      $(".code-input").each ->
+        $(this).val($(".replit-input").val())
+      jsrepl.eval($(".replit-input").val())

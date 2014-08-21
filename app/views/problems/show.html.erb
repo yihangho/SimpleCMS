@@ -25,7 +25,15 @@
 </div>
 
 <% if signed_in? %>
-  <% user_submissions = @problem.last_submissions_by(current_user) %>
+  <%
+    user_submissions = @problem.last_submissions_by(current_user)
+    last_submission_with_code = user_submissions.values.select do |x|
+      x && !x.code.empty?
+    end.max_by { |x| x.created_at} || Submission.new
+  %>
+
+  <%= render :partial => "partials/python_interpreter", :locals => { :code => last_submission_with_code.code } %>
+
   <% @problem.tasks.order(:order).each do |task| %>
     <% submission = user_submissions[task.id] || Submission.new %>
     <div class="well">
@@ -33,26 +41,18 @@
       <%= render :partial => "task_input", :locals => { :task => task } %>
 
       <%= f.hidden_field(:task_id, :value => task.id) %>
+      <%= f.hidden_field :code, :class => "code-input", :value => nil %>
 
       <div class="form-group">
         <%= f.label :input, "Answer" %>
         <%= f.text_area :input, :class => "form-control" %>
       </div>
 
-      <div class="form-group">
-        <%= f.label :code %>
-        <%= f.text_area :code, :class => "form-control replit-input", :data => { :id => task.id } %>
-      </div>
-
-      <ul class="list-unstyled replit-output" data-id=<%= task.id %>></ul>
-
       <% if task.submissions_left_for(current_user).is_a? Numeric %>
         <p class="help-block">
           You have <%= pluralize(task.submissions_left_for(current_user), "submission") %> left.
         </p>
       <% end %>
-
-      <button type="button" class="btn btn-default disabled replit-run" data-id=<%=task.id %>>Run</button>
 
       <% if task.allowed_to_submit?(current_user) %>
         <%= f.submit "Submit", :class => "btn btn-primary" %>

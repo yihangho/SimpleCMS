@@ -13,7 +13,7 @@ describe Submission do
 
   it { should respond_to :input }
   it { should respond_to :accepted? }
-  it { should respond_to :code_link }
+  it { should respond_to :code }
 
   context "validations" do
     describe "when user is nil" do

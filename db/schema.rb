@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140818104847) do
+ActiveRecord::Schema.define(version: 20140821105631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(version: 20140818104847) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "accepted"
-    t.string   "code_link"
+    t.text     "code",       default: ""
   end
 
   add_index "submissions", ["accepted"], name: "index_submissions_on_accepted", using: :btree

@@ -9,6 +9,7 @@ $(document).on "page:load", ->
 
     jsrepl.loadLanguage "python", ->
       $(".replit-run").removeClass("disabled")
+      $(".replit-run").text("Run")
 
     $(".replit-run").click ->
       code = $('.replit-input').data('ace-editor').getValue()

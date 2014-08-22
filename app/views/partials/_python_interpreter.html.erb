@@ -10,8 +10,8 @@
   <div data-ace-editor class="replit-input"><%= code %></div>
   <ul class="list-unstyled replit-output"></ul>
   <% if UserAgent.parse(request.env['HTTP_USER_AGENT']).platform == "Macintosh" %>
-    <button type="button" class="btn btn-default disabled replit-run" title="⌘-B" data-toggle="tooltip" data-placement="right">Run</button>
+    <button type="button" class="btn btn-default disabled replit-run" title="⌘-B" data-toggle="tooltip" data-placement="right">Loading</button>
   <% else %>
-    <button type="button" class="btn btn-default disabled replit-run" title="Ctrl-B" data-toggle="tooltip" data-placement="right">Run</button>
+    <button type="button" class="btn btn-default disabled replit-run" title="Ctrl-B" data-toggle="tooltip" data-placement="right">Loading</button>
   <% end %>
 </div>

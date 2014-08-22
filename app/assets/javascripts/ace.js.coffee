@@ -13,5 +13,6 @@ $(document).on "page:load", ->
     session.setMode("ace/mode/python")
     session.setTabSize(2)
     session.setUseSoftTabs(true)
+    session.setUseWrapMode(true)
 
     $(this).data("ace-editor", editor)

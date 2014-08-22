@@ -63,6 +63,9 @@ app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemD
     };
 
     $scope.taskAddInputField = function(index) {
+        if (!$scope.problem.tasks_attributes[index].input_fields) {
+            $scope.problem.tasks_attributes[index].input_fields = [];
+        }
         $scope.problem.tasks_attributes[index].input_fields.push({});
     };
 }]);

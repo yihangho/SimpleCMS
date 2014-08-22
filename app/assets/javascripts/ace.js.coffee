@@ -8,6 +8,13 @@ $(document).on "page:load", ->
 
     editor = ace.edit(this)
     editor.setTheme("ace/theme/monokai")
+    editor.commands.addCommand
+      name: 'Run'
+      bindKey:
+        win: 'Ctrl-B'
+        mac: 'Command-B'
+      exec: () ->
+        $(".replit-run").click()
 
     session = editor.getSession()
     session.setMode("ace/mode/python")

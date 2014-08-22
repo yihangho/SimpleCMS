@@ -25,6 +25,7 @@
 //= require bootstrap/dropdown
 //= require bootstrap/tab
 //= require bootstrap/transition
+//= require bootstrap/tooltip
 //= require turbolinks
 //= require_tree .
 //= require ../../../vendor/assets/javascripts/angular.ui.sortable.js

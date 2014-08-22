@@ -32,3 +32,5 @@ $(document).on "page:load", ->
   $('[ng-app]').each ->
     try
       angular.bootstrap($(this), [$(this).attr('ng-app')])
+
+  $('[data-toggle=tooltip]').tooltip()

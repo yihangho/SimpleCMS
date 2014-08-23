@@ -24,13 +24,6 @@
   </div>
 
   <% if signed_in? %>
-    <%
-      user_submissions = @problem.last_submissions_by(current_user)
-      last_submission_with_code = user_submissions.values.select do |x|
-        x && !x.code.empty?
-      end.max_by { |x| x.created_at} || Submission.new
-    %>
-
     <div class="form-group">
       <label>Python Code</label>
       <div>
@@ -53,16 +46,21 @@
         {{ task.input }}
       </div>
 
-      <div class="form-group">
-        <label>Answer</label>
-        <textarea class="form-control" ng-model="task.submission.input"></textarea>
-      </div>
+      <form action="<%= submissions_path %>" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="hidden" name="submission[task_id]" ng-value="task.id">
 
-      <p class="help-block">
-        You have X submissions left.
-      </p>
+        <div class="form-group">
+          <label>Answer</label>
+          <textarea class="form-control" ng-model="task.submission.input" name="submission[input]"></textarea>
+        </div>
 
-      <input type="submit" class="btn btn-default">
+        <p class="help-block">
+          You have X submissions left.
+        </p>
+
+        <input type="submit" class="btn btn-default">
+      </form>
     </div>
   <% else %>
     <p>Please sign in to solve this task.</p>

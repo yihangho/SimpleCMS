@@ -86,6 +86,7 @@ app.controller('ProblemPage', ['$scope', '$q', ($scope, $q) ->
 
         task.submission = {} unless task.submission
         task.submission.input = "" unless task.submission.input
+        task.submission.code  = resultantCode
 
         $scope.runCode resultantCode, ->
           $scope.logs.add("system", "Running with input data for task " + (index + 1))

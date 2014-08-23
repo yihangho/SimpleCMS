@@ -66,6 +66,7 @@
       <form action="<%= submissions_path %>" method="post">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
         <input type="hidden" name="submission[task_id]" ng-value="task.id">
+        <input type="hidden" name="submission[code]" ng-value="task.submission.code">
 
         <div class="form-group">
           <label>Answer</label>

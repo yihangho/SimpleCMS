@@ -1,6 +1,6 @@
-app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives'])
+app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives', 'LocalStorageModule'])
 
-app.controller('ProblemPage', ['$scope', '$q', ($scope, $q) ->
+app.controller('ProblemPage', ['$scope', '$q', 'localStorageService', ($scope, $q, $storage) ->
     # Set default values
     $scope.code = ""
     $scope.logs = []
@@ -13,6 +13,10 @@ app.controller('ProblemPage', ['$scope', '$q', ($scope, $q) ->
 
     $scope.isNumber = (input) ->
       not isNaN(Number(input))
+
+    $scope.$watch 'problem.id', ->
+      if $scope.problem && $scope.problem.id
+        $storage.bind($scope, 'code', '', "problem-#{$scope.problem.id}-code")
 
     # Since jsrepl is kind of like a resource that must be shared, use jsreplPromise
     # to implement a locking mechanism.

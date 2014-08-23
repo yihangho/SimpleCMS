@@ -92,8 +92,12 @@ app.controller('ProblemPage', ['$scope', '$q', 'localStorageService', ($scope, $
         task.submission.input = "" unless task.submission.input
         task.submission.code  = resultantCode
 
+        stdout = ""
+
         $scope.runCode resultantCode, ->
           $scope.logs.add("system", "Running with input data for task " + (index + 1))
         , (data) ->
-          task.submission.input += data
+          stdout += data
+        , null, null, ->
+          task.submission.input = stdout
 ])

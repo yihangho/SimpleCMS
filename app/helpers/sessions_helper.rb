@@ -19,12 +19,35 @@ module SessionsHelper
 
   def current_user
     remember_token = cookies[:remember_token]
-    Session.get_user(remember_token)
-
+    user = Session.get_user(remember_token)
+    return user unless user.nil?
+    user = User.create!(random_credentials)
+    sign_in(user)
+    user
     # This line is supposed to be the better approach, but it causes
     # a weird bug when using ActiveRecord 4.1.4.
     # TODO check if this bug is still there when newer Rails come out
     # @current_user ||= Session.get_user(remember_token)
+  end
+
+  def random_credentials
+    def school_name number
+      if number == 0
+        "school_three"
+      elsif number == 1
+        "school_one"
+      elsif number == 2
+        "school_two"
+      end
+    end
+    user_counter = User.count + 1
+    {
+      :username => "user_#{user_counter}",
+      :email => "example_#{user_counter}@example.com",
+      :school => "#{school_name(user_counter % 3)}",
+      :password => "password",
+      :password_confirmation => "password"      
+    }
   end
 
   def current_user?(user)

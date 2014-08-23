@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  get '/' => redirect("/signin")
+  get '/adminlogin' => "sessions#adminlogin" , via: "get"
+  get "/" => redirect("signin")
   get 'signin' => 'sessions#new', :as => 'signin'
   delete 'signout' => 'sessions#destroy', :as => 'signout'
   post '/contests/:id/participate' => 'contests#participate', :as => 'participate_contest'

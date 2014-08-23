@@ -44,8 +44,23 @@
     <hr>
 
     <div class="well" ng-repeat="task in problem.tasks_attributes">
-      <div>
-        {{ task.input }}
+      <div ng-hide="task.json && task.input_fields">
+        <pre >{{ task.input }}</pre>
+        <button type="button" class="btn btn-default disabled">Copy</button>
+      </div>
+
+      <div ng-show="task.json && task.input_fields">
+        <div class="form-group input-group" ng-repeat="field in task.input_fields">
+          <span class="input-group-addon">{{ field.label }}</span>
+
+          <input type="text" class="form-control task-input" readonly ng-value="field.content" ng-if="field.content.trim().indexOf('\n') == -1">
+
+          <textarea class="form-control task-input" readonly ng-if="field.content.trim().indexOf('\n') != -1">{{ field.content }}</textarea>
+
+          <span class="input-group-btn">
+            <button class="btn btn-default disabled" type="button">Copy</button>
+          </span>
+        </div>
       </div>
 
       <form action="<%= submissions_path %>" method="post">

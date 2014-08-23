@@ -1,73 +1,70 @@
-<div class="header-container">
-  <span class="h1">
-    <%= @problem.title %>
+<div ng-app="ProblemPage" ng-controller="ProblemPage" problem-id="<%= @problem.id %>">
+  <div class="header-container">
+    <span class="h1">
+      <%= @problem.title %>
 
-    <% if @problem.solvers.include?(current_user) %>
-      <small><span class="text-success">(Solved)</span></small>
-    <% end %>
-
-    <% if @problem.attempted_by?(current_user) %>
-      <small>
-        <%= render :partial => "point", :locals => { :problem => @problem, :user => current_user } %>
+      <small ng-show="problem.solved">
+        <span class="text-success">(Solved)</span>
       </small>
-    <% end %>
 
-    <% if signed_in? && current_user.admin? %>
-      <%= link_to icon("edit"), edit_problem_path(@problem), :class => "btn btn-default pull-right", :title => "Edit" %>
-    <% end %>
-  </span>
-</div>
+      <small ng-show="problem.attempted">
+        ({{ problem.current_points }}/{{ problem.total_points }})
+      </small>
 
-<div class="panel panel-default">
-  <div class="panel-body" data-mathjax-source>
-    <%= Kramdown::Document.new(@problem.statement).to_html.html_safe %>
+      <% if signed_in? && current_user.admin? %>
+        <%= link_to icon("edit"), edit_problem_path(@problem), :class => "btn btn-default pull-right", :title => "Edit" %>
+      <% end %>
+    </span>
   </div>
-</div>
 
-<% if signed_in? %>
-  <%
-    user_submissions = @problem.last_submissions_by(current_user)
-    last_submission_with_code = user_submissions.values.select do |x|
-      x && !x.code.empty?
-    end.max_by { |x| x.created_at} || Submission.new
-  %>
+  <div class="panel panel-default">
+    <div class="panel-body" data-mathjax-source>
+      <%= Kramdown::Document.new(@problem.statement).to_html.html_safe %>
+    </div>
+  </div>
 
-  <%= render :partial => "partials/python_interpreter", :locals => { :code => last_submission_with_code.code } %>
+  <% if signed_in? %>
+    <%
+      user_submissions = @problem.last_submissions_by(current_user)
+      last_submission_with_code = user_submissions.values.select do |x|
+        x && !x.code.empty?
+      end.max_by { |x| x.created_at} || Submission.new
+    %>
 
-  <% @problem.tasks.order(:order).each do |task| %>
-    <% submission = user_submissions[task.id] || Submission.new %>
-    <div class="well">
-    <%= form_for(submission, :url => submissions_path, :method => :post) do |f| %>
-      <%= render :partial => "task_input", :locals => { :task => task } %>
-
-      <%= f.hidden_field(:task_id, :value => task.id) %>
-      <%= f.hidden_field :code, :class => "code-input", :value => nil %>
-
-      <div class="form-group">
-        <%= f.label :input, "Answer" %>
-        <%= f.text_area :input, :class => "form-control" %>
+    <div class="form-group">
+      <label>Python Code</label>
+      <div>
+        <button type="button" class="btn btn-default" ng-click="runCode()">Run</button>
+        <button type="button" class="btn btn-default" ng-click="runCodeWithTestCases()">Run with Test Cases</button>
       </div>
 
-      <% if task.submissions_left_for(current_user).is_a? Numeric %>
-        <p class="help-block">
-          You have <%= pluralize(task.submissions_left_for(current_user), "submission") %> left.
-        </p>
-      <% end %>
-
-      <% if task.allowed_to_submit?(current_user) %>
-        <%= f.submit "Submit", :class => "btn btn-primary" %>
-      <% else %>
-        <%= f.submit "Submit", :class => "btn btn-primary disabled" %>
-      <% end %>
-
-      <% if task.solved_by?(current_user) %>
-        <span class="label label-success">Solved!</span>
-      <% elsif task.attempted_by?(current_user) %>
-        <span class="label label-danger">Wrong answer</span>
-      <% end %>
-    <% end %>
+      <div ui-ace="{mode: 'python', theme: 'monokai'}" ng-model="code" style="height:200px; margin-top: 10px"></div>
+      <ul class="list-unstyled">
+        <li ng-repeat="log in logs track by $index" ng-class="{ 'text-success': log.type == 'result', 'text-danger': log.type == 'stderr', 'text-warning': log.type == 'system' }">
+          <pre class="repl-log"><span ng-show="log.type == 'result'">=> </span>{{ log.message }}</pre>
+        </li>
+      </ul>
     </div>
+
+    <hr>
+
+    <div class="well" ng-repeat="task in problem.tasks_attributes">
+      <div>
+        {{ task.input }}
+      </div>
+
+      <div class="form-group">
+        <label>Answer</label>
+        <textarea class="form-control" ng-model="task.submission.input"></textarea>
+      </div>
+
+      <p class="help-block">
+        You have X submissions left.
+      </p>
+
+      <input type="submit" class="btn btn-default">
+    </div>
+  <% else %>
+    <p>Please sign in to solve this task.</p>
   <% end %>
-<% else %>
-  <p>Please sign in to solve this task.</p>
-<% end %>
+</div>

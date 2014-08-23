@@ -29,4 +29,5 @@
 //= require turbolinks
 //= require_tree .
 //= require ../../../vendor/assets/javascripts/angular.ui.sortable.js
+//= require ../../../vendor/assets/javascripts/angular.ui.ace.js
 //= require websocket_rails/main

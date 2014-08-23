@@ -11,6 +11,9 @@ app.controller('ProblemPage', ['$scope', '$q', ($scope, $q) ->
             type: type
             message: message
 
+    $scope.isNumber = (input) ->
+      not isNaN(Number(input))
+
     # Since jsrepl is kind of like a resource that must be shared, use jsreplPromise
     # to implement a locking mechanism.
     # When jsrepl is ready, this promise should be resolved, otherwise, its state shold be

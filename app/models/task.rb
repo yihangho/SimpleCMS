@@ -61,10 +61,13 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def to_h(user = nil)
+  def to_h(user = User.new)
     hash = attributes.dup
+    hash[:submission] = user.submissions.for(self).last
     hash[:submissions_left] = submissions_left_for(user)
     hash[:submission_allowed] = allowed_to_submit?(user)
+    hash[:attempted] = attempted_by?(user)
+    hash[:solved] = solved_by?(user)
     hash
   end
 end

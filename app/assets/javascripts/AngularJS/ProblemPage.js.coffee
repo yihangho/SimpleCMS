@@ -1,4 +1,4 @@
-app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace'])
+app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives'])
 
 app.controller('ProblemPage', ['$scope', '$q', ($scope, $q) ->
     # Set default values

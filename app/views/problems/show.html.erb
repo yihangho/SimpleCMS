@@ -46,7 +46,7 @@
     <div class="well" ng-repeat="task in problem.tasks_attributes">
       <div ng-hide="task.json && task.input_fields">
         <pre >{{ task.input }}</pre>
-        <button type="button" class="btn btn-default disabled">Copy</button>
+        <button type="button" class="btn btn-default" zero-clipboard="task.input">Copy</button>
       </div>
 
       <div ng-show="task.json && task.input_fields">
@@ -58,7 +58,7 @@
           <textarea class="form-control task-input" readonly ng-if="field.content.trim().indexOf('\n') != -1">{{ field.content }}</textarea>
 
           <span class="input-group-btn">
-            <button class="btn btn-default disabled" type="button">Copy</button>
+            <button class="btn btn-default" type="button" zero-clipboard="field.content">Copy</button>
           </span>
         </div>
       </div>

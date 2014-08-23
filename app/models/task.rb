@@ -60,4 +60,11 @@ class Task < ActiveRecord::Base
       user.submissions.for(self).correct_answer.any?
     end
   end
+
+  def to_h(user = nil)
+    hash = attributes.dup
+    hash[:submissions_left] = submissions_left_for(user)
+    hash[:submission_allowed] = allowed_to_submit?(user)
+    hash
+  end
 end

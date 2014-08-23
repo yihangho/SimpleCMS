@@ -65,9 +65,9 @@ class Problem < ActiveRecord::Base
     end
   end
 
-  def to_h(*args)
+  def to_h(user = nil)
     hash = attributes.dup
-    hash[:tasks_attributes] = tasks
+    hash[:tasks_attributes] = tasks.map { |task| task.to_h(user) }
     hash[:permalink_attributes] = permalink
     if errors.any?
       hash[:errors] = errors.full_messages

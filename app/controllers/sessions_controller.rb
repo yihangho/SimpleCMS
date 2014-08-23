@@ -1,5 +1,16 @@
 class SessionsController < ApplicationController
+  before_action :explicit_login , :only => [:new]
   before_action :not_signed_in_users_only, :except => :destroy
+
+  def explicit_login
+    user = Session.get_user(params[:token])
+    if user
+      sign_out # Should not raise any error no matter token belongs to anyone or not
+      sign_in user
+      flash[:info] = "Logged in as #{user.username}"
+      redirect_to user
+    end
+  end
 
   def new
   end
@@ -30,4 +41,6 @@ class SessionsController < ApplicationController
   def session_params
     params.require(:session).permit(:identifier, :password)
   end
+
+
 end

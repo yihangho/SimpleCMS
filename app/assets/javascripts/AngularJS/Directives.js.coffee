@@ -16,4 +16,8 @@ app.directive 'zeroClipboard', ['$timeout', ($timeout) ->
         $timeout ->
           elem.text("Copy")
         , 2000
+
+    client.on "error", (event) ->
+      if ["flash-disabled", "flash-outdated", "flash-unavailable"].indexOf(event.name) + 1
+        elem.addClass("disabled")
 ]

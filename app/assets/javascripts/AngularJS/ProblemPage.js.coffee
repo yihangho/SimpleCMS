@@ -1,6 +1,6 @@
-app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives', 'LocalStorageModule'])
+app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives', 'LocalStorageModule', 'SimpleCMS.jsrepl'])
 
-app.controller('ProblemPage', ['$scope', '$q', 'localStorageService', ($scope, $q, $storage) ->
+app.controller('ProblemPage', ['$scope', 'localStorageService', 'jsrepl', ($scope, $storage, jsrepl) ->
     # Set default values
     $scope.code = ""
     $scope.logs = []
@@ -18,24 +18,6 @@ app.controller('ProblemPage', ['$scope', '$q', 'localStorageService', ($scope, $
       if $scope.problem && $scope.problem.id
         $storage.bind($scope, 'code', '', "problem-#{$scope.problem.id}-code")
 
-    # Since jsrepl is kind of like a resource that must be shared, use jsreplPromise
-    # to implement a locking mechanism.
-    # When jsrepl is ready, this promise should be resolved, otherwise, its state shold be
-    # pending.
-    #
-    # Etiquette
-    # 1. Resolve the promise as soon as you are done with jsrepl.
-    # 2. Detach only the listeners that you have attached.
-    #    Hence, never call `jsrepl.off('output')`. Instead, call `jsrepl.off('output', fn)`.
-    # 3. Always resolve, never reject.
-    jsreplQ = $q.defer()
-    jsreplPromise = jsreplQ.promise
-
-    jsrepl = new JSREPL
-      input: (fn) -> fn() # In theory this should never be called since we don't have an actual REPL
-
-    jsrepl.loadLanguage("python", -> jsreplQ.resolve())
-
     $scope.aceLoad = (editor) ->
       editor.commands.addCommand
         name: 'run',
@@ -48,46 +30,20 @@ app.controller('ProblemPage', ['$scope', '$q', 'localStorageService', ($scope, $
       editor.getSession().setUseSoftTabs(true)
       editor.getSession().setUseWrapMode(true)
 
-    $scope.runCode = (code, before, output, result, error, after) ->
-      code ||= $scope.code
+    jsrepl.addDefaultListener "output", (data) ->
+      $scope.$apply ->
+        $scope.logs.add("stdout", data)
 
-      jsreplPromise = jsreplPromise.then ->
-        innerDfd = $q.defer()
+    jsrepl.addDefaultListener "result", (data) ->
+      $scope.$apply ->
+        $scope.logs.add("result", data)
 
-        before() if before
+    jsrepl.addDefaultListener "error", (data) ->
+      $scope.$apply ->
+        $scope.logs.add("stderr", data)
 
-        outputListener = (data) ->
-          listener(data, output, "stdout")
-
-        resultListener = (data) ->
-          listener(data, result, "result", true)
-
-        errorListener = (data) ->
-          listener(data, result, "stderr", true)
-
-        listener = (data, externalListener, label, done = false) ->
-          $scope.$apply ->
-            externalListener(data) if externalListener
-            $scope.logs.add(label, data)
-
-          if done
-            detachListeners()
-            innerDfd.resolve()
-
-        detachListeners = ->
-          jsrepl.off("output", outputListener)
-          jsrepl.off("result", resultListener)
-          jsrepl.off("error", errorListener)
-          $scope.$apply ->
-            after() if after
-
-        jsrepl.on("output", outputListener)
-        jsrepl.on("result", resultListener)
-        jsrepl.on("error", errorListener)
-
-        jsrepl.eval(code)
-
-        innerDfd.promise;
+    $scope.runCode = (code = $scope.code, listeners = {}) ->
+      jsrepl.eval(code, listeners)
 
     $scope.runCodeWithTestCases = ->
       whitelist = (index for index in arguments)
@@ -108,10 +64,11 @@ app.controller('ProblemPage', ['$scope', '$q', 'localStorageService', ($scope, $
 
         stdout = ""
 
-        $scope.runCode resultantCode, ->
-          $scope.logs.add("system", "Running with input data for task " + (index + 1))
-        , (data) ->
-          stdout += data
-        , null, null, ->
-          task.submission.input = stdout
+        $scope.runCode resultantCode,
+          before: ->
+            $scope.logs.add("system", "Running with input data for task " + (index + 1))
+          output: (data) -> stdout += data
+          after: ->
+            $scope.$apply ->
+              task.submission.input = stdout
 ])

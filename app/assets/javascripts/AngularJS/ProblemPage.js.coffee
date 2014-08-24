@@ -78,7 +78,8 @@ app.controller('ProblemPage', ['$scope', '$q', 'localStorageService', ($scope, $
           jsrepl.off("output", outputListener)
           jsrepl.off("result", resultListener)
           jsrepl.off("error", errorListener)
-          after() if after
+          $scope.$apply ->
+            after() if after
 
         jsrepl.on("output", outputListener)
         jsrepl.on("result", resultListener)

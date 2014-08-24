@@ -31,4 +31,5 @@
 //= require ../../../vendor/assets/javascripts/angular.ui.sortable.js
 //= require ../../../vendor/assets/javascripts/angular.ui.ace.js
 //= require ../../../vendor/assets/javascripts/angular-local-storage.js
+//= require ../../../vendor/assets/javascripts/jqconsole-2.10.0.min.js
 //= require websocket_rails/main

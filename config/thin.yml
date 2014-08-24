@@ -1,0 +1,4 @@
+---
+socket: /tmp/thin.sock
+servers: 3
+environment: production

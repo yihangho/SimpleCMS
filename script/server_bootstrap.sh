@@ -9,7 +9,7 @@ sudo apt-get -y update
 sudo apt-get -y upgrade
 
 echo "Installing system dependencies"
-sudo apt-get -y install git-core postgresql libpq-dev nodejs openssh-server
+sudo apt-get -y install git-core postgresql libpq-dev nodejs openssh-server nginx
 
 echo "Installing RVM"
 \curl -sSL https://get.rvm.io | bash -s stable
@@ -53,6 +53,13 @@ source ~/.profile
 echo "Installing Git post-receive hook"
 cp script/post-receive.sh $HOME/SimpleCMS.git/hooks/post-receive
 
+echo "Setting up Nginx"
+read -p "Enter the server name (an IP or domain): " server_name; echo
+sed -e "s|<SERVER_NAME_PLACEHOLDER>|$server_name|" -e "s|<SERVER_ROOT_PLACEHOLDER>|$DEPLOYMENT_DIR|" config/nginx_default > /tmp/nginx_default
+sudo mv /tmp/nginx_default /etc/nginx/sites-available/default
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo service nginx restart
+
 echo "Setting up database"
 RAILS_ENV=production bundle exec rake db:schema:load
 
@@ -60,4 +67,4 @@ echo "Precompiling assets"
 RAILS_ENV=production bundle exec rake assets:precompile
 
 echo "Starting Thin"
-RAILS_ENV=production bundle exec thin --environment production --daemonize start
+RAILS_ENV=production bundle exec thin --config config/thin.yml start

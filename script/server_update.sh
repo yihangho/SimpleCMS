@@ -20,7 +20,7 @@ RAILS_ENV=production bundle exec rake assets:clean
 
 echo "Restart server"
 if [[ -f tmp/pids/thin.pid ]]; then
-  RAILS_ENV=production bundle exec thin --environment production --daemonize restart
+  RAILS_ENV=production bundle exec thin --config config/thin.yml restart
 else
-  RAILS_ENV=production bundle exec thin --environment production --daemonize start
+  RAILS_ENV=production bundle exec thin --config config/thin.yml start
 fi

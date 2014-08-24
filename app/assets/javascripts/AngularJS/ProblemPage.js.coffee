@@ -89,10 +89,11 @@ app.controller('ProblemPage', ['$scope', '$q', 'localStorageService', ($scope, $
         innerDfd.promise;
 
     $scope.runCodeWithTestCases = ->
-      prefix = $scope.problem.prefix_code
+      whitelist = (index for index in arguments)
 
       angular.forEach $scope.problem.tasks_attributes, (task, index) ->
         return if task.json
+        return if whitelist.length && whitelist.indexOf(index) < 0
 
         # TODO We should probably check that task.input itself is a valid Python
         # program before continuing, else, it is likely that the user will see

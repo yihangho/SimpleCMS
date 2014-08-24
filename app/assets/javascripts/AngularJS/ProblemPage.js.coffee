@@ -36,6 +36,18 @@ app.controller('ProblemPage', ['$scope', '$q', 'localStorageService', ($scope, $
 
     jsrepl.loadLanguage("python", -> jsreplQ.resolve())
 
+    $scope.aceLoad = (editor) ->
+      editor.commands.addCommand
+        name: 'run',
+        bindKey:
+          win: 'Ctrl-B'
+          mac: 'Command-B'
+        exec: -> $scope.runCode()
+
+      editor.getSession().setTabSize(2)
+      editor.getSession().setUseSoftTabs(true)
+      editor.getSession().setUseWrapMode(true)
+
     $scope.runCode = (code, before, output, result, error, after) ->
       code ||= $scope.code
 

@@ -29,11 +29,15 @@
     <div class="form-group">
       <label>Python Code</label>
       <div>
-        <button type="button" class="btn btn-default" ng-click="runCode()">Run</button>
+        <% if UserAgent.parse(request.env['HTTP_USER_AGENT']).platform == "Macintosh" %>
+          <button type="button" class="btn btn-default" title="⌘-B" data-toggle="tooltip" data-placement="left" ng-click="runCode()">Run</button>
+        <% else %>
+          <button type="button" class="btn btn-default" title="Ctrl-B" data-toggle="tooltip" data-placement="left" ng-click="runCode()">Run</button>
+        <% end %>
         <button type="button" class="btn btn-default" ng-click="runCodeWithTestCases()">Run with Test Cases</button>
       </div>
 
-      <div ui-ace="{mode: 'python', theme: 'monokai'}" ng-model="code" style="height:200px; margin-top: 10px"></div>
+      <div ui-ace="{mode: 'python', theme: 'monokai', onLoad: aceLoad}" ng-model="code" style="height:200px; margin-top: 10px"></div>
       <ul class="list-unstyled">
         <li ng-repeat="log in logs track by $index" ng-class="{ 'text-success': log.type == 'result', 'text-danger': log.type == 'stderr', 'text-warning': log.type == 'system' }">
           <pre class="repl-log"><span ng-show="log.type == 'result'">=> </span>{{ log.message }}</pre>

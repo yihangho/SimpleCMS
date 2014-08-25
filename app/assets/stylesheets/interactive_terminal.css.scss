@@ -1,0 +1,10 @@
+interactive-terminal {
+    position: absolute;
+    width: 400px;
+    height: 500px;
+    background-color: black;
+
+    .jqconsole-cursor {
+        background-color: gray;
+    }
+}

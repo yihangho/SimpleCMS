@@ -48,11 +48,7 @@
       </div>
 
       <div ui-ace="{mode: 'python', theme: 'monokai', onLoad: aceLoad}" ng-model="code" style="height:200px; margin-top: 10px"></div>
-      <ul class="list-unstyled">
-        <li ng-repeat="log in logs track by $index" ng-class="{ 'text-success': log.type == 'result', 'text-danger': log.type == 'stderr', 'text-warning': log.type == 'system' }">
-          <pre class="repl-log"><span ng-show="log.type == 'result'">=> </span>{{ log.message }}</pre>
-        </li>
-      </ul>
+      <interactive-terminal></interactive-terminal>
     </div>
 
     <hr>

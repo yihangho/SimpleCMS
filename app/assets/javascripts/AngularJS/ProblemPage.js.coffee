@@ -1,4 +1,4 @@
-app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives', 'LocalStorageModule', 'SimpleCMS.jsrepl'])
+app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives', 'LocalStorageModule', 'SimpleCMS.jsrepl', 'SimpleCMS.InteractiveTerminal'])
 
 app.controller('ProblemPage', ['$scope', 'localStorageService', 'jsrepl', ($scope, $storage, jsrepl) ->
     # Set default values
@@ -30,18 +30,6 @@ app.controller('ProblemPage', ['$scope', 'localStorageService', 'jsrepl', ($scop
       editor.getSession().setUseSoftTabs(true)
       editor.getSession().setUseWrapMode(true)
 
-    jsrepl.addDefaultListener "output", (data) ->
-      $scope.$apply ->
-        $scope.logs.add("stdout", data)
-
-    jsrepl.addDefaultListener "result", (data) ->
-      $scope.$apply ->
-        $scope.logs.add("result", data)
-
-    jsrepl.addDefaultListener "error", (data) ->
-      $scope.$apply ->
-        $scope.logs.add("stderr", data)
-
     $scope.runCode = (code = $scope.code, listeners = {}) ->
       jsrepl.eval(code, listeners)
 
@@ -66,7 +54,7 @@ app.controller('ProblemPage', ['$scope', 'localStorageService', 'jsrepl', ($scop
 
         $scope.runCode resultantCode,
           before: ->
-            $scope.logs.add("system", "Running with input data for task " + (index + 1))
+            jsrepl.writer("Running with input data for task #{index + 1}\n", "text-warning")
           output: (data) -> stdout += data
           after: ->
             $scope.$apply ->

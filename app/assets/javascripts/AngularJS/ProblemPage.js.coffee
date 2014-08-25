@@ -17,6 +17,7 @@ app.controller('ProblemPage', ['$scope', 'localStorageService', 'jsrepl', ($scop
     $scope.$watch 'problem.id', ->
       if $scope.problem && $scope.problem.id
         $storage.bind($scope, 'code', '', "problem-#{$scope.problem.id}-code")
+        $storage.bind($scope, "terminalHistory", [], "terminal-history")
 
     $scope.aceLoad = (editor) ->
       editor.commands.addCommand

@@ -1,12 +1,23 @@
 app = angular.module('SimpleCMS.InteractiveTerminal', ['SimpleCMS.jsrepl'])
 
-app.directive 'interactiveTerminal', ['jsrepl', (jsrepl) ->
+app.directive 'interactiveTerminal', ['jsrepl', '$window', (jsrepl, $window) ->
   restrict: 'E'
+  scope:
+    history: '='
   link: (scope, elem, attrs) ->
     elem.css
       width: elem.parent().width()
 
+    scope.$watch "history", ->
+      if angular.isArray scope.history
+        jqconsole.SetHistory(scope.history)
+
     jqconsole = elem.jqconsole('Welcome to SimpleCMS!\n', '> ', '..')
+
+    angular.element($window).on 'beforeunload', (e) ->
+      scope.$apply ->
+        scope.history = jqconsole.GetHistory()
+      undefined
 
     startPrompt = ->
       jqconsole.Prompt true, jsrepl.eval, jsrepl.jsrepl.checkLineEnd, true

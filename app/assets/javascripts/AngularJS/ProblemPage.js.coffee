@@ -45,15 +45,23 @@ app.controller('ProblemPage', ['$scope', 'localStorageService', 'jsrepl', ($scop
         # program before continuing, else, it is likely that the user will see
         # some weird shit error message
 
-        resultantCode = task.input + "\n" + $scope.code
-
         task.submission = {} unless task.submission
         task.submission.input = "" unless task.submission.input
-        task.submission.code  = resultantCode
+        task.submission.code  = """
+                                ### Beginning of injected code
+                                #{task.input}
+                                ### End of injected code
+
+                                #{$scope.code}
+                                """
 
         stdout = ""
 
-        $scope.runCode resultantCode,
+        $scope.runCode task.input,
+          before: ->
+            jsrepl.writer("Initializing input data for task #{index + 1}\n", "jqconsole-system")
+
+        $scope.runCode $scope.code,
           before: ->
             jsrepl.writer("Running with input data for task #{index + 1}\n", "jqconsole-system")
           output: (data) -> stdout += data

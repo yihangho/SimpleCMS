@@ -8,7 +8,13 @@ app.factory 'jsrepl', ['$q', ($q) ->
   jsrepl.loadLanguage "python", -> _dfd.resolve()
   jsreplEvents = ["input", "output", "result", "error"]
 
-  addDefaultListener: (type, listener) -> jsrepl.on(type, listener)
+  defaultListeners = {}
+
+  addDefaultListener: (type, listener) ->
+    if type in jsreplEvents
+      jsrepl.on(type, listener)
+    else
+      (defaultListeners[type] ||= []).push(listener)
   eval: (code = "", listeners = {}) ->
     for key, val of listeners
       listeners[key] = [val] unless angular.isArray(val)
@@ -23,6 +29,7 @@ app.factory 'jsrepl', ['$q', ($q) ->
         jsrepl.off("result", doneListener)
         jsrepl.off("error", doneListener)
 
+        fn() for fn in (defaultListeners["after"] || [])
         fn() for fn in (listeners["after"] || [])
 
         dfd.resolve()
@@ -33,6 +40,7 @@ app.factory 'jsrepl', ['$q', ($q) ->
       jsrepl.on("result", doneListener)
       jsrepl.on("error", doneListener)
 
+      fn() for fn in (defaultListeners["before"] || [])
       fn() for fn in (listeners["before"] || [])
 
       jsrepl.eval(code)

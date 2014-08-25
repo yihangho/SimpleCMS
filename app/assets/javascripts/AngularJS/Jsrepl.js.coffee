@@ -11,7 +11,6 @@ app.factory 'jsrepl', ['$q', ($q) ->
   defaultListeners = {}
 
   writer: (text, cls, escape) ->
-  errorLineNumberOffset: 0
   addDefaultListener: (type, listener) ->
     if type in jsreplEvents
       jsrepl.on(type, listener)

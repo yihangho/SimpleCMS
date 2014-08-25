@@ -53,15 +53,11 @@ app.controller('ProblemPage', ['$scope', 'localStorageService', 'jsrepl', ($scop
 
         stdout = ""
 
-        additionalLines = (task.input.match(/\n/g) || []).length + 1
-
         $scope.runCode resultantCode,
           before: ->
             jsrepl.writer("Running with input data for task #{index + 1}\n", "jqconsole-system")
-            jsrepl.errorLineNumberOffset = additionalLines
           output: (data) -> stdout += data
           after: ->
-            jsrepl.errorLineNumberOffset = 0
             $scope.$apply ->
               task.submission.input = stdout
 ])

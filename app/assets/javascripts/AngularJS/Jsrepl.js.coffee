@@ -10,6 +10,7 @@ app.factory 'jsrepl', ['$q', ($q) ->
 
   defaultListeners = {}
 
+  writer: (text, cls, escape) ->
   addDefaultListener: (type, listener) ->
     if type in jsreplEvents
       jsrepl.on(type, listener)

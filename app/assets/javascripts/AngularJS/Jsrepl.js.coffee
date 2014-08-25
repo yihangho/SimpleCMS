@@ -46,4 +46,6 @@ app.factory 'jsrepl', ['$q', ($q) ->
       jsrepl.eval(code)
 
       dfd.promise
+  jsrepl:
+    checkLineEnd: jsrepl.checkLineEnd
 ]

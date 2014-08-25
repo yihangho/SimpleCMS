@@ -38,6 +38,9 @@ app.directive 'interactiveTerminal', ['jsrepl', '$window', (jsrepl, $window) ->
     jsrepl.addDefaultListener "result", (data) ->
       jqconsole.Write("=> " + toStringWithNewline(data), "text-success") if data
     jsrepl.addDefaultListener "error", (data) ->
+      data = data.replace /line (\d+)/g, (match, line) ->
+        line = parseInt(line)
+        return "line #{line - jsrepl.errorLineNumberOffset}"
       jqconsole.Write(toStringWithNewline(data), "jqconsole-error")
 
     startPrompt()

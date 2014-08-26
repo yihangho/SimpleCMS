@@ -12,7 +12,7 @@ This app is using PostgreSQL. Hence, it is necessary to have PostgreSQL running.
 - `PG_SIMPLECMS_TEST`
 
 ### Qt
-We are using `capybara-webkit` to run our integration tests. This gem depends on Qt. For for info on installing Qt, [read this](https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit).
+We are using `capybara-webkit` to run our integration tests. This gem depends on Qt. For more info on installing Qt, [read this](https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit).
 
 ## Running Tests
 Run `bundle exec rake` to run all tests.
@@ -40,6 +40,3 @@ Replace `<username>` with the user on the server that ran the setup script and `
 ### `data-` attributes
 #### `data-mathjax-source`
 Attaching this attribute to an element will cause MathJax to typeset the content of the element.
-
-## JSON Input
-For tasks that are using JSON input, the JSON string should represent an array of objects. Each object should have three keys defined: `label` and `content`. It is important to ensure that the JSON string is valid.

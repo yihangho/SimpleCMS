@@ -1,5 +1,7 @@
 class PreviewController < ApplicationController
+  include MarkdownHelper
+
   def markdown
-    render :inline => Kramdown::Document.new(params[:input]).to_html
+    render :inline => markdown_to_html(params[:input])
   end
 end

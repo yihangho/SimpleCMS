@@ -45,7 +45,7 @@
 
     <% if @contest.instructions && !@contest.instructions.empty? %>
       <h2>Instructions</h2>
-      <div data-mathjax-source><%= Kramdown::Document.new(@contest.instructions).to_html.html_safe %></div>
+      <div data-mathjax-source><%= markdown_to_html(@contest.instructions) %></div>
     <% end %>
   </div>
 
@@ -81,7 +81,7 @@
             </span>
           </div>
           <div class="panel-body" data-mathjax-source>
-            <%= Kramdown::Document.new(announcement.message).to_html.html_safe %>
+            <%= markdown_to_html(announcement.message) %>
           </div>
         </div>
       <% end %>

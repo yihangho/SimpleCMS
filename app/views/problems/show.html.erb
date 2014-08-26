@@ -21,7 +21,7 @@
 
   <div class="panel panel-default">
     <div class="panel-body" data-mathjax-source>
-      <%= Kramdown::Document.new(@problem.statement, :input => "GFM", :coderay_line_numbers => nil).to_html.html_safe %>
+      <%= markdown_to_html(@problem.statement) %>
     </div>
   </div>
 

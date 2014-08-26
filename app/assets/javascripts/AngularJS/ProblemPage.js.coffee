@@ -59,11 +59,9 @@ app.controller('ProblemPage', ['$scope', 'localStorageService', 'jsrepl', ($scop
 
         $scope.runCode task.input,
           before: ->
-            jsrepl.writer("Initializing input data for task #{index + 1}\n", "jqconsole-system")
+            jsrepl.writer("Test Case #{index + 1}\n", "jqconsole-system")
 
         $scope.runCode $scope.code,
-          before: ->
-            jsrepl.writer("Running with input data for task #{index + 1}\n", "jqconsole-system")
           output: (data) -> stdout += data
           after: ->
             $scope.$apply ->

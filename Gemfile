@@ -19,6 +19,7 @@ gem 'will_paginate', '~> 3.0.7'
 gem 'bootstrap-will_paginate', '~> 0.0.10'
 
 gem 'kramdown', '~> 1.4.0'
+gem 'coderay', '~> 1.1.0'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'

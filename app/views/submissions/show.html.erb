@@ -4,10 +4,9 @@
 <h2>Your Answer</h2>
 <pre><%= @submission.input %></pre>
 
-<% unless @submission.code_link.empty? %>
-  <p>
-    <%= link_to "Link to code", @submission.code_link, :target => "_blank" %>
-  </p>
+<% unless @submission.code.empty? %>
+  <h2>Code</h2>
+  <%= render :partial => "partials/python_interpreter", :locals => { :code => @submission.code, :show_label => false } %>
 <% end %>
 
 <p>

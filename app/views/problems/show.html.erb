@@ -1,69 +1,106 @@
-<div class="header-container">
-  <span class="h1">
-    <%= @problem.title %>
+<div ng-app="ProblemPage" ng-controller="ProblemPage" problem-id="<%= @problem.id %>">
+  <div class="header-container">
+    <span class="h1">
+      <%= @problem.title %>
 
-    <% if @problem.solvers.include?(current_user) %>
-      <small><span class="text-success">(Solved)</span></small>
-    <% end %>
+      <% if @problem.solvers.include?(current_user) %>
+        <small><span class="text-success">(Solved)</span></small>
+      <% end %>
 
-    <% if @problem.attempted_by?(current_user) %>
-      <small>
-        <%= render :partial => "point", :locals => { :problem => @problem, :user => current_user } %>
-      </small>
-    <% end %>
+      <% if @problem.attempted_by?(current_user) %>
+        <small>
+          <%= render :partial => "point", :locals => { :problem => @problem, :user => current_user } %>
+        </small>
+      <% end %>
 
-    <% if signed_in? && current_user.admin? %>
-      <%= link_to icon("edit"), edit_problem_path(@problem), :class => "btn btn-default pull-right", :title => "Edit" %>
-    <% end %>
-  </span>
-</div>
-
-<div class="panel panel-default">
-  <div class="panel-body" data-mathjax-source>
-    <%= Kramdown::Document.new(@problem.statement).to_html.html_safe %>
+      <% if signed_in? && current_user.admin? %>
+        <%= link_to icon("edit"), edit_problem_path(@problem), :class => "btn btn-default pull-right", :title => "Edit" %>
+      <% end %>
+    </span>
   </div>
-</div>
 
-<% if signed_in? %>
-  <% user_submissions = @problem.last_submissions_by(current_user) %>
-  <% @problem.tasks.order(:order).each do |task| %>
-    <% submission = user_submissions[task.id] || Submission.new %>
-    <div class="well">
-    <%= form_for(submission, :url => submissions_path, :method => :post) do |f| %>
-      <%= render :partial => "task_input", :locals => { :task => task } %>
-
-      <%= f.hidden_field(:task_id, :value => task.id) %>
-
-      <div class="form-group">
-        <%= f.label :input, "Answer" %>
-        <%= f.text_area :input, :class => "form-control" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :code_link, "Link to your code" %>
-        <%= f.text_field :code_link, :class => "form-control" %>
-      </div>
-
-      <% if task.submissions_left_for(current_user).is_a? Numeric %>
-        <p class="help-block">
-          You have <%= pluralize(task.submissions_left_for(current_user), "submission") %> left.
-        </p>
-      <% end %>
-
-      <% if task.allowed_to_submit?(current_user) %>
-        <%= f.submit "Submit", :class => "btn btn-primary" %>
-      <% else %>
-        <%= f.submit "Submit", :class => "btn btn-primary disabled" %>
-      <% end %>
-
-      <% if task.solved_by?(current_user) %>
-        <span class="label label-success">Solved!</span>
-      <% elsif task.attempted_by?(current_user) %>
-        <span class="label label-danger">Wrong answer</span>
-      <% end %>
-    <% end %>
+  <div class="panel panel-default">
+    <div class="panel-body" data-mathjax-source>
+      <%= Kramdown::Document.new(@problem.statement, :input => "GFM", :coderay_line_numbers => nil).to_html.html_safe %>
     </div>
+  </div>
+
+  <% if signed_in? %>
+    <div class="form-group">
+      <label>Python Code</label>
+      <div>
+        <% if UserAgent.parse(request.env['HTTP_USER_AGENT']).platform == "Macintosh" %>
+          <button type="button" class="btn btn-default" title="⌘-B" data-toggle="tooltip" data-placement="left" ng-click="runCode()">Run</button>
+        <% else %>
+          <button type="button" class="btn btn-default" title="Ctrl-B" data-toggle="tooltip" data-placement="left" ng-click="runCode()">Run</button>
+        <% end %>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" ng-click="runCodeWithTestCases()">Run on Test Cases</button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-if="(problem.tasks_attributes | filter:{json:false}).length">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu" ng-if="(problem.tasks_attributes | filter:{json:false}).length">
+            <li ng-repeat="task in problem.tasks_attributes" ng-click="runCodeWithTestCases($index)" ng-hide="task.json"><a href>Test Case {{ $index + 1 }}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row jsrepl-container">
+        <div class="col-md-6">
+          <div ui-ace="{mode: 'python', theme: 'monokai', onLoad: aceLoad}" ng-model="code" style="height:400px;"></div>
+        </div>
+        <div class="col-md-6">
+          <interactive-terminal history="terminalHistory"></interactive-terminal>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="well" ng-repeat="task in problem.tasks_attributes">
+      <label>Test Case {{ $index + 1 }}</label>
+      <div ng-hide="task.json && task.input_fields">
+        <pre >{{ task.input }}</pre>
+        <button type="button" class="btn btn-default" zero-clipboard="task.input">Copy</button>
+      </div>
+
+      <div ng-show="task.json && task.input_fields">
+        <div class="form-group input-group" ng-repeat="field in task.input_fields">
+          <span class="input-group-addon">{{ field.label }}</span>
+
+          <input type="text" class="form-control task-input" readonly ng-value="field.content" ng-if="field.content.trim().indexOf('\n') == -1">
+
+          <textarea class="form-control task-input" readonly ng-if="field.content.trim().indexOf('\n') != -1">{{ field.content }}</textarea>
+
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" zero-clipboard="field.content">Copy</button>
+          </span>
+        </div>
+      </div>
+
+      <form action="<%= submissions_path %>" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="hidden" name="submission[task_id]" ng-value="task.id">
+        <input type="hidden" name="submission[code]" ng-value="task.submission.code">
+
+        <div class="form-group">
+          <label>Answer</label>
+          <textarea class="form-control" ng-model="task.submission.input" name="submission[input]"></textarea>
+        </div>
+
+        <p class="help-block" ng-show="isNumber(task.submissions_left)">
+          You have {{ task.submissions_left }} submissions left.
+        </p>
+
+        <input type="submit" class="btn btn-default" ng-class="{disabled: !task.submission_allowed}">
+
+        <span class="label label-success" ng-show="task.solved">Solved!</span>
+        <span class="label label-danger" ng-show="!task.solved && task.attempted">Wrong answer</span>
+      </form>
+    </div>
+  <% else %>
+    <p>Please sign in to solve this task.</p>
   <% end %>
-<% else %>
-  <p>Please sign in to solve this task.</p>
-<% end %>
+</div>

@@ -62,7 +62,7 @@ class ProblemsController < ApplicationController
     @problem = Problem.find(params[:id])
     respond_to do |res|
       res.html {}
-      res.json { render :json => @problem.to_h(:tasks, :permalink) }
+      res.json { render :json => @problem.to_h(current_user) }
     end
   end
 

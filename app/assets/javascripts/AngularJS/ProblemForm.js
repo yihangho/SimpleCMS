@@ -1,57 +1,23 @@
 var app = angular.module('ProblemFormApp', ['ui.sortable', 'ProblemsHelper', 'Directives']);
 
-app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemDefaultSetter', 'TaskJSONInputParser', function($scope, $http, $window, ProblemDefaultSetter, TaskJSONInputParser) {
-    // Default values for a new problem
-    $scope.problem = ProblemDefaultSetter({});
+app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemsHelper', function($scope, $http, $window, ProblemsHelper) {
+
+    $scope.problem = ProblemsHelper.defaultProblem();
+    $scope.errors = [];
 
     $scope.saveProblem = function($event) {
         $event.preventDefault();
 
-        if (!$scope.problem.permalink_attributes.url || $scope.problem.permalink_attributes.url.trim().length == 0) {
-            $scope.problem.permalink_attributes["_destroy"] = true;
-        }
-
-        // Stringify JSON
-        angular.forEach($scope.problem.tasks_attributes, function(task, index) {
-            if (task.json) {
-                var newArr = [];
-                angular.forEach(task.input_fields, function(field) {
-                    if (field.label && field.label.length) {
-                        this.push(field);
-                    }
-                }, newArr);
-                task.input = angular.toJson(newArr, true);
-            }
-
-            task.order = index;
+        ProblemsHelper.save($scope.problem, $scope.authenticity_token).then(function() {
+            $window.location.pathname = "/problems/" + $scope.problem.id;
+        }, function(errors) {
+            angular.forEach(errors, function(error) {
+                $scope.errors.push({
+                    type: "danger",
+                    message: error
+                });
+            });
         });
-
-        startSpinner();
-        if ($scope.problem.id !== undefined && $scope.problem.id !== null) {
-            var endPoint = "/problems/" + $scope.problem.id + ".json";
-            var savePromise = $http.put(endPoint, $scope.getSubmissionParams());
-        } else {
-            var endPoint = "/problems.json";
-            var savePromise = $http.post(endPoint, $scope.getSubmissionParams());
-        }
-
-        savePromise.success(function(data) {
-            $scope.problem = ProblemDefaultSetter(data);
-            TaskJSONInputParser($scope.problem.tasks_attributes);
-
-            if (!data.errors || data.errors.length == 0) {
-                $window.location.pathname = "/problems/" + data.id;
-            }
-        }).finally(function() {
-            stopSpinner();
-        });
-    };
-
-    $scope.getSubmissionParams = function() {
-        return {
-            authenticity_token: $scope.authenticity_token,
-            problem: $scope.problem
-        };
     };
 
     $scope.addTask = function() {

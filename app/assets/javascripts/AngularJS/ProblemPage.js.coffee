@@ -1,8 +1,8 @@
 app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives', 'LocalStorageModule', 'SimpleCMS.jsrepl', 'SimpleCMS.InteractiveTerminal'])
 
-app.controller('ProblemPage', ['$scope', '$http', '$window', 'localStorageService', 'jsrepl', ($scope, $http, $window, $storage, jsrepl) ->
+app.controller('ProblemPage', ['$scope', '$http', '$window', 'localStorageService', 'jsrepl', 'ProblemsHelper', ($scope, $http, $window, $storage, jsrepl, ProblemsHelper) ->
     # Set default values
-    $scope.code = ""
+    $scope.problem = ProblemsHelper.defaultProblem()
     $scope.alerts = []
     Object.defineProperty $scope.alerts, "add",
       value: (type, message) ->

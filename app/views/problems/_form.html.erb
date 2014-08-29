@@ -1,7 +1,5 @@
 <%= form_for(@problem, :html => { "ng-app" => "ProblemFormApp", "ng-controller" => "ProblemFormController", "problem-id" => @problem.id, "ng-submit" => "saveProblem($event)", "authenticity-token" => form_authenticity_token }) do |f| %>
-  <div class="alert alert-danger" role="alert" ng-repeat="message in problem.errors">
-    {{ message }}
-  </div>
+  <alerts alerts="errors"></alerts>
 
   <div class="form-group">
     <%= f.label :title %>

@@ -3,8 +3,8 @@ app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives', '
 app.controller('ProblemPage', ['$scope', '$http', '$window', 'localStorageService', 'jsrepl', ($scope, $http, $window, $storage, jsrepl) ->
     # Set default values
     $scope.code = ""
-    $scope.logs = []
-    Object.defineProperty $scope.logs, "add",
+    $scope.alerts = []
+    Object.defineProperty $scope.alerts, "add",
       value: (type, message) ->
         if message
           this.push
@@ -44,8 +44,21 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', 'localStorageServic
           input: task.submission.input
           code: task.submission.code
 
-      $http.post("/submissions.json", {authenticity_token: $scope.authenticity_token, submissions: submissions}).success ->
-        $window.location.reload(true)
+      $http.post("/submissions.json", {authenticity_token: $scope.authenticity_token, submissions: submissions})
+           .success (data) ->
+             for submission in data
+              task = task for task in $scope.problem.tasks_attributes when task.id is submission.task_id
+              index = $scope.problem.tasks_attributes.indexOf(task)
+              task.submission = submission
+              task.submissions_left -= 1
+              task.attempted = true
+              task.solved ||= submission.accepted
+              if submission.accepted
+                $scope.alerts.add("success", "Test case #{index + 1} accepted.")
+              else
+                $scope.alerts.add("danger", "Test case #{index + 1} failed.")
+           .error ->
+            $scope.alerts.add("danger", "Cannot submit your answers. Please refresh the page and try again.")
 
     $scope.runCode = (code = $scope.code, listeners = {}) ->
       jsrepl.eval(code, listeners)

@@ -44,6 +44,8 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', 'localStorageServic
           input: task.submission.input
           code: task.submission.code
 
+      startSpinner()
+
       $http.post("/submissions.json", {authenticity_token: $scope.authenticity_token, submissions: submissions})
            .success (data) ->
              $scope.problem = data.problems[0] if data.problems.length
@@ -56,7 +58,9 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', 'localStorageServic
               else
                 $scope.alerts.add("danger", "Test case #{index + 1} failed.")
            .error ->
-            $scope.alerts.add("danger", "Cannot submit your answers. Please refresh the page and try again.")
+             $scope.alerts.add("danger", "Cannot submit your answers. Please refresh the page and try again.")
+           .finally ->
+             stopSpinner()
 
     $scope.runCode = (code = $scope.code, listeners = {}) ->
       jsrepl.eval(code, listeners)

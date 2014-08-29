@@ -1,4 +1,4 @@
-var app = angular.module('ProblemFormApp', ['ui.sortable', 'ProblemsHelper']);
+var app = angular.module('ProblemFormApp', ['ui.sortable', 'ProblemsHelper', 'Directives']);
 
 app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemDefaultSetter', 'TaskJSONInputParser', function($scope, $http, $window, ProblemDefaultSetter, TaskJSONInputParser) {
     // Default values for a new problem
@@ -70,11 +70,4 @@ app.controller('ProblemFormController', ['$scope', '$http', '$window', 'ProblemD
     };
 }]);
 
-app.directive('authenticityToken', function() {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            scope["authenticity_token"] = attrs['authenticityToken'];
-        }
-    };
-});
+

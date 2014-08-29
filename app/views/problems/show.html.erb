@@ -1,4 +1,7 @@
 <div ng-app="ProblemPage" ng-controller="ProblemPage" problem-id="<%= @problem.id %>" authenticity-token="<%= form_authenticity_token %>">
+
+  <alerts alerts="alerts"></alerts>
+
   <div class="header-container">
     <span class="h1">
       <%= @problem.title %>

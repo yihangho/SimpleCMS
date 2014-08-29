@@ -49,8 +49,8 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', 'localStorageServic
              $scope.problem = data.problems[0] if data.problems.length
 
              for submission in data.submissions
-              task = task for task in $scope.problem.tasks_attributes when task.id is submission.task_id
-              index = $scope.problem.tasks_attributes.indexOf(task)
+              index = parseInt(i for i, task of $scope.problem.tasks_attributes when task.id is submission.task_id)
+
               if submission.accepted
                 $scope.alerts.add("success", "Test case #{index + 1} accepted.")
               else

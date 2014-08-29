@@ -6,15 +6,9 @@
     <span class="h1">
       <%= @problem.title %>
 
-      <% if @problem.solvers.include?(current_user) %>
-        <small><span class="text-success">(Solved)</span></small>
-      <% end %>
+      <small ng-show="problem.attempted && problem.solved"><span class="text-success">(Solved)</span></small>
 
-      <% if @problem.attempted_by?(current_user) %>
-        <small>
-          <%= render :partial => "point", :locals => { :problem => @problem, :user => current_user } %>
-        </small>
-      <% end %>
+      <small ng-show="problem.attempted"><span>{{ problem.points_scored }} / {{ problem.total_points }}</span></small>
 
       <% if signed_in? && current_user.admin? %>
         <%= link_to icon("edit"), edit_problem_path(@problem), :class => "btn btn-default pull-right", :title => "Edit" %>

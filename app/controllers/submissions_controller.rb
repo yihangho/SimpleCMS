@@ -10,15 +10,26 @@ class SubmissionsController < ApplicationController
   end
 
   def create
-    submission = current_user.submissions.create(submission_params)
-    if submission.save
-      if submission.accepted?
-        flash[:success] = "Your last submission was correct."
-      else
-        flash[:danger] = "Your last submission was incorrect."
+    if params.has_key?(:submissions)
+      submissions = submissions_params.map do |s|
+        current_user.submissions.create(s)
       end
+
+      respond_to do |res|
+        res.html { redirect_to submission.task.problem }
+        res.json { render :json => submissions }
+      end
+    else
+      submission = current_user.submissions.create(submission_params)
+      if submission.save
+        if submission.accepted?
+          flash[:success] = "Your last submission was correct."
+        else
+          flash[:danger] = "Your last submission was incorrect."
+        end
+      end
+      redirect_to submission.task.problem
     end
-    redirect_to submission.task.problem
   end
 
   def show
@@ -31,14 +42,27 @@ class SubmissionsController < ApplicationController
   end
 
   private
+
+  def submissions_params
+    params.permit(:submissions => [:task_id, :input, :code])[:submissions] || []
+  end
+
   def submission_params
     params.require(:submission).permit(:task_id, :input, :code)
   end
 
   def users_allowed_to_submit_only
-    unless Task.find(submission_params[:task_id]).allowed_to_submit?(current_user)
-      flash[:danger] = "You are not allowed to submit an answer for this task."
-      redirect_to Task.find(submission_params[:task_id]).problem
+    if params.has_key?(:submissions)
+      ids = submissions_params.map { |x| x[:task_id]}
+    else
+      ids = [submission_params[:task_id]]
+    end
+
+    ids.each do |id|
+      unless Task.find(id).allowed_to_submit?(current_user)
+        flash[:danger] = "You are not allowed to submit an answer for this task."
+        redirect_to Task.find(id).problem
+      end
     end
   end
 

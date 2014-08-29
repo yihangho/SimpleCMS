@@ -8,7 +8,11 @@
 
       <small ng-show="problem.attempted && problem.solved"><span class="text-success">(Solved)</span></small>
 
-      <small ng-show="problem.attempted"><span>{{ problem.points_scored }} / {{ problem.total_points }}</span></small>
+      <small ng-show="problem.attempted">
+        <span ng-class="{'text-success': problem.points_scored == problem.total_points, 'text-danger': problem.points_scored != problem.total_points}">
+          ({{ problem.points_scored }} / {{ problem.total_points }})
+        </span>
+      </small>
 
       <% if signed_in? && current_user.admin? %>
         <%= link_to icon("edit"), edit_problem_path(@problem), :class => "btn btn-default pull-right", :title => "Edit" %>

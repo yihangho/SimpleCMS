@@ -1,4 +1,4 @@
-<div ng-app="ProblemPage" ng-controller="ProblemPage" problem-id="<%= @problem.id %>">
+<div ng-app="ProblemPage" ng-controller="ProblemPage" problem-id="<%= @problem.id %>" authenticity-token="<%= form_authenticity_token %>">
   <div class="header-container">
     <span class="h1">
       <%= @problem.title %>
@@ -45,6 +45,8 @@
             <li ng-repeat="task in problem.tasks_attributes" ng-click="runCodeWithTestCases($index)" ng-hide="task.json"><a href>Test Case {{ $index + 1 }}</a></li>
           </ul>
         </div>
+
+        <button type="button" class="btn btn-default" ng-click="submitAll()">Submit All Answers</button>
       </div>
 
       <div class="row jsrepl-container">

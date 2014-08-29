@@ -1,6 +1,6 @@
 app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives', 'LocalStorageModule', 'SimpleCMS.jsrepl', 'SimpleCMS.InteractiveTerminal'])
 
-app.controller('ProblemPage', ['$scope', 'localStorageService', 'jsrepl', ($scope, $storage, jsrepl) ->
+app.controller('ProblemPage', ['$scope', '$http', '$window', 'localStorageService', 'jsrepl', ($scope, $http, $window, $storage, jsrepl) ->
     # Set default values
     $scope.code = ""
     $scope.logs = []
@@ -30,6 +30,22 @@ app.controller('ProblemPage', ['$scope', 'localStorageService', 'jsrepl', ($scop
       editor.getSession().setTabSize(2)
       editor.getSession().setUseSoftTabs(true)
       editor.getSession().setUseWrapMode(true)
+
+    $scope.submitAll = ->
+      submissions = []
+      angular.forEach $scope.problem.tasks_attributes, (task) ->
+        return if task.solved
+        return unless task.submission_allowed
+
+        task.submission ||= {}
+
+        submissions.push
+          task_id: task.id
+          input: task.submission.input
+          code: task.submission.code
+
+      $http.post("/submissions.json", {authenticity_token: $scope.authenticity_token, submissions: submissions}).success ->
+        $window.location.reload(true)
 
     $scope.runCode = (code = $scope.code, listeners = {}) ->
       jsrepl.eval(code, listeners)

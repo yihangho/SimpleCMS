@@ -21,3 +21,8 @@ app.directive 'zeroClipboard', ['$timeout', ($timeout) ->
       if ["flash-disabled", "flash-outdated", "flash-unavailable"].indexOf(event.name) + 1
         elem.addClass("disabled")
 ]
+
+app.directive 'authenticityToken', ->
+  restrict: 'A'
+  link: (scope, element, attrs) ->
+    scope["authenticity_token"] = attrs['authenticityToken']

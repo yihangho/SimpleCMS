@@ -69,6 +69,10 @@ class Problem < ActiveRecord::Base
     hash = attributes.dup
     hash[:tasks_attributes] = tasks.map { |task| task.to_h(user) }
     hash[:permalink_attributes] = permalink
+    hash[:solved] = solved_by?(user)
+    hash[:attempted] = attempted_by?(user)
+    hash[:total_points] = total_points
+    hash[:points_scored] = points_for(user)
     if errors.any?
       hash[:errors] = errors.full_messages
     end

@@ -21,9 +21,9 @@ app.factory 'ProblemsHelper', ['$q', '$http', '$filter', ($q, $http, $filter) ->
   #
   # This works by first checking the internal cache (problems array). If the cache
   # already have the requested problem, resolve the promise, else, try to load from server
-  get: (id) ->
+  get: (id, force = false) ->
     dfd = $q.defer()
-    if problems[id]?
+    if problems[id]? && !force
       dfd.resolve(problems[id])
     else
       $http.get("/problems/#{id}.json")

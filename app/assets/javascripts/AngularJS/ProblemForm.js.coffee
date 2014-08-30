@@ -1,9 +1,14 @@
-app = angular.module('ProblemForm', ['ui.sortable', 'ProblemsHelper', 'Directives'])
+app = angular.module('ProblemForm', ['ui.sortable', 'ui.ace', 'ProblemsHelper', 'Directives'])
 
 app.controller 'ProblemFormController', ['$scope', '$window', 'ProblemsHelper', ($scope, $window, ProblemsHelper) ->
 
   $scope.problem = ProblemsHelper.defaultProblem()
   $scope.errors = []
+
+  $scope.aceLoad = (editor) ->
+    editor.getSession().setTabSize(2)
+    editor.getSession().setUseSoftTabs(true)
+    editor.getSession().setUseWrapMode(true)
 
   $scope.saveProblem = ($event) ->
     $event.preventDefault()

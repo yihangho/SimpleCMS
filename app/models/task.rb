@@ -2,6 +2,7 @@ class Task < ActiveRecord::Base
   belongs_to :problem, :validate => false
   has_many :submissions, :validate => false
   has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_tasks", :validate => false
+  has_many :seeds
 
   validates :problem_id, :presence => true
   validates :point, :tokens, :numericality => { :greater_than_or_equal_to => 0, :only_integer => true }

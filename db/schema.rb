@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140821105631) do
+ActiveRecord::Schema.define(version: 20140830073201) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,17 @@ ActiveRecord::Schema.define(version: 20140821105631) do
   end
 
   add_index "problems", ["setter_id"], name: "index_problems_on_setter_id", using: :btree
+
+  create_table "seeds", force: true do |t|
+    t.string   "seed"
+    t.integer  "user_id"
+    t.integer  "task_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "seeds", ["task_id", "user_id"], name: "index_seeds_on_task_id_and_user_id", unique: true, using: :btree
+  add_index "seeds", ["user_id", "task_id"], name: "index_seeds_on_user_id_and_task_id", unique: true, using: :btree
 
   create_table "sessions", force: true do |t|
     t.string   "remember_token"

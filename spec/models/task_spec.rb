@@ -18,6 +18,7 @@ describe Task do
   it { should respond_to :problem }
   it { should respond_to :submissions }
   it { should respond_to :solvers }
+  it { should respond_to :seeds }
 
   it { should respond_to :submissions_left_for }
 

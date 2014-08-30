@@ -23,6 +23,7 @@ describe User do
   it { should respond_to :solved_tasks }
   it { should respond_to :sessions }
   it { should respond_to :announcements }
+  it { should respond_to :seeds }
 
   context "validations" do
     describe "when email is obviously invalid" do

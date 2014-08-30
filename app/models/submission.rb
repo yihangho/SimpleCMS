@@ -21,7 +21,7 @@ class Submission < ActiveRecord::Base
   end
 
   def correct_input?
-    InputParser.normalize_input(input) == InputParser.normalize_input(task.output)
+    task.grade(input, user)
   end
 
   def regrade

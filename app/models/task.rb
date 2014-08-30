@@ -35,6 +35,11 @@ class Task < ActiveRecord::Base
     user && user.submissions.for(self).any?
   end
 
+  def grade(answer, user)
+    eval(grader)
+    grade_answer(raw_input(user), answer)
+  end
+
   def regrade
     submissions.each do |submission|
       submission.regrade

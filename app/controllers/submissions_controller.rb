@@ -17,12 +17,7 @@ class SubmissionsController < ApplicationController
 
       respond_to do |res|
         res.html { redirect_to submission.task.problem }
-        res.json do
-          render :json => {
-            :submissions => submissions,
-            :problems    => submissions.map { |s| s.task.problem.to_h(current_user) }
-          }
-        end
+        res.json { render :json => submissions }
       end
     else
       submission = current_user.submissions.create(submission_params)

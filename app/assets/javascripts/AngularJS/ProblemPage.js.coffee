@@ -47,10 +47,10 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', 'localStorageServic
       startSpinner()
 
       $http.post("/submissions.json", {authenticity_token: $scope.authenticity_token, submissions: submissions})
-           .success (data) ->
-             $scope.problem = data.problems[0] if data.problems.length
+           .success (submissions) ->
+             ProblemsHelper.get($scope.problem.id, true)
 
-             for submission in data.submissions
+             for submission in submissions
               index = parseInt(i for i, task of $scope.problem.tasks_attributes when task.id is submission.task_id)
 
               if submission.accepted

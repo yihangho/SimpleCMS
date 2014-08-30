@@ -41,6 +41,8 @@ app.factory 'ProblemsHelper', ['$q', '$http', ($q, $http) ->
   # the .get method uses this method as well) as this method will perform some
   # initialization-like operations (like updating the default problem)
   set: (problem, def = false) ->
+    problem.tasks_attributes.sort (a, b) ->
+      a.order - b.order
     problems[problem.id] = problem
     if problem.id is defaultId || def
       this.defaultId(defaultId)

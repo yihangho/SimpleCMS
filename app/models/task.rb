@@ -11,6 +11,18 @@ class Task < ActiveRecord::Base
     self.point ||= 0
   end
 
+  def raw_input(user)
+    return nil unless user && !user.new_record?
+
+    seed = Seed.find_by(:task_id => id, :user_id => user.id)
+    unless seed
+      seed = seeds.create(:user_id => user.id, :seed => Random.new_seed)
+    end
+
+    eval(input_generator)
+    generate_input(seed.seed.to_i)
+  end
+
   def solved_by?(user)
     solvers.include?(user)
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140830073201) do
+ActiveRecord::Schema.define(version: 20140830074455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -143,15 +143,14 @@ ActiveRecord::Schema.define(version: 20140830073201) do
   add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 
   create_table "tasks", force: true do |t|
-    t.text     "input"
-    t.text     "output"
+    t.text     "input_generator"
+    t.text     "grader"
     t.integer  "problem_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "point",      default: 0
-    t.integer  "tokens",     default: 0
-    t.boolean  "json",       default: false
-    t.integer  "order",      default: 0
+    t.integer  "point",           default: 0
+    t.integer  "tokens",          default: 0
+    t.integer  "order",           default: 0
   end
 
   add_index "tasks", ["problem_id"], name: "index_tasks_on_problem_id", using: :btree

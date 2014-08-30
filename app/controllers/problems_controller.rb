@@ -31,20 +31,14 @@ class ProblemsController < ApplicationController
 
   def update
     @problem = Problem.find(params[:id])
-    original_outputs = @problem.tasks.map do |task|
-      [task.id, task.output]
-    end.to_h
 
     if @problem.update_attributes(problem_params)
+      # TODO: Determine when to actually regrade
       @problem.tasks.each do |task|
-        if original_outputs.has_key?(task.id) && original_outputs[task.id] != task.output
-          task.regrade
-        end
+        task.regrade
       end
 
-      if original_outputs.keys.sort != @problem.task_ids.sort
-        @problem.update_solvers
-      end
+      @problem.update_solvers
 
       respond_to do |res|
         res.html { render 'show' }
@@ -68,7 +62,7 @@ class ProblemsController < ApplicationController
 
   private
   def problem_params
-    params.require(:problem).permit(:title, :statement, :contest_only, :permalink_attributes => [:url, :_destroy], :tasks_attributes => [:id, :point, :tokens, :input, :output, :_destroy, :json, :order])
+    params.require(:problem).permit(:title, :statement, :contest_only, :permalink_attributes => [:url, :_destroy], :tasks_attributes => [:id, :point, :tokens, :input_generator, :grader, :order, :_destroy])
   end
 
   def authorized_users_only

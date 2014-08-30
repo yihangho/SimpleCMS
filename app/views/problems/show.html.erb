@@ -38,11 +38,11 @@
 
         <div class="btn-group">
           <button type="button" class="btn btn-default" ng-click="runCodeWithTestCases()">Run on Test Cases</button>
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-if="(problem.tasks_attributes | filter:{json:false}).length">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-if="problem.tasks_attributes.length">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
           </button>
-          <ul class="dropdown-menu" role="menu" ng-if="(problem.tasks_attributes | filter:{json:false}).length">
+          <ul class="dropdown-menu" role="menu" ng-if="problem.tasks_attributes.length">
             <li ng-repeat="task in problem.tasks_attributes" ng-click="runCodeWithTestCases($index)" ng-hide="task.json"><a href>Test Case {{ $index + 1 }}</a></li>
           </ul>
         </div>

@@ -22,8 +22,4 @@ app.controller 'ProblemFormController', ['$scope', '$window', 'ProblemsHelper', 
 
   $scope.removeTask = (index) ->
     $scope.problem.tasks_attributes.splice(index, 1)
-
-  $scope.taskAddInputField = (index) ->
-    $scope.problem.tasks_attributes[index].input_fields ||= []
-    $scope.problem.tasks_attributes[index].input_fields.push({})
 ]

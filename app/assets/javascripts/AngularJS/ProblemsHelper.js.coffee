@@ -7,7 +7,7 @@ app.directive 'problemId', ['$http', 'ProblemsHelper', ($http, ProblemsHelper) -
     ProblemsHelper.defaultId(problemId)
 ]
 
-app.factory 'ProblemsHelper', ['$q', '$http', '$filter', ($q, $http, $filter) ->
+app.factory 'ProblemsHelper', ['$q', '$http', ($q, $http) ->
   problems = []
   defaultId = null
   defaultProblem =
@@ -39,37 +39,22 @@ app.factory 'ProblemsHelper', ['$q', '$http', '$filter', ($q, $http, $filter) ->
   #
   # Please use this method whenever a problem should be added to internal cache (note that
   # the .get method uses this method as well) as this method will perform some
-  # initialization-like operations (like parsing JSON and updating the default problem)
+  # initialization-like operations (like updating the default problem)
   set: (problem, def = false) ->
-    # Try to parse the input as JSON
-    for task in problem.tasks_attributes
-      try task.input_fields = angular.fromJson(task.input)
-
     problems[problem.id] = problem
     if problem.id is defaultId || def
       this.defaultId(defaultId)
 
   # Save problem to server and perform the following:
   # 1. Set the order for each task
-  # 2. Convert the input fields into JSON if the task is a JSON task
-  #    and also remove those fields with empty labels.
-  # 3. Set the ._destroy field for permalink_attributes
+  # 2. Set the ._destroy field for permalink_attributes
   # After saving the problem reference given will be updated.
   # Returns a promise which is resolved with the problem itself if operation
   # was successful, else reject with an array of error messages.
   save: (problem, token) ->
     # 1. Set order
-    # 2. Filter input fields (empty label ==> delete)
     problem.tasks_attributes ||= []
-    for task, idx in problem.tasks_attributes
-      task.order = idx
-
-      continue unless task.json
-
-      filteredFields = $filter("filter") task.input_fields, (field) ->
-        !!(field.label && field.label.trim().length)
-
-      task.input = angular.toJson(filteredFields, true)
+    task.order = idx for task, idx in problem.tasks_attributes
 
     # Set permalink destroy status
     problem.permalink_attributes ||= {}

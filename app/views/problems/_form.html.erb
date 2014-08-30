@@ -52,42 +52,18 @@
       </div>
 
       <div class="form-group">
-        <label>Input</label>
-
-        <div ng-hide="task.json">
-          <textarea class="form-control" ng-model="task.input"></textarea>
-        </div>
-
-        <div ui-sortable ng-model="task.input_fields" ng-show="task.json">
-          <div ng-repeat="field in task.input_fields">
-            <div class="form-group">
-              <label>Label</label>
-              <input type="text" class="form-control" ng-model="field.label">
-            </div>
-
-            <div class="form-group">
-              <label>Content</label>
-              <textarea class="form-control" ng-model="field.content"></textarea>
-            </div>
-          </div>
-          <button type="button" class="btn btn-default" ng-click="taskAddInputField($index)">Add Field</button>
-        </div>
+        <label>Input generator</label>
+        <textarea class="form-control" ng-model="task.input_generator"></textarea>
       </div>
 
       <div class="form-group">
-        <label>Output</label>
-        <textarea class="form-control" ng-model="task.output"></textarea>
+        <label>Grader</label>
+        <textarea class="form-control" ng-model="task.grader"></textarea>
       </div>
 
       <div class="checkbox" ng-show="task.id!==undefined && task.id!==null">
         <label>
           <input type="checkbox" ng-model="task._destroy"> Delete
-        </label>
-      </div>
-
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" ng-model="task.json"> Multifields Input
         </label>
       </div>
     </div>

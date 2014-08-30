@@ -19,8 +19,9 @@ class Task < ActiveRecord::Base
       seed = seeds.create(:user_id => user.id, :seed => Random.new_seed)
     end
 
-    eval(input_generator)
-    generate_input(seed.seed.to_i)
+    namespace = Class.new
+    namespace.class_eval(input_generator)
+    namespace.new.generate_input(seed.seed.to_i)
   end
 
   def solved_by?(user)
@@ -36,8 +37,9 @@ class Task < ActiveRecord::Base
   end
 
   def grade(answer, user)
-    eval(grader)
-    grade_answer(raw_input(user), answer)
+    namespace = Class.new
+    namespace.class_eval(grader)
+    namespace.new.grade_answer(raw_input(user), answer)
   end
 
   def regrade

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140830074455) do
+ActiveRecord::Schema.define(version: 20140901151617) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 20140830074455) do
     t.integer  "point",           default: 0
     t.integer  "tokens",          default: 0
     t.integer  "order",           default: 0
+    t.string   "label",           default: ""
   end
 
   add_index "tasks", ["problem_id"], name: "index_tasks_on_problem_id", using: :btree

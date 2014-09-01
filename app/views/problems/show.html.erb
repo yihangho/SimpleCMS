@@ -63,7 +63,7 @@
     <hr>
 
     <div class="well" ng-repeat="task in problem.tasks_attributes">
-      <label>Test Case {{ $index + 1 }}</label>
+      <label>Test Case {{ $index + 1 }} <span ng-show="task.label.length">({{ task.label }})</span></label>
       <div ng-hide="task.json && task.input_fields">
         <pre >{{ task.input }}</pre>
         <button type="button" class="btn btn-default" zero-clipboard="task.input">Copy</button>

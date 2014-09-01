@@ -11,12 +11,6 @@ This app is using PostgreSQL. Hence, it is necessary to have PostgreSQL running.
 - `PG_SIMPLECMS_DEV`
 - `PG_SIMPLECMS_TEST`
 
-### Qt
-We are using `capybara-webkit` to run our integration tests. This gem depends on Qt. For more info on installing Qt, [read this](https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit).
-
-## Running Tests
-Run `bundle exec rake` to run all tests.
-
 ## Deployment
 ### Heroku
 A simple `git push heroku master` should do the job. You might also need to run `heroku run rake db:schema:load` after the very first deployment, or `heroku run rake db:migrate` after an update.

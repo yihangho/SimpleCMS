@@ -1,0 +1,75 @@
+<!--[if lt IE 10]>
+<div class="alert alert-danger" role="alert">
+  Hey there! Seems like you are using an old version of Internet Explorer.
+  Please consider upgrading your browser to enjoy all the awesome features of SimpleCMS.
+  <a href="http://browsehappy.com/" target="_blank">Click here</a> to see what options you have.
+</div>
+<![endif]-->
+
+<div>
+  <div class="header-container">
+    <span class="h1">
+      <%= @problem.title %>
+
+      <% if @problem.solvers.include?(current_user) %>
+        <small><span class="text-success">(Solved)</span></small>
+      <% end %>
+
+      <% if @problem.attempted_by?(current_user) %>
+        <small>
+          <%= render :partial => "point", :locals => { :problem => @problem, :user => current_user } %>
+        </small>
+      <% end %>
+
+      <% if signed_in? && current_user.admin? %>
+        <%= link_to icon("edit"), edit_problem_path(@problem), :class => "btn btn-default pull-right", :title => "Edit" %>
+      <% end %>
+    </span>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-body" data-mathjax-source>
+      <%= markdown_to_html(@problem.statement) %>
+    </div>
+  </div>
+
+  <% if signed_in? %>
+    <% user_submissions = @problem.last_submissions_by(current_user) %>
+    <% @problem.tasks.order(:order).each do |task| %>
+      <% submission = user_submissions[task.id] || Submission.new %>
+      <div class="well">
+      <%= form_for(submission, :url => submissions_path, :method => :post) do |f| %>
+        <pre><%= InputEncoder::Python.encode(task.raw_input(current_user)) %></pre>
+
+        <%= f.hidden_field(:task_id, :value => task.id) %>
+        <%= f.hidden_field :code, :class => "code-input", :value => nil %>
+
+        <div class="form-group">
+          <%= f.label :input, "Answer" %>
+          <%= f.text_area :input, :class => "form-control" %>
+        </div>
+
+        <% if task.submissions_left_for(current_user).is_a? Numeric %>
+          <p class="help-block">
+            You have <%= pluralize(task.submissions_left_for(current_user), "submission") %> left.
+          </p>
+        <% end %>
+
+        <% if task.allowed_to_submit?(current_user) %>
+          <%= f.submit "Submit", :class => "btn btn-primary" %>
+        <% else %>
+          <%= f.submit "Submit", :class => "btn btn-primary disabled" %>
+        <% end %>
+
+        <% if task.solved_by?(current_user) %>
+          <span class="label label-success">Solved!</span>
+        <% elsif task.attempted_by?(current_user) %>
+          <span class="label label-danger">Wrong answer</span>
+        <% end %>
+      <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>Please sign in to solve this task.</p>
+  <% end %>
+</div>

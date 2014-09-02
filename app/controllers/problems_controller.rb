@@ -55,7 +55,12 @@ class ProblemsController < ApplicationController
   def show
     @problem = Problem.find(params[:id])
     respond_to do |res|
-      res.html {}
+      res.html do
+        if UserAgent.parse(request.env['HTTP_USER_AGENT']).browser == 'Internet Explorer' &&
+            UserAgent.parse(request.env['HTTP_USER_AGENT']).version.to_s.to_i < 10
+          render 'show-ie'
+        end
+      end
       res.json { render :json => @problem.to_h(current_user) }
     end
   end

@@ -31,26 +31,28 @@
   <% end %>
 <% end %>
 
-<h2>Problems by user</h2>
-<% if @user.set_problems.any? %>
-  <ul>
-    <% @user.set_problems.each do |problem| %>
-      <li><%= link_to problem.title, problem %></li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>None.</p>
-<% end %>
+<% if @user.admin? %>
+  <h2>Problems by user</h2>
+  <% if @user.set_problems.any? %>
+    <ul>
+      <% @user.set_problems.each do |problem| %>
+        <li><%= link_to problem.title, problem %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>None.</p>
+  <% end %>
 
-<h2>Contests by user</h2>
-<% if @user.created_contests.any? %>
-  <ul>
-    <% @user.created_contests.each do |contest| %>
-      <li><%= link_to contest.title, contest %></li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>None.</p>
+  <h2>Contests by user</h2>
+  <% if @user.created_contests.any? %>
+    <ul>
+      <% @user.created_contests.each do |contest| %>
+        <li><%= link_to contest.title, contest %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>None.</p>
+  <% end %>
 <% end %>
 
 <h2>Solved problems</h2>

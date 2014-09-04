@@ -39,7 +39,7 @@ class Task < ActiveRecord::Base
   def grade(answer, user)
     namespace = Class.new
     namespace.class_eval(grader)
-    namespace.new.grade_answer(raw_input(user), answer)
+    namespace.new.grade_answer(raw_input(user), answer.to_s)
   end
 
   def regrade

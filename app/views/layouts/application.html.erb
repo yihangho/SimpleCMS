@@ -135,6 +135,10 @@
   <% end %>
 
   <%= yield %>
+
+  <a href="#" data-toggle="modal" data-target="#feedback-form-modal">Feedback</a>
+
+  <%= render :partial => "partials/feedback_form" %>
 </div>
 
 <div class="spinner-container hidden"></div>

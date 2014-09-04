@@ -1,4 +1,5 @@
 class ProblemsController < ApplicationController
+  before_action :store_location, :only => :show
   before_action :admin_only, :only => [:new, :create, :edit, :update]
   before_action :authorized_users_only, :only => :show
 

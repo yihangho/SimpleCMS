@@ -2,7 +2,7 @@
 <h2>Input</h2>
 <pre><%= InputEncoder::Python.encode(@submission.task.raw_input(@submission.user)) %></pre>
 <h2>Your Answer</h2>
-<pre><%= @submission.input %></pre>
+<pre class="disable-select"><%= @submission.input %></pre>
 
 <% unless @submission.code.empty? %>
   <h2>Code</h2>

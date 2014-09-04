@@ -91,6 +91,9 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', 'localStorageServic
         $scope.runCode task.input,
           before: ->
             jsrepl.writer("Test Case #{index + 1}\n", "jqconsole-system")
+            jsrepl.writer("Already solved, hence skipping this test case.\n", "jqconsole-system") if task.solved
+
+        return if task.solved
 
         $scope.runCode $scope.code,
           output: (data) -> stdout += data

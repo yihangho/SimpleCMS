@@ -66,6 +66,7 @@ class Problem < ActiveRecord::Base
   end
 
   def to_h(user = User.new)
+    user ||= User.new
     hash = attributes.dup
     hash[:tasks_attributes] = tasks.map { |task| task.to_h(user) }
     hash[:permalink_attributes] = permalink

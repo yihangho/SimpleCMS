@@ -6,7 +6,23 @@
         <h4 class="modal-title" id="feedback-form-modal-label">Feedback</h4>
       </div>
       <div class="modal-body">
-        <%= form_for :feedback do |f| %>
+        <div class="alert alert-danger hidden" role="alert">
+          <strong>Error!</strong> Something went wrong, your feedback cannot be sent. Please try again later.
+          <p>
+            If the problem persists, please send your feedback via
+            <% if ENV['CONTACT_EMAIL'] %>
+              <a href="mailto:<%= ENV['CONTACT_EMAIL'] %>">email</a>.
+            <% else %>
+              email.
+            <% end %>
+          </p>
+        </div>
+
+        <div class="alert alert-success hidden" role="alert">
+          <strong>Thanks!</strong> We will get back to you soon.
+        </div>
+
+        <%= form_for :feedback, :url => feedbacks_path, :remote => true, :html => { :id => "feedback-form" } do |f| %>
           <div class="form-group">
             <%= f.label :email %>
             <%= f.text_field :email, :class => "form-control", :value => (current_user || User.new).email %>
@@ -20,7 +36,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send</button>
+        <button type="button" class="btn btn-primary" id="send-feedback-btn">Send</button>
       </div>
     </div>
   </div>

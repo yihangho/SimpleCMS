@@ -15,3 +15,10 @@ pre.repl-log {
 .jsrepl-container {
     margin-top: 10px;
 }
+
+textarea[disabled] {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}

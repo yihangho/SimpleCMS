@@ -8,6 +8,7 @@ class FeedbacksController < ApplicationController
   def create
     feedback = Feedback.create(feedback_params)
     render :json => feedback
+    Notifier::PushBullet.notify("New feedback for SimpleCMS!", "SimpleCMS", feedbacks_url)
   end
 
   private

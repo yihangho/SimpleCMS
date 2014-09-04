@@ -13,6 +13,11 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :stub %>
+    <div ui-ace="{mode: 'python', theme: 'monokai', onLoad: aceLoad}" ng-model="problem.stub" style="height:400px;"></div>
+  </div>
+
+  <div class="form-group">
     <%= f.fields_for(:permalink, @problem.permalink || Permalink.new) do |ff| %>
       <%= ff.label :url, "Permalink" %>
       <%= ff.text_field :url, :class => "form-control permalink-field", "ng-model" => "problem.permalink_attributes.url" %>

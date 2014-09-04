@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :submissions, :only => [:index, :create, :show]
   resources :contests, :only => [:index, :new, :create, :show, :edit, :update]
   resources :announcements, :only => :create
+  resources :feedbacks, :only => [:index, :create]
   get '/:permalink', :to => 'permalinks#resolver', :constraints => lambda { |x| x.params[:permalink] != "websocket" }
 
   # The priority is based upon order of creation: first created -> highest priority.

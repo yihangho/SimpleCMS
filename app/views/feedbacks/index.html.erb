@@ -1,0 +1,15 @@
+<h1>Feedbacks</h1>
+
+<% @feedbacks.each do |feedback| %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      At <%= format_datetime(feedback.created_at, cookies[:timezone]) %>
+      <% unless feedback.email.to_s.empty? %>
+      by <%= link_to feedback.email, "mailto:#{feedback.email}" %>
+      <% end %>
+    </div>
+    <div class="panel-body">
+      <%= feedback.message %>
+    </div>
+  </div>
+<% end %>

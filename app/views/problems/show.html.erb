@@ -1,3 +1,9 @@
+<% unless signed_in? %>
+  <div class="alert alert-warning" role="alert">
+    You need to <%= link_to "sign in", signin_path %> or <%= link_to "register", new_user_path %> to solve this task.
+  </div>
+<% end %>
+
 <div ng-app="ProblemPage" ng-controller="ProblemPage" problem-id="<%= @problem.id %>" authenticity-token="<%= form_authenticity_token %>">
 
   <alerts alerts="alerts"></alerts>
@@ -103,7 +109,5 @@
         <span class="label label-danger" ng-show="!task.solved && task.attempted">Wrong answer</span>
       </form>
     </div>
-  <% else %>
-    <p>Please <%= link_to "sign in", signin_path %> to solve this task.</p>
   <% end %>
 </div>

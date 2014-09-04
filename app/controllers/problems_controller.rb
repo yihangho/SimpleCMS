@@ -1,5 +1,4 @@
 class ProblemsController < ApplicationController
-  before_action :store_location, :only => :show
   before_action :admin_only, :only => [:new, :create, :edit, :update]
   before_action :authorized_users_only, :only => :show
 
@@ -57,6 +56,7 @@ class ProblemsController < ApplicationController
     @problem = Problem.find(params[:id])
     respond_to do |res|
       res.html do
+        store_location
         if UserAgent.parse(request.env['HTTP_USER_AGENT']).browser == 'Internet Explorer' &&
             UserAgent.parse(request.env['HTTP_USER_AGENT']).version.to_s.to_i < 10
           render 'show-ie'

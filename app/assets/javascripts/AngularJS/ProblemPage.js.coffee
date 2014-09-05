@@ -1,6 +1,6 @@
-app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives', 'LocalStorageModule', 'SimpleCMS.jsrepl', 'SimpleCMS.InteractiveTerminal'])
+app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives', 'SimpleCMS.jsrepl', 'SimpleCMS.InteractiveTerminal'])
 
-app.controller('ProblemPage', ['$scope', '$http', '$window', 'localStorageService', 'jsrepl', 'ProblemsHelper', ($scope, $http, $window, $storage, jsrepl, ProblemsHelper) ->
+app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl', 'ProblemsHelper', ($scope, $http, $window, $timeout, jsrepl, ProblemsHelper) ->
     # Set default values
     $scope.problem = ProblemsHelper.defaultProblem()
     $scope.alerts = []
@@ -15,9 +15,29 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', 'localStorageServic
       not isNaN(Number(input))
 
     $scope.$watch 'problem.id', ->
-      if $scope.problem && $scope.problem.id
-        $storage.bind($scope, 'code', $scope.problem.stub, "problem-#{$scope.problem.id}-code")
-        $storage.bind($scope, "terminalHistory", [], "terminal-history")
+      if $scope.problem
+        $scope.problem.user_code ||= {}
+        $scope.problem.user_code.code ||= ""
+        if $scope.problem.user_code.code.trim().length
+          $scope.code = $scope.problem.user_code.code
+        else
+          $scope.code = $scope.problem.stub
+
+    updateCodeTimeout = null
+    $scope.$watch 'code', ->
+      $timeout.cancel(updateCodeTimeout) if updateCodeTimeout isnt null
+      updateCodeTimeout = $timeout ->
+        # update code
+        console.log "Updating", $scope
+        $http.post '/codes.json',
+          authenticity_token: $scope.authenticity_token
+          code:
+            problem_id: $scope.problem.id
+            code:       $scope.code
+        .finally ->
+          console.log "Done :D"
+      , 2500
+
 
     $scope.aceLoad = (editor) ->
       editor.commands.addCommand

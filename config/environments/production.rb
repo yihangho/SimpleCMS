@@ -83,3 +83,7 @@ Rails.application.configure do
 
   config.middleware.delete Rack::Lock
 end
+
+WebsocketRails.setup do |config|
+  config.synchronize = true
+end

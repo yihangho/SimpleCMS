@@ -27,15 +27,14 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
     $scope.$watch 'code', ->
       $timeout.cancel(updateCodeTimeout) if updateCodeTimeout isnt null
       updateCodeTimeout = $timeout ->
-        # update code
-        console.log "Updating", $scope
+        $scope.savingCode = true
         $http.post '/codes.json',
           authenticity_token: $scope.authenticity_token
           code:
             problem_id: $scope.problem.id
             code:       $scope.code
         .finally ->
-          console.log "Done :D"
+          $scope.savingCode = false
       , 2500
 
 

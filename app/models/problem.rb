@@ -69,6 +69,7 @@ class Problem < ActiveRecord::Base
   def to_h(user = User.new)
     user ||= User.new
     hash = attributes.dup
+    hash[:user_code] = codes.where(:user_id => user.id).take
     hash[:tasks_attributes] = tasks.map { |task| task.to_h(user) }
     hash[:permalink_attributes] = permalink
     hash[:solved] = solved_by?(user)

@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
           redirect_to signin_path
         end
 
-        format.json { render :status => :forbidden, :json => [] }
+        format.json { render :status => :unauthorized, :json => [] }
       end
     end
   end

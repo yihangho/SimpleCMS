@@ -16,10 +16,8 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
 
     $scope.$watch 'problem.id', ->
       if $scope.problem
-        $scope.problem.user_code ||= {}
-        $scope.problem.user_code.code ||= ""
-        if $scope.problem.user_code.code.trim().length
-          $scope.code = $scope.problem.user_code.code
+        if $scope.problem.user_code
+          $scope.code = $scope.problem.user_code.code ||= ""
         else
           $scope.code = $scope.problem.stub
 

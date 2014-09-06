@@ -85,5 +85,5 @@ Rails.application.configure do
 end
 
 WebsocketRails.setup do |config|
-  config.synchronize = true
+  config.synchronize = true unless ENV.has_key?("NO_SYNC_WEBSOCKET_RAILS")
 end

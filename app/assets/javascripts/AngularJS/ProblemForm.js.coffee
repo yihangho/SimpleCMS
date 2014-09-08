@@ -14,6 +14,7 @@ app.controller 'ProblemFormController', ['$scope', '$window', 'ProblemsHelper', 
     $event.preventDefault()
 
     $scope.savingProblem = true
+    startSpinner()
 
     ProblemsHelper.save($scope.problem, $scope.authenticity_token)
     .then ->
@@ -25,6 +26,7 @@ app.controller 'ProblemFormController', ['$scope', '$window', 'ProblemsHelper', 
           message: error
     .finally ->
       $scope.saveProblem = false
+      stopSpinner()
 
   $scope.addTask = ->
     $scope.problem.tasks_attributes.push({})

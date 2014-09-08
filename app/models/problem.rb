@@ -20,7 +20,7 @@ class Problem < ActiveRecord::Base
     elsif user.admin?
       true
     else
-      user.participated_contests.where("\"contests\".\"start\" <= ?", Time.now).any?
+      user.participated_contests.where(:id => contests).where("\"contests\".\"start\" <= ?", Time.now).any?
     end
   end
 

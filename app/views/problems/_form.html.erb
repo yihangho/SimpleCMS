@@ -84,8 +84,8 @@
   <%= f.button "Add Task", :class => "btn btn-default", :id => "add-task-btn", :type => "button", "ng-click" => "addTask()" %>
 
   <% if @problem.id %>
-    <%= f.submit "Update", :class => "btn btn-primary" %>
+    <%= f.submit "Update", :class => "btn btn-primary", "ng-class" => "{disabled: savingProblem}" %>
   <% else %>
-    <%= f.submit "Create", :class => "btn btn-primary" %>
+    <%= f.submit "Create", :class => "btn btn-primary", "ng-class" => "{disabled: savingProblem}" %>
   <% end %>
 <% end %>

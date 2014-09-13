@@ -128,15 +128,15 @@
     </nav>
   </div>
 
-  <% flash.each do |k, v| %>
-    <div class="alert alert-<%= k %> alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      <%= v %>
-    </div>
-  <% end %>
 
   <div class="container">
     <%= render :partial => "partials/feedback_form" %>
+    <% flash.each do |k, v| %>
+      <div class="alert alert-<%= k %> alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <%= v %>
+      </div>
+    <% end %>
     <%= yield %>
   </div>
 

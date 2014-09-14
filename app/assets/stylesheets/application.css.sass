@@ -16,44 +16,57 @@
  *= require_self
  */
 
-.spinner-container {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(255, 255, 255, 0.7);
-  z-index: 9999;
-}
+// Variables
+$color-danger: #a94442
 
-.header-container {
-    margin-bottom: 10px;
-}
+html 
+  position: relative
+  min-height: 100%
 
-html {
-    position: relative;
-    min-height: 100%;
-}
 
-body {
-    margin-bottom: 60px;
-}
+body 
+  margin-bottom: 60px
 
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    background-color: #f5f5f5;
-}
 
-footer p {
-    margin: 20px 0px;
-}
+footer 
+  position: absolute
+  bottom: 0
+  width: 100%
+  height: 60px
+  background-color: #f5f5f5
 
-.disable-select {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
+
+footer p 
+  margin: 20px 0px
+
+
+.disable-select 
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+
+
+.spinner-container 
+  width: 100%
+  height: 100%
+  position: fixed
+  top: 0
+  left: 0
+  background-color: rgba(255, 255, 255, 0.7)
+  z-index: 9999
+
+
+.header-container 
+  margin-bottom: 10px
+
+
+/* Form */
+.form-group.required 
+  label:after 
+    content: ' *'
+    color: $color-danger
+
+/* Navigation */
+.navbar 
+  border-radius: 0px

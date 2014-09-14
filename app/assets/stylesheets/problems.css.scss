@@ -12,12 +12,23 @@ pre.repl-log {
     background-color: inherit;
 }
 
+.form-group, .col-md-6, .ace_editor{
+    height: 100% !important;
+}
 .jsrepl-container {
     margin-top: 10px;
+    height: 100%;
 }
 
+.terminal{
+	margin-top: 0px;
+	position: relative;
+	height: 40%
+
+}
 interactive-terminal{
 	width: 100% !important;
+	height: 100%;
 	display: block;
 	position: static;
 	pre{
@@ -27,8 +38,20 @@ interactive-terminal{
 	}
 }
 
+.editor{
+	height: 60% !important;
+	overflow: hide;
+	.ace-editor{
+		height: 100%
+	}
+}
+
 .container {
 	width: 100%
+}
+
+.problem-container{
+	overflow: hidden
 }
 
 .problem-area{
@@ -36,6 +59,7 @@ interactive-terminal{
 	height: 100%;
 	margin-bottom: 36px;
 }
+
 
 @media(max-width: 996px){
 	.problem-area{
@@ -48,11 +72,3 @@ interactive-terminal{
 	}
 }
 
-.terminal{
-	margin-top: 0px;
-	position: relative;
-}
-
-.problem-container{
-	overflow: hidden
-}

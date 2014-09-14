@@ -9,6 +9,9 @@
   <alerts alerts="alerts"></alerts>
 
   <!-- Problem Description -->
+
+  <div class="col-md-6 problem-area">
+    <!-- Header items -->
     <div class="header-container">
       <span class="h1">
         <%= @problem.title %>
@@ -27,11 +30,9 @@
       </span>
     </div>
 
-  <div class="col-md-6 problem-area">
-    <div class="panel panel-default">
-      <div class="panel-body" data-mathjax-source>
-        <%= markdown_to_html(@problem.statement) %>
-      </div>
+    <!-- Problem Statement -->
+    <div data-mathjax-source>
+      <%= markdown_to_html(@problem.statement) %>
     </div>
 
     <%= render 'test_cases' %>

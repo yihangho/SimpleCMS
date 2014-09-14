@@ -1,0 +1,74 @@
+// Place all the styles related to the problems controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.task-input[readonly] 
+    cursor: auto
+    background-color: white
+
+
+pre.repl-log 
+    color: inherit
+    background-color: inherit
+
+
+.form-group, .col-md-6, .ace_editor
+    height: 100% !important
+
+.jsrepl-container 
+    margin-top: 10px
+    height: 100%
+
+
+.terminal
+    margin-top: 0px
+    position: relative
+    height: 40%
+
+
+interactive-terminal
+    width: 100% !important
+    height: 100%
+    display: block
+    position: static
+    pre
+        border-radius: 0px
+        border: 0
+        border-top: 1px solid #555
+    
+
+
+.editor
+    height: 60% !important
+    overflow: hide
+    .ace-editor
+        height: 100%
+    
+
+
+.container 
+    width: 100%
+
+
+.problem-container
+    overflow: hidden
+
+
+.problem-area
+    overflow-y: scroll
+    height: 100%
+    margin-bottom: 36px
+
+
+
+@media(max-width: 996px)
+    .problem-area
+        overflow: auto
+        height: 100%
+    
+    .problem-container
+        overflow: display
+        height: 100% !important
+    
+
+

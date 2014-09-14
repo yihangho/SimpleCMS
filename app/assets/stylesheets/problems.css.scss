@@ -34,7 +34,6 @@ interactive-terminal{
 .problem-area{
 	overflow-y: scroll;
 	height: 100%;
-	height: 100vh;
 	margin-bottom: 36px;
 }
 
@@ -43,6 +42,10 @@ interactive-terminal{
 		overflow: auto;
 		height: 100%;
 	}
+	.problem-container{
+		overflow: display;
+		height: 100% !important;
+	}
 }
 
 .terminal{
@@ -50,4 +53,6 @@ interactive-terminal{
 	position: relative;
 }
 
-
+.problem-container{
+	overflow: hidden
+}

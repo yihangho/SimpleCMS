@@ -22,7 +22,7 @@
           end
           %>
         </td>
-        <td><%= submission.task.order + 1 %></td>
+        <td><%= submission.task.order + 1 if submission.task %></td>
         <td>
           <% if submission.accepted? %>
             <p class="text-success">Accepted</p>

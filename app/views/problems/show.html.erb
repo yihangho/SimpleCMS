@@ -9,7 +9,7 @@
   <alerts alerts="alerts"></alerts>
 
   <!-- Problem Description -->
-  <div class="col-md-6">
+  <div class="col-md-6 problem-area">
     <div class="header-container">
       <span class="h1">
         <%= @problem.title %>
@@ -66,9 +66,9 @@
           <span ng-show="savingCode"><i class="fa fa-spinner fa-spin"></i> Saving...</span>
         </div>
 
-        <div class="row jsrepl-container">
+        <div class="jsrepl-container">
             <div ui-ace="{mode: 'python', theme: 'monokai', onLoad: aceLoad}" ng-model="code" style="height:400px;"></div>
-            <interactive-terminal history="terminalHistory"></interactive-terminal>
+            <div><interactive-terminal history="terminalHistory"></interactive-terminal></div>
         </div>
       </div>
 

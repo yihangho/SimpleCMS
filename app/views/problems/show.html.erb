@@ -52,9 +52,9 @@
         <label>Python Code</label>
         <div>
           <% if UserAgent.parse(request.env['HTTP_USER_AGENT']).platform == "Macintosh" %>
-          <button type="button" class="btn btn-default" title="⌘-B" data-toggle="tooltip" data-placement="left" ng-click="runCode()">Run</button>
+          <button type="button" class="btn btn-primary" title="⌘-B" data-toggle="tooltip" data-placement="left" ng-click="runCode()">Run</button>
           <% else %>
-          <button type="button" class="btn btn-default" title="Ctrl-B" data-toggle="tooltip" data-placement="left" ng-click="runCode()">Run</button>
+          <button type="button" class="btn btn-primary" title="Ctrl-B" data-toggle="tooltip" data-placement="left" ng-click="runCode()">Run</button>
           <% end %>
 
           <div class="btn-group">

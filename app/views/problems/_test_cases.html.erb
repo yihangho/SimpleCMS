@@ -19,7 +19,7 @@
       </span>
     </div>
   </div>
-
+  <br/>
   <form action="<%= submissions_path %>" method="post">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <input type="hidden" name="submission[task_id]" ng-value="task.id">
@@ -34,7 +34,7 @@
       You have {{ task.submissions_left }} submissions left.
     </p>
 
-    <input type="submit" class="btn btn-default" ng-class="{disabled: !task.submission_allowed || task.solved}" value="Submit">
+    <input type="submit" class="btn btn-primary" ng-class="{disabled: !task.submission_allowed || task.solved}" value="Submit">
 
     <span class="label label-success" ng-show="task.solved">Solved!</span>
     <span class="label label-danger" ng-show="!task.solved && task.attempted">Wrong answer</span>

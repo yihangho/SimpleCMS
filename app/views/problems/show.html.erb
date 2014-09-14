@@ -9,7 +9,6 @@
   <alerts alerts="alerts"></alerts>
 
   <!-- Problem Description -->
-  <div class="col-md-6 problem-area">
     <div class="header-container">
       <span class="h1">
         <%= @problem.title %>
@@ -28,13 +27,13 @@
       </span>
     </div>
 
+  <div class="col-md-6 problem-area">
     <div class="panel panel-default">
       <div class="panel-body" data-mathjax-source>
         <%= markdown_to_html(@problem.statement) %>
       </div>
     </div>
 
-    <hr/>
     <%= render 'test_cases' %>
   </div>
 
@@ -68,7 +67,7 @@
 
         <div class="jsrepl-container">
             <div ui-ace="{mode: 'python', theme: 'monokai', onLoad: aceLoad}" ng-model="code" style="height:400px;"></div>
-            <div><interactive-terminal history="terminalHistory"></interactive-terminal></div>
+            <div class="terminal"><interactive-terminal history="terminalHistory"></interactive-terminal></div>
         </div>
       </div>
 

@@ -20,7 +20,7 @@
   </script>
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
-<body>
+<body class="<%= controller.controller_name + " " + controller.action_name %>">
 
 <nav class="navbar navbar-default" role="navigation">
   <div class="container">
@@ -130,7 +130,7 @@
   </div>
 
 
-  <div class="container <%= controller.controller_name + " " + controller.action_name %>">
+  <div class="container">
     <%= render :partial => "partials/feedback_form" %>
     <% flash.each do |k, v| %>
       <div class="alert alert-<%= k %> alert-dismissible" role="alert">

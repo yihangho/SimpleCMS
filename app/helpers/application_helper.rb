@@ -6,4 +6,9 @@ module ApplicationHelper
       datetime.strftime("%b %-d, %Y %l:%M %p %z")
     end
   end
+
+  def controller_stylesheet_link_tag
+    stylesheet = controller.controller_name
+    stylesheet_link_tag stylesheet
+  end
 end

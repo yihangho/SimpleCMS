@@ -130,7 +130,7 @@
   </div>
 
 
-  <div class="container">
+  <div class="container <%= controller.controller_name + " " + controller.action_name %>">
     <%= render :partial => "partials/feedback_form" %>
     <% flash.each do |k, v| %>
       <div class="alert alert-<%= k %> alert-dismissible" role="alert">

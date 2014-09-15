@@ -53,7 +53,6 @@
     <div class="col-md-6">
       <% if signed_in? %>
       <div class="form-group">
-        <label>Python Code</label>
         <div>
           <% if UserAgent.parse(request.env['HTTP_USER_AGENT']).platform == "Macintosh" %>
           <button type="button" class="btn btn-primary" title="⌘-B" data-toggle="tooltip" data-placement="left" ng-click="runCode()">Run</button>

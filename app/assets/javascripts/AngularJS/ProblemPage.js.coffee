@@ -11,6 +11,11 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
             type: type
             message: message
 
+    # Set height = window height, subtract nav and footer heights
+    $scope.style = {
+      height: $window.innerHeight - 72 - 60, 
+    }
+
     $scope.isNumber = (input) ->
       not isNaN(Number(input))
 

@@ -1,15 +1,15 @@
 <h1>Problems</h1>
 
 <table class="table">
-    <tr>
-    <th>Problem</th>
-    <th># Tasks</th>
-    <th>Score</th>
-    <% if signed_in? && current_user.admin? %>
-        <th>Edit</th>
-    <% end %>
+    <thead>
+        <th>Problem</th>
+        <th># Tasks</th>
+        <th>Score</th>
+        <% if signed_in? && current_user.admin? %>
+            <th>Edit</th>
+        <% end %>
+    </thead>
     
-    </tr>
     <% @problems.each do |problem| %>
       <% if problem.visible_to?(current_user) %>
         <tr>

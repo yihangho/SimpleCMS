@@ -112,13 +112,15 @@
               </li>
             <% end %>
 
-            <% if current_user.username %>
-              <li><%= link_to "#{current_user.username}", current_user %></li>
-            <% else %>
-              <li><%= link_to "Profile", current_user %></li>
-            <% end %>
-
-            <li><%= link_to "Sign Out", signout_path, :method => :delete %></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <%= current_user.username %> <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li><%= link_to "Profile", current_user %></li>
+                <li><%= link_to "Sign Out", signout_path, :method => :delete %></li>
+              </ul>
+            </li>
           <% else %>
             <li><%= link_to "Sign In", signin_path %></li>
             <li><%= link_to "Register", new_user_path %></li>

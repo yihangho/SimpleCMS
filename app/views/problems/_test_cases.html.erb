@@ -2,7 +2,12 @@
 
 <ul class="nav nav-tabs" role="tablist">
   <li ng-repeat="task in problem.tasks_attributes" ng-class="{'active': $index == 0}">
-    <a href="#case-{{$index}}" role="tab" data-toggle="tab">Case {{$index + 1}}</a>
+    <a href="#case-{{$index}}" role="tab" data-toggle="tab">
+      Case {{$index + 1}}
+
+      <span class="text-success" ng-show="task.solved"><i class="fa fa-check-circle"></i></span>
+      <span class="text-danger" ng-show="!task.solved && task.attempted"><i class="fa fa-times-circle"></i></span>
+    </a>
   </li>
 </ul>
 

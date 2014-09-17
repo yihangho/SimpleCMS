@@ -35,10 +35,18 @@
 
   <span class="help-block" ng-show="problem.tasks_attributes.length > 1">Hint: Drag the tasks around to reorder the tasks.</span>
 
-  <div ui-sortable ng-model="problem.tasks_attributes" class="tasks-forms">
-    <div ng-repeat="task in problem.tasks_attributes">
-      <hr ng-show="$index">
 
+  <ul class="nav nav-tabs" ui-sortable  ng-model="problem.tasks_attributes" >
+    <li ng-repeat="task in problem.tasks_attributes" ng-class="{'active': $index == 0}">
+      <a href="#case-{{$index}}" role="tab" data-toggle="tab">
+        Case {{$index + 1}}
+      </a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+
+    <div  ng-repeat="task in problem.tasks_attributes" ng-model="problem.tasks_attributes" id="case-{{$index}}" ng-class="{'tab-pane tasks-forms': true, 'active': $index==0}">
       <button type="button" class="close" ng-show="task.id===undefined || task.id===null" ng-click="removeTask($index)">
         <span aria-hidden="true">&times;</span>
         <span class="sr-only">Close</span>
@@ -73,13 +81,16 @@
         <div ui-ace="{mode: 'ruby', theme: 'monokai', onLoad: aceLoad}" ng-model="task.grader" style="height:400px;"></div>
       </div>
 
+      <br/>
       <div class="checkbox" ng-show="task.id!==undefined && task.id!==null">
         <label>
           <input type="checkbox" ng-model="task._destroy"> Delete
         </label>
       </div>
     </div>
+
   </div>
+
 
   <%= f.button "Add Task", :class => "btn btn-default", :id => "add-task-btn", :type => "button", "ng-click" => "addTask()" %>
 

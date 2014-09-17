@@ -4,10 +4,33 @@
   <h1>Contests</h1>
 <% end %>
 
-<ul>
-  <% @contests.each do |c| %>
-    <% if c.listed_to?(current_user) %>
-      <li><%= link_to c.title, c %></li>
+<table class="table">
+  <thead>
+    <th>Name</th>
+    <th>Start</th>
+    <th>End</th>
+    
+    <% if signed_in? && current_user.admin? %>
+      <th># Invited</th>
     <% end %>
+    
+    <th># Problems</th>
+    <th># Participants</th>
+  </thead>
+
+  <% @contests.each do |c| %>
+  
+  <% if c.listed_to?(current_user) %>
+    <tr>
+        <td><%= link_to c.title, c %></td>
+        <td><%= c.start %></td>
+        <td><%= c.end %></td>
+      <% if signed_in? && current_user.admin? %>
+        <td><%= c.invited_users.size %></td>
+      <% end %>
+        <td><%= c.problems.size %></td>
+        <td><%= c.participants.size %></td>
+    </tr>
   <% end %>
-</ul>
+  <% end %>
+</table>

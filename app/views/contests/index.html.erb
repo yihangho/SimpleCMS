@@ -7,20 +7,28 @@
 <table class="table">
   <thead>
     <th>Name</th>
-    <th># Problems</th>
     <th>Start</th>
     <th>End</th>
-    <th>Invited</th>
-    <th>Participants</th>
+    
+    <% if signed_in? && current_user.admin? %>
+      <th># Invited</th>
+    <% end %>
+    
+    <th># Problems</th>
+    <th># Participants</th>
   </thead>
+
   <% @contests.each do |c| %>
+  
   <% if c.listed_to?(current_user) %>
     <tr>
         <td><%= link_to c.title, c %></td>
-        <td><%= c.problems.size %></td>
         <td><%= c.start %></td>
         <td><%= c.end %></td>
+      <% if signed_in? && current_user.admin? %>
         <td><%= c.invited_users.size %></td>
+      <% end %>
+        <td><%= c.problems.size %></td>
         <td><%= c.participants.size %></td>
     </tr>
   <% end %>

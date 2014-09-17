@@ -13,7 +13,7 @@
 
 <div class="tab-content">
   <!-- Test Cases -->
-  <div ng-class="{'tab-pane': true, 'active': $index==0}" ng-repeat="task in problem.tasks_attributes" id="case-{{$index}}">
+  <div ng-class="{'tab-pane task': true, 'active': $index==0}" ng-repeat="task in problem.tasks_attributes" id="case-{{$index}}">
     <label>Test Case {{ $index + 1 }} <span ng-show="task.label.length">({{ task.label }})</span></label>
     <div ng-hide="task.json && task.input_fields">
       <pre class="task-case">{{ task.input }}</pre>

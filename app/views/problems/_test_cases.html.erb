@@ -30,7 +30,7 @@
       <textarea class="form-control" ng-model="task.submission.input" name="submission[input]" ng-disabled="{{ task.solved }}" ng-class="{'disable-select': task.solved}"></textarea>
     </div>
 
-    <p class="help-block" ng-show="isNumber(task.submissions_left)">
+    <p class="help-block" ng-show="isNumber(task.submissions_left) && !task.solved">
       You have {{ task.submissions_left }} submissions left.
     </p>
 

@@ -16,9 +16,6 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
       height: $window.innerHeight - 72 - 60,
     }
 
-    jsrepl.addDefaultListener "before", ->
-      jsrepl.writer(">\n", "jqconsole-old-prompt")
-
     $scope.isNumber = (input) ->
       not isNaN(Number(input))
 
@@ -88,6 +85,11 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
              stopSpinner()
 
     $scope.runCode = (code = $scope.code, listeners = {}) ->
+      originalBefore = listeners["before"]
+      listeners["before"] = ->
+        jsrepl.writer(">\n", "jqconsole-old-prompt")
+        originalBefore() if originalBefore?
+
       jsrepl.eval(code, listeners)
 
     $scope.runCodeWithTestCases = ->

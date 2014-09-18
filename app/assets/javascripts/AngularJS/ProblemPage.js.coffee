@@ -115,14 +115,15 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
 
         stdout = ""
 
-        $scope.runCode task.input,
+        jsrepl.eval task.input,
           before: ->
+            jsrepl.writer(">\n", "jqconsole-old-prompt")
             jsrepl.writer("Test Case #{index + 1}\n", "jqconsole-system")
             jsrepl.writer("Already solved, hence skipping this test case.\n", "jqconsole-system") if task.solved
 
         return if task.solved
 
-        $scope.runCode $scope.code,
+        jsrepl.eval $scope.code,
           output: (data) -> stdout += data
           after: ->
             $scope.$apply ->

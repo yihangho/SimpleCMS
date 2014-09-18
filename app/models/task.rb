@@ -4,8 +4,10 @@ class Task < ActiveRecord::Base
   has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_tasks", :validate => false
   has_many :seeds
 
-  validates :problem_id, :presence => true
+  validates :input_generator, :grader, :presence => true
   validates :point, :tokens, :numericality => { :greater_than_or_equal_to => 0, :only_integer => true }
+
+  validate :working_input_generator_and_grader
 
   after_initialize do
     self.point ||= 0
@@ -78,6 +80,30 @@ class Task < ActiveRecord::Base
   def update_solvers
     self.solvers = User.select do |user|
       user.submissions.for(self).correct_answer.any?
+    end
+  end
+
+  private
+
+  def working_input_generator_and_grader
+    begin
+      namespace = Class.new
+      namespace.class_eval(input_generator)
+      input = namespace.new.generate_input(0)
+    rescue Exception => e
+      return errors.add(:input_generator, "is not working: #{e.message}")
+    end
+
+    return errors.add(:input_generator, "is not returning Array - got #{input.class}.") unless input.is_a? Array
+
+    return errors.add(:input_generator, "is not returning Array of Hashes") unless input.all? { |h| h.is_a? Hash }
+
+    begin
+      namespace = Class.new
+      namespace.class_eval(grader)
+      namespace.new.grade_answer(input, "")
+    rescue Exception => e
+      errors.add(:grader, "is not working: #{e.message}")
     end
   end
 end

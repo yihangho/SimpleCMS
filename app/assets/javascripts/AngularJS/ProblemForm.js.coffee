@@ -36,8 +36,13 @@ app.controller 'ProblemFormController', ['$scope', '$window', 'ProblemsHelper', 
       authenticity_token: AuthenticityToken,
       {problem: $scope.problem},
       ->
-        if $scope.problem.errors? && $scope.problem.errors.length
-          $scope.errors = $scope.errors.concat(type: "danger", message: e for e in $scope.problem.errors)
+        $scope.problem.tasks_attributes ||= []
+        if ($scope.problem.errors? && $scope.problem.errors.length) ||
+          $scope.problem.tasks_attributes.filter((t) -> t.errors? && t.errors.length).length
+            $scope.errors = $scope.errors.concat(type: "danger", message: e for e in $scope.problem.errors)
+            for task in $scope.problem.tasks_attributes.sort((a, b) -> a.order - b.order)
+              $scope.errors = $scope.errors.concat(type: "danger", message: "Task #{task.order + 1}: #{e}" for e in (task.errors || []))
+
         else
           $window.location.pathname = "/problems/#{$scope.problem.id}"
       , (e) ->

@@ -1,8 +1,14 @@
-app = angular.module('ProblemForm', ['ui.sortable', 'ui.ace', 'ProblemsHelper', 'Directives'])
+app = angular.module('ProblemForm', ['ui.sortable', 'ui.ace', 'ProblemsHelper', 'Directives', 'ProblemId', 'AuthenticityToken'])
 
-app.controller 'ProblemFormController', ['$scope', '$window', 'ProblemsHelper', ($scope, $window, ProblemsHelper) ->
+app.controller 'ProblemFormController', ['$scope', '$window', 'ProblemsHelper', 'ProblemId', 'AuthenticityToken', ($scope, $window, ProblemsHelper, ProblemId, AuthenticityToken) ->
+  # $scope.problem = ProblemsHelper.defaultProblem()
+  if ProblemId?
+    $scope.problem = ProblemsHelper.edit(id: ProblemId)
+  else
+    $scope.problem = new ProblemsHelper
+      contest_only: true
+      tasks_attributes: []
 
-  $scope.problem = ProblemsHelper.defaultProblem()
   $scope.errors = []
 
   $scope.aceLoad = (editor) ->
@@ -16,16 +22,31 @@ app.controller 'ProblemFormController', ['$scope', '$window', 'ProblemsHelper', 
     $scope.savingProblem = true
     startSpinner()
 
-    ProblemsHelper.save($scope.problem, $scope.authenticity_token)
-    .then ->
-      $window.location.pathname = "/problems/#{$scope.problem.id}"
-    , (errors) ->
-      angular.forEach errors, (error) ->
+    # If permalink is empty, mark it to be deleted
+    $scope.problem.permalink_attributes ||= {}
+    $scope.problem.permalink_attributes["_destroy"] =
+      !($scope.problem.permalink_attributes.url && $scope.problem.permalink_attributes.url.trim().length)
+
+    # Set the order of each task
+    $scope.problem.tasks_attributes ||= []
+    t.order = idx for t, idx in $scope.problem.tasks_attributes
+
+    $scope.problem = (if $scope.problem.id then ProblemsHelper.update else ProblemsHelper.save)
+      id: $scope.problem.id
+      authenticity_token: AuthenticityToken,
+      {problem: $scope.problem},
+      ->
+        if $scope.problem.errors? && $scope.problem.errors.length
+          $scope.errors = $scope.errors.concat(type: "danger", message: e for e in $scope.problem.errors)
+        else
+          $window.location.pathname = "/problems/#{$scope.problem.id}"
+      , (e) ->
         $scope.errors.push
           type: "danger"
-          message: error
-    .finally ->
-      $scope.saveProblem = false
+          message: "Something went wrong: #{e.statusText}"
+
+    $scope.problem.$promise.finally ->
+      $scope.savingProblem = false
       stopSpinner()
 
   $scope.addTask = ->

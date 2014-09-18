@@ -20,6 +20,7 @@
 //= require detect_timezone
 //= require zeroclipboard
 //= require angular
+//= require angular-resource
 //= require bootstrap/alert
 //= require bootstrap/collapse
 //= require bootstrap/dropdown

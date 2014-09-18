@@ -1,0 +1,7 @@
+<script>
+var app = angular.module("AuthenticityToken", []);
+
+app.factory('AuthenticityToken', function(){
+  return '<%= form_authenticity_token %>';
+});
+</script>

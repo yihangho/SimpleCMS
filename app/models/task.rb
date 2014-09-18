@@ -80,20 +80,4 @@ class Task < ActiveRecord::Base
       user.submissions.for(self).correct_answer.any?
     end
   end
-
-  def to_h(user = User.new)
-    hash = attributes.dup
-    hash.delete("input_generator") unless user.admin?
-    hash.delete("grader") unless user.admin?
-    begin
-      hash[:input] = InputEncoder::Python.encode(raw_input(user))
-    rescue
-    end
-    hash[:submission] = user.submissions.for(self).last
-    hash[:submissions_left] = submissions_left_for(user)
-    hash[:submission_allowed] = allowed_to_submit?(user)
-    hash[:attempted] = attempted_by?(user)
-    hash[:solved] = solved_by?(user)
-    hash
-  end
 end

@@ -1,4 +1,7 @@
-<%= form_for(@problem, :html => { "ng-app" => "ProblemForm", "ng-controller" => "ProblemFormController", "problem-id" => @problem.id, "ng-submit" => "saveProblem($event)", "authenticity-token" => form_authenticity_token }) do |f| %>
+<%= render "problem_id_provider" %>
+<%= render "partials/authenticity_token_provider" %>
+
+<%= form_for(@problem, :html => { "ng-app" => "ProblemForm", "ng-controller" => "ProblemFormController", "ng-submit" => "saveProblem($event)"}) do |f| %>
   <alerts alerts="errors"></alerts>
 
   <div class="form-group">

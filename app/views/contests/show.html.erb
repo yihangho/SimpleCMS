@@ -52,7 +52,7 @@
   <% if @contest.can_access_problems_list?(current_user) %>
     <div class="tab-pane" id="problems">
       <ul>
-        <% @contest.problems.each do |problem| %>
+        <% @contest.problems.sort { |a, b| a.total_points <=> b.total_points }.each do |problem| %>
           <li><%= link_to problem.title, problem %></li>
         <% end %>
       </ul>

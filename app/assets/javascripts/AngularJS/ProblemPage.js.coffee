@@ -64,10 +64,8 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
 
     startSpinner()
 
-    $http.post("/submissions.json", {authenticity_token: $scope.authenticity_token, submissions: submissions})
+    $http.post("/submissions.json", {authenticity_token: AuthenticityToken, submissions: submissions})
          .success (submissions) ->
-           ProblemsHelper.get($scope.problem.id, true)
-
            for submission in submissions
             index = parseInt(i for i, task of $scope.problem.tasks_attributes when task.id is submission.task_id)
 
@@ -75,6 +73,8 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
               $scope.alerts.add("success", "Test case #{index + 1} accepted.")
             else
               $scope.alerts.add("danger", "Test case #{index + 1} failed.")
+
+           $scope.problem = ProblemsHelper.get(id: $scope.problem.id)
          .error ->
            $scope.alerts.add("danger", "Cannot submit your answers. Please refresh the page and try again.")
          .finally ->

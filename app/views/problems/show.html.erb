@@ -30,6 +30,10 @@
             <span ng-class="{'text-success': problem.points_scored == problem.total_points, 'text-danger': problem.points_scored != problem.total_points}">({{ problem.points_scored }} / {{ problem.total_points }})</span>
           </small>
 
+          <small ng-hide="problem.attempted">
+            ({{ problem.total_points }} points)
+          </small>
+
           <% if signed_in? && current_user.admin? %>
           <%= link_to icon("edit"), edit_problem_path(@problem), :class =>
           "btn btn-default pull-right", :title => "Edit" %>

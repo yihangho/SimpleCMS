@@ -6,7 +6,10 @@ app.controller 'ProblemFormController', ['$scope', '$window', 'ProblemsHelper', 
   $scope.errors = []
 
   $scope.aceLoad = (editor) ->
-    editor.getSession().setTabSize(2)
+    if editor.session.$modeId == "ace/mode/python"
+      editor.getSession().setTabSize(4)
+    else
+      editor.getSession().setTabSize(2)
     editor.getSession().setUseSoftTabs(true)
     editor.getSession().setUseWrapMode(true)
 

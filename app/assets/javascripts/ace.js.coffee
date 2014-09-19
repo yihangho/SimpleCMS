@@ -18,7 +18,7 @@ $(document).on "page:load", ->
 
     session = editor.getSession()
     session.setMode("ace/mode/python")
-    session.setTabSize(2)
+    session.setTabSize(4)
     session.setUseSoftTabs(true)
     session.setUseWrapMode(true)
 

@@ -11,6 +11,11 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
             type: type
             message: message
 
+    # Set height = window height, subtract nav and footer heights
+    $scope.style = {
+      height: $window.innerHeight - 72 - 60,
+    }
+
     $scope.isNumber = (input) ->
       not isNaN(Number(input))
 
@@ -80,6 +85,11 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
              stopSpinner()
 
     $scope.runCode = (code = $scope.code, listeners = {}) ->
+      originalBefore = listeners["before"]
+      listeners["before"] = ->
+        jsrepl.writer(">\n", "jqconsole-old-prompt")
+        originalBefore() if originalBefore?
+
       jsrepl.eval(code, listeners)
 
     $scope.runCodeWithTestCases = ->
@@ -105,14 +115,15 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
 
         stdout = ""
 
-        $scope.runCode task.input,
+        jsrepl.eval task.input,
           before: ->
+            jsrepl.writer(">\n", "jqconsole-old-prompt")
             jsrepl.writer("Test Case #{index + 1}\n", "jqconsole-system")
             jsrepl.writer("Already solved, hence skipping this test case.\n", "jqconsole-system") if task.solved
 
         return if task.solved
 
-        $scope.runCode $scope.code,
+        jsrepl.eval $scope.code,
           output: (data) -> stdout += data
           after: ->
             $scope.$apply ->

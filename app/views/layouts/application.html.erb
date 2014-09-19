@@ -19,10 +19,10 @@
   </script>
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
-<body>
+<body class="<%= controller.controller_name + " " + controller.action_name %>">
 
-<div class="container">
-  <nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
@@ -31,7 +31,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#"><%= I18n.t("app-title") %></a>
+        <a class="navbar-brand" href="/"><%= I18n.t("app-title") %></a>
       </div>
 
       <div class="collapse navbar-collapse" id="navbar-collapse">
@@ -112,33 +112,35 @@
               </li>
             <% end %>
 
-            <% if current_user.username %>
-              <li><%= link_to "#{current_user.username}", current_user %></li>
-            <% else %>
-              <li><%= link_to "Profile", current_user %></li>
-            <% end %>
-
-            <li><%= link_to "Sign Out", signout_path, :method => :delete %></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <%= current_user.username %> <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li><%= link_to "Profile", current_user %></li>
+                <li><%= link_to "Sign Out", signout_path, :method => :delete %></li>
+              </ul>
+            </li>
           <% else %>
             <li><%= link_to "Sign In", signin_path %></li>
             <li><%= link_to "Register", new_user_path %></li>
           <% end %>
         </ul>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </div>
 
-  <% flash.each do |k, v| %>
-    <div class="alert alert-<%= k %> alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      <%= v %>
-    </div>
-  <% end %>
 
-  <%= yield %>
-
-  <%= render :partial => "partials/feedback_form" %>
-
+  <div class="container">
+    <%= render :partial => "partials/feedback_form" %>
+    <% flash.each do |k, v| %>
+      <div class="alert alert-<%= k %> alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <%= v %>
+      </div>
+    <% end %>
+    <%= yield %>
+  </div>
 
 </div>
 

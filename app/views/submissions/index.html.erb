@@ -5,6 +5,7 @@
     <th>ID</th>
     <th>User</th>
     <th>Problem</th>
+    <th>Test Case</th>
     <th>Status</th>
   </thead>
   <tbody>
@@ -21,6 +22,7 @@
           end
           %>
         </td>
+        <td><%= submission.task.order + 1 if submission.task %></td>
         <td>
           <% if submission.accepted? %>
             <p class="text-success">Accepted</p>

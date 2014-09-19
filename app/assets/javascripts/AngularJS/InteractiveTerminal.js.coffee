@@ -20,6 +20,9 @@ Python 2.7.2.\n', '> ', '..')
         scope.history = jqconsole.GetHistory()
       undefined
 
+    gainFocus = ->
+      jqconsole.Focus()
+
     startPrompt = ->
       jqconsole.Prompt true, jsrepl.eval, jsrepl.jsrepl.checkLineEnd, true
 
@@ -34,6 +37,7 @@ Python 2.7.2.\n', '> ', '..')
 
     jsrepl.addDefaultListener "before", abortPrompt
     jsrepl.addDefaultListener "after", startPrompt
+    jsrepl.addDefaultListener "after", gainFocus
     jsrepl.addDefaultListener "output", (data) ->
       jqconsole.Write(toStringWithNewline(data), "jqconsole-output") if data
     jsrepl.addDefaultListener "result", (data) ->

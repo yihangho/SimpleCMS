@@ -13,6 +13,9 @@ app.controller 'ProblemFormController', ['$scope', '$window', 'ProblemsHelper', 
   $scope.saveProblem = ($event) ->
     $event.preventDefault()
 
+    $scope.savingProblem = true
+    startSpinner()
+
     ProblemsHelper.save($scope.problem, $scope.authenticity_token)
     .then ->
       $window.location.pathname = "/problems/#{$scope.problem.id}"
@@ -21,6 +24,9 @@ app.controller 'ProblemFormController', ['$scope', '$window', 'ProblemsHelper', 
         $scope.errors.push
           type: "danger"
           message: error
+    .finally ->
+      $scope.saveProblem = false
+      stopSpinner()
 
   $scope.addTask = ->
     $scope.problem.tasks_attributes.push({})

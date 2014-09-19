@@ -1,7 +1,22 @@
 <h1>Users</h1>
 
-<ul>
+<table class="table">
+  <thead>
+    <th>Name</th>
+    <th>Participating Contests</th>
+  </thead>
   <% @users.each do |user| %>
-    <li><%= link_to user.username, user %></li>
+    <tr>
+      <td><%= link_to user.username, user %> 
+        <% if user.admin?  %> 
+        <span class="text-muted"> - admin</span> 
+        <% end %>
+      </td>
+      <td>
+        <% user.participated_contests.each do |contest| %>
+          <%= link_to contest.title, contest %><br/>
+        <% end %>
+      </td>
+    </tr>
   <% end %>
-</ul>
+</table>

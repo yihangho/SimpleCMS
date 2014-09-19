@@ -1,3 +1,15 @@
 <h1>Edit Problem</h1>
 
+<% if @problem.contests.ongoing.any? %>
+  <div class="alert alert-warning" role="alert">
+    <strong>Warning!</strong>
+    This problem that you are trying to edit is being used in the following ongoing contests:
+    <ul>
+      <% @problem.contests.ongoing.each do |contest| %>
+        <li><%= link_to contest.title, contest, :class => "alert-link" %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <%= render 'form' %>

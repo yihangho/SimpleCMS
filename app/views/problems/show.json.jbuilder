@@ -5,7 +5,7 @@ json.attempted     @problem.attempted_by?(current_user)
 json.user_code     @problem.codes.where(:user_id => current_user).take || Code.new, :code
 json.points_scored @problem.points_for(current_user)
 
-json.tasks_attributes @problem.tasks do |task|
+json.tasks_attributes @problem.tasks.order(:order) do |task|
   json.(task, :id, :order, :label)
   json.input              InputEncoder::Python.encode(task.raw_input(current_user))
   json.submissions_left   task.submissions_left_for(current_user)

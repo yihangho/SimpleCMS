@@ -49,7 +49,7 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
           mac: 'Command-B'
         exec: -> $scope.runCode()
 
-      editor.getSession().setTabSize(2)
+      editor.getSession().setTabSize(4)
       editor.getSession().setUseSoftTabs(true)
       editor.getSession().setUseWrapMode(true)
 

@@ -4,8 +4,10 @@ class Task < ActiveRecord::Base
   has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_tasks", :validate => false
   has_many :seeds
 
-  validates :problem_id, :presence => true
+  validates :input_generator, :grader, :presence => true
   validates :point, :tokens, :numericality => { :greater_than_or_equal_to => 0, :only_integer => true }
+
+  validate :working_input_generator_and_grader
 
   after_initialize do
     self.point ||= 0
@@ -81,19 +83,27 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def to_h(user = User.new)
-    hash = attributes.dup
-    hash.delete("input_generator") unless user.admin?
-    hash.delete("grader") unless user.admin?
+  private
+
+  def working_input_generator_and_grader
     begin
-      hash[:input] = InputEncoder::Python.encode(raw_input(user))
-    rescue
+      namespace = Class.new
+      namespace.class_eval(input_generator)
+      input = namespace.new.generate_input(0)
+    rescue Exception => e
+      return errors.add(:input_generator, "is not working: #{e.message}")
     end
-    hash[:submission] = user.submissions.for(self).last
-    hash[:submissions_left] = submissions_left_for(user)
-    hash[:submission_allowed] = allowed_to_submit?(user)
-    hash[:attempted] = attempted_by?(user)
-    hash[:solved] = solved_by?(user)
-    hash
+
+    return errors.add(:input_generator, "is not returning Array - got #{input.class}.") unless input.is_a? Array
+
+    return errors.add(:input_generator, "is not returning Array of Hashes") unless input.all? { |h| h.is_a? Hash }
+
+    begin
+      namespace = Class.new
+      namespace.class_eval(grader)
+      namespace.new.grade_answer(input, "")
+    rescue Exception => e
+      errors.add(:grader, "is not working: #{e.message}")
+    end
   end
 end

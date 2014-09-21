@@ -15,12 +15,12 @@ class ProblemsController < ApplicationController
     if @problem.save
       respond_to do |res|
         res.html { render 'show' }
-        res.json { render :json => @problem.to_h(current_user) }
+        res.json { render 'edit' }
       end
     else
       respond_to do |res|
         res.html { render 'new' }
-        res.json { render :json => @problem.to_h(current_user) }
+        res.json { render 'edit' }
       end
     end
   end
@@ -42,13 +42,10 @@ class ProblemsController < ApplicationController
 
       respond_to do |res|
         res.html { render 'show' }
-        res.json { render :json => @problem.to_h(current_user) }
+        res.json { render 'edit' }
       end
     else
-      respond_to do |res|
-        res.html { render 'new' }
-        res.json { render :json => @problem.to_h(current_user) }
-      end
+      render 'edit'
     end
   end
 
@@ -62,7 +59,7 @@ class ProblemsController < ApplicationController
           render 'show-ie'
         end
       end
-      res.json { render :json => @problem.to_h(current_user) }
+      res.json { render 'show' }
     end
   end
 

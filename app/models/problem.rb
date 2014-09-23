@@ -7,6 +7,8 @@ class Problem < ActiveRecord::Base
   has_and_belongs_to_many :contests, :validate => false
   has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_problems", :validate => false
 
+  validates_associated :tasks
+
   accepts_nested_attributes_for :tasks, :allow_destroy => true
   accepts_nested_attributes_for :permalink, :update_only => true, :reject_if => :all_blank, :allow_destroy => true
 
@@ -64,21 +66,5 @@ class Problem < ActiveRecord::Base
     tasks.inject(0) do |sum, task|
       task.solved_between_by?(time1, time2, user) ? sum + task.point : sum
     end
-  end
-
-  def to_h(user = User.new)
-    user ||= User.new
-    hash = attributes.dup
-    hash[:user_code] = codes.where(:user_id => user.id).take
-    hash[:tasks_attributes] = tasks.map { |task| task.to_h(user) }
-    hash[:permalink_attributes] = permalink
-    hash[:solved] = solved_by?(user)
-    hash[:attempted] = attempted_by?(user)
-    hash[:total_points] = total_points
-    hash[:points_scored] = points_for(user)
-    if errors.any?
-      hash[:errors] = errors.full_messages
-    end
-    hash
   end
 end

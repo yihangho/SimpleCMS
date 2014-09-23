@@ -6,10 +6,10 @@
   </div>
 <% end %>
 
-<div ng-app="ProblemPage" ng-controller="ProblemPage" problem-id="<%= @problem.id %>
-  " authenticity-token="
-  <%= form_authenticity_token %>
-  ">
+<%= render "problem_id_provider" %>
+<%= render "partials/authenticity_token_provider" %>
+
+<div ng-app="ProblemPage" ng-controller="ProblemPage">
   <div class="problem-container" ng-style="style">
 
     <alerts alerts="alerts"></alerts>

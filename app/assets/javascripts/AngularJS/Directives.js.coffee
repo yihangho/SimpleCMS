@@ -22,11 +22,6 @@ app.directive 'zeroClipboard', ['$timeout', ($timeout) ->
         elem.addClass("disabled")
 ]
 
-app.directive 'authenticityToken', ->
-  restrict: 'A'
-  link: (scope, element, attrs) ->
-    scope["authenticity_token"] = attrs['authenticityToken']
-
 app.directive 'alerts', ->
   restrict: 'E'
   scope:

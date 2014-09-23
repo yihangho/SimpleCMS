@@ -2,7 +2,7 @@
   <h1>Leaderboard for <%= @contest.title %></h1>
 <% end %>
 
-<% problems = @contest.problems %>
+<% problems = @contest.problems.sort { |a, b| a.total_points <=> b.total_points } %>
 
 <table class="table table-hover">
   <thead>

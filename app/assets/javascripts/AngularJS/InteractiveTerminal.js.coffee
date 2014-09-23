@@ -12,8 +12,7 @@ app.directive 'interactiveTerminal', ['jsrepl', '$window', (jsrepl, $window) ->
       if angular.isArray scope.history
         jqconsole.SetHistory(scope.history)
 
-    jqconsole = elem.jqconsole('Welcome to the Malaysian Computing Challenge.\nThis system is running
-Python 2.7.2.\n', '> ', '..')
+    jqconsole = elem.jqconsole('This system is running Python 2.7.2.\n', '> ', '..')
 
     angular.element($window).on 'beforeunload', (e) ->
       scope.$apply ->

@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   before_action :not_signed_in_users_only, :only => :new
-  before_action :admin_only, :only => [:index, :set_admin]
-  before_action :current_user_only, :only => [:edit, :update]
+  before_action :admin_only, :only => [:index, :set_admin, :edit, :update]
 
   def index
     @users = User.all

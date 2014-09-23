@@ -8,10 +8,12 @@ class UsersController < ApplicationController
   end
 
   def new
+    redirect_to signin_path
     @user = User.new
   end
 
   def create
+    redirect_to signin_path
     @user = User.create(user_params)
     if @user.save
       sign_in @user

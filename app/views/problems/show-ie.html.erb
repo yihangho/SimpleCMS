@@ -8,7 +8,7 @@
 
 <% unless signed_in? %>
   <div class="alert alert-warning" role="alert">
-    You need to <%= link_to "sign in", signin_path %> or <%= link_to "register", new_user_path %> to solve this task.
+    You need to <%= link_to "sign in", signin_path %> to solve this task.
   </div>
 <% end %>
 

@@ -1,5 +1,5 @@
 class ContestsController < ApplicationController
-  before_action :admin_only, :only => [:new, :create, :edit, :update]
+  before_action :admin_only, :only => [:new, :create, :edit, :update, :leaderboard]
   before_action :signed_in_users_only, :only => [:participate, :invited, :ongoing]
   before_action :authorized_users_only, :only => :show
 

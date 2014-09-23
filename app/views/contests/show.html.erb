@@ -13,7 +13,7 @@
     <li><a href="#problems" role="tab" data-toggle="tab">Problems</a></li>
   <% end %>
 
-  <% if @contest.status != :not_started %>
+  <% if signed_in? && current_user.admin? && @contest.status != :not_started %>
     <li><a href="#leaderboard" role="tab" data-toggle="tab" data-source="<%= leaderboard_path(@contest) %>">Leaderboard</a></li>
   <% end %>
 
@@ -59,7 +59,7 @@
     </div>
   <% end %>
 
-  <% if @contest.status != :not_started %>
+  <% if signed_in? && current_user.admin? && @contest.status != :not_started %>
     <div class="tab-pane" id="leaderboard"></div>
   <% end %>
 

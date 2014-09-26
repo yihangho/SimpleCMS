@@ -2,6 +2,7 @@ upstream thin_cluster {
     server unix:/tmp/thin.0.sock;
     server unix:/tmp/thin.1.sock;
     server unix:/tmp/thin.2.sock;
+    server unix:/tmp/thin.3.sock;
 }
 
 server {

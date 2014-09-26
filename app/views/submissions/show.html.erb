@@ -1,4 +1,8 @@
-<h1>Submission <%= @submission.id %></h1>
+<div>
+  <span class="h1">Submission <%= @submission.id %></span>
+  <span class="pull-right small"><%= link_to "More submissions by #{@submission.user.username}", user_submissions_path(@submission.user) %></span>
+</div>
+
 <h2>Input</h2>
 <pre><%= InputEncoder::Python.encode(@submission.task.raw_input(@submission.user)) %></pre>
 <h2>Your Answer</h2>

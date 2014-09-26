@@ -16,7 +16,7 @@
   <tbody>
     <% @contest.leaderboard.each do |row| %>
       <tr>
-        <td><%= row[:user].username %></td>
+        <td><%= link_to row[:user].username, user_submissions_path(row[:user]) %></td>
         <% problems.each do |problem| %>
           <td><%= row[:problems][problem.id] %></td>
         <% end %>

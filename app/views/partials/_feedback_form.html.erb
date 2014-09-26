@@ -25,7 +25,7 @@
         <%= form_for :feedback, :url => feedbacks_path, :remote => true, :html => { :id => "feedback-form" } do |f| %>
           <div class="form-group">
             <%= f.label :email %>
-            <%= f.text_field :email, :class => "form-control", :value => (current_user || User.new).email %>
+            <%= f.text_field :email, :class => "form-control", :placeholder => "Please fill in your email address if you need our response." %>
           </div>
 
           <div class="form-group">

@@ -49,6 +49,13 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
     editor.getSession().setUseSoftTabs(true)
     editor.getSession().setUseWrapMode(true)
 
+  saveCode = ->
+    $http.post '/codes.json',
+      authenticity_token: AuthenticityToken
+      code:
+        problem_id: $scope.problem.id
+        code:       $scope.code
+
   $scope.submitAll = ->
     submissions = []
     angular.forEach $scope.problem.tasks_attributes, (task) ->
@@ -81,6 +88,7 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
            stopSpinner()
 
   $scope.runCode = (code = $scope.code, listeners = {}) ->
+    saveCode()
     originalBefore = listeners["before"]
     listeners["before"] = ->
       jsrepl.writer(">\n", "jqconsole-old-prompt")
@@ -89,6 +97,7 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
     jsrepl.eval(code, listeners)
 
   $scope.runCodeWithTestCases = ->
+    saveCode()
     whitelist = (index for index in arguments)
 
     angular.forEach $scope.problem.tasks_attributes, (task, index) ->

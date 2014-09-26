@@ -8,7 +8,6 @@ gem 'thin', '~> 1.6.2'
 gem 'websocket-rails', '~> 0.7.0'
 
 gem 'pg'
-gem 'rails_12factor', group: :production
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 gem 'bootstrap-sass', '~> 3.2.0'

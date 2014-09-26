@@ -9,11 +9,11 @@
   <%= render :partial => "partials/python_interpreter", :locals => { :code => @submission.code, :show_label => false } %>
 <% end %>
 
-<% if signed_in? && current_user.admin?
-    && @submission.task.problem.code.where(:user_id => @submission.user).any?
-    && !@submission.task.problem.code.where(:user_id => @submission.user).first.code.empty? %>
+<% if signed_in? && current_user.admin? &&
+    @submission.task.problem.codes.where(:user_id => @submission.user).any? &&
+    !@submission.task.problem.codes.where(:user_id => @submission.user).first.code.strip.empty? %>
   <h2>Code from the editor</h2>
-  <pre><%= @submission.task.problem.code.where(:user_id => @submission.user).first.code %></pre>
+  <pre><%= @submission.task.problem.codes.where(:user_id => @submission.user).first.code %></pre>
 <% end %>
 
 <p>

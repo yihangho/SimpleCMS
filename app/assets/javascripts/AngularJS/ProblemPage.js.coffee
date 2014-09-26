@@ -23,19 +23,19 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
   $scope.isNumber = (input) ->
     not isNaN(Number(input))
 
-  updateCodeTimeout = null
-  $scope.$watch 'code', ->
-    $timeout.cancel(updateCodeTimeout) if updateCodeTimeout isnt null
-    updateCodeTimeout = $timeout ->
-      $scope.savingCode = true
-      $http.post '/codes.json',
-        authenticity_token: AuthenticityToken
-        code:
-          problem_id: $scope.problem.id
-          code:       $scope.code
-      .finally ->
-        $scope.savingCode = false
-    , 2500
+  # updateCodeTimeout = null
+  # $scope.$watch 'code', ->
+  #   $timeout.cancel(updateCodeTimeout) if updateCodeTimeout isnt null
+  #   updateCodeTimeout = $timeout ->
+  #     $scope.savingCode = true
+  #     $http.post '/codes.json',
+  #       authenticity_token: AuthenticityToken
+  #       code:
+  #         problem_id: $scope.problem.id
+  #         code:       $scope.code
+  #     .finally ->
+  #       $scope.savingCode = false
+  #   , 2500
 
   $scope.aceLoad = (editor) ->
     editor.commands.addCommand

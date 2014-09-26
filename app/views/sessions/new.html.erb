@@ -1,14 +1,28 @@
 <h1>Sign In</h1>
 <%= form_for(:session, :url => sessions_path) do |f| %>
-    <div class="form-group">
-        <%= f.label :identifier, "Username/Email" %>
-        <%= f.text_field :identifier, :class => "form-control" %>
-    </div>
+  <div class="form-group">
+    <%= f.label :identifier, "Username/Email" %>
+    <%= f.text_field :identifier, :class => "form-control" %>
+  </div>
 
-    <div class="form-group">
-        <%= f.label :password %>
-        <%= f.password_field :password, :class => "form-control" %>
-    </div>
+  <div class="form-group">
+    <%= f.label :password %>
+    <%= f.password_field :password, :class => "form-control" %>
+  </div>
 
-    <%= f.submit "Sign In", :class => "btn btn-primary" %>
+  <h2>Honour Code</h2>
+  <p>
+    All participants in MCC 2014 agree to that he or she will:
+
+    <ul>
+      <li>Not discuss the problems with anyone else during the competition time;</li>
+      <li>Neither share solutions nor post solutions online during the competition time;</li>
+      <li>Notify the organizers (<code>mcc-info [at] googlegroups [dot] com</code>) immediately if he or she becomes aware of other participants cheating.</li>
+    </ul>
+  </p>
+
+  <p class="help-block">By signing in you are agreeing to the Honour Code.</p>
+
+  <%= f.submit "Sign In", :class => "btn btn-primary" %>
 <% end %>
+

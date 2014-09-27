@@ -7,6 +7,9 @@ $(document).on "page:load", ->
     # Hide all the alerts
     $("#feedback-form-modal .alert").addClass("hidden")
     $("#send-feedback-btn").removeClass("disabled")
+    # Fill in email address
+    emailAddress = $.cookie("feedback_email")
+    $("#feedback_email").val(emailAddress.trim()) if emailAddress? && emailAddress.trim()
 
   $("#feedback-form").on "ajax:success", ->
     $("#feedback-form-modal .alert.alert-success").removeClass("hidden")
@@ -18,3 +21,5 @@ $(document).on "page:load", ->
   $("#send-feedback-btn").click ->
     $(this).addClass("disabled")
     $("#feedback-form").submit()
+    emailAddress = $("#feedback_email").val()
+    $.cookie("feedback_email", emailAddress.trim()) if emailAddress.trim()

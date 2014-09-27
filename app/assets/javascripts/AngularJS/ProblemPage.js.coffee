@@ -2,12 +2,6 @@ app = angular.module('ProblemPage', ['ProblemsHelper', 'ui.ace', 'Directives', '
 
 app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl', 'ProblemsHelper', 'ProblemId', 'AuthenticityToken', ($scope, $http, $window, $timeout, jsrepl, ProblemsHelper, ProblemId, AuthenticityToken) ->
 
-  $scope.problem = ProblemsHelper.get id: ProblemId, ->
-    if $scope.problem.user_code
-      $scope.code = $scope.problem.user_code.code ||= ""
-    else
-      $scope.code = $scope.problem.stub
-
   $scope.alerts = []
   Object.defineProperty $scope.alerts, "add",
     value: (type, message) ->
@@ -15,6 +9,14 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
         this.push
           type: type
           message: message
+
+  $scope.problem = ProblemsHelper.get id: ProblemId, ->
+    if $scope.problem.user_code
+      $scope.code = $scope.problem.user_code.code ||= ""
+    else
+      $scope.code = $scope.problem.stub
+  , ->
+    $scope.alerts.add("danger", "Something went wrong. Please try again later.")
 
   # Set height = window height, subtract nav and footer heights
   $scope.style =

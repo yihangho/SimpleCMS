@@ -41,6 +41,11 @@ class SubmissionsController < ApplicationController
     render 'index'
   end
 
+  def problem
+    @submissions = Problem.find(params[:id]).submissions.order(:created_at => :desc).paginate(:page => params[:page])
+    render 'index'
+  end
+
   private
 
   def submissions_params

@@ -67,4 +67,8 @@ class Problem < ActiveRecord::Base
       task.solved_between_by?(time1, time2, user) ? sum + task.point : sum
     end
   end
+
+  def submissions
+    Submission.where(:task_id => tasks)
+  end
 end

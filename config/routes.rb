@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   patch '/users/:id/admin' => 'users#set_admin', :as => 'set_admin'
   get '/users/:id/submissions' => 'submissions#user', :as => 'user_submissions'
   post '/preview/markdown' => 'preview#markdown', :as => 'markdown_preview'
+  get '/problems/:id/submissions' => 'submissions#problem', :as => 'problem_submissions'
   resources :problems, :only => [:index, :new, :create, :show, :edit, :update]
   resources :users, :only => [:index, :new, :create, :show, :edit, :update]
   resources :sessions, :only => :create

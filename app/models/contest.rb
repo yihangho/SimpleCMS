@@ -13,6 +13,7 @@ class Contest < ActiveRecord::Base
     where("\"contests\".\"start\" < ?", Time.now)
   end
   scope :ended, -> { where("\"contests\".\"end\" < ?", Time.now) }
+  scope :not_ended, -> { where("\"contests\".\"end\" > ?", Time.now) }
   scope :participated_by, ->(user) { where(:id => user.participated_contests) }
 
   has_one :permalink, :as => :linkable, :dependent => :destroy

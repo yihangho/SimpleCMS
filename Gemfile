@@ -50,6 +50,7 @@ gem 'angularjs-rails', '~> 1.2.21'
 gem 'useragent', '~> 0.10.0'
 gem 'rest-client', '~> 1.7.2'
 gem 'grader-utils', '0.0.1'
+gem 'jquery-cookie-rails'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'

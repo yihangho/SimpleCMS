@@ -1,5 +1,5 @@
 class SubmissionsController < ApplicationController
-  before_action :admin_only, :only => :index
+  before_action :admin_only, :only => [:index, :problem]
   before_action :signed_in_users_only, :only => :create
   before_action :users_allowed_to_submit_only, :only => :create
   before_action :correct_user_or_admin, :only => :user

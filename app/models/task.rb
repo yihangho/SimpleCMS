@@ -21,9 +21,11 @@ class Task < ActiveRecord::Base
       seed = seeds.create(:user_id => user.id, :seed => Random.new_seed)
     end
 
-    namespace = Class.new
-    namespace.class_eval(input_generator)
-    namespace.new.generate_input(seed.seed.to_i)
+    Timeout::timeout(1) do
+      namespace = Class.new
+      namespace.class_eval(input_generator)
+      namespace.new.generate_input(seed.seed.to_i)
+    end
   end
 
   def solved_by?(user)

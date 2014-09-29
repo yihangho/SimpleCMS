@@ -9,7 +9,10 @@ $(document).on "page:load", ->
     $("#send-feedback-btn").removeClass("disabled")
 
   $("#feedback-form").on "ajax:success", ->
-    $("#feedback-form-modal .alert.alert-success").removeClass("hidden")
+    if $("#feedback_email").val().trim()
+      $("#feedback-form-modal .alert.alert-success.with-email").removeClass("hidden")
+    else
+      $("#feedback-form-modal .alert.alert-success.without-email").removeClass("hidden")
 
   $("#feedback-form").on "ajax:error", ->
     $("#feedback-form-modal .alert.alert-danger").removeClass("hidden")

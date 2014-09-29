@@ -1,37 +1,39 @@
 <h1>Problems</h1>
 
-<table class="table">
-    <thead>
-        <th>Name</th>
-        <th># Tasks</th>
-        <th>Score</th>
-        <% if signed_in? && current_user.admin? %>
-            <th>Edit</th>
-        <% end %>
-    </thead>
-    
-    <% @problems.each do |problem| %>
-      <% if problem.visible_to?(current_user) %>
-        <tr>
-            <td>
-               <%= link_to problem.title, problem %>
-            </td>
-            <td>
-                <%= problem.tasks.size %>
-            </td>
-            
-        	<td>
-                <%= render :partial => "point", :locals => { :problem => problem, :user => current_user } %>
-            </td>
-
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <th>Name</th>
+            <th># Tasks</th>
+            <th>Score</th>
             <% if signed_in? && current_user.admin? %>
-                <td>
-                  <%= link_to icon("edit"), edit_problem_path(problem), :class =>
-                  "btn btn-default", :title => "Edit" %>
-                </td>
+                <th>Edit</th>
             <% end %>
+        </thead>
 
-        </tr>
-      <% end %>
-    <% end %>
-</table>
+        <% @problems.each do |problem| %>
+          <% if problem.visible_to?(current_user) %>
+            <tr>
+                <td>
+                   <%= link_to problem.title, problem %>
+                </td>
+                <td>
+                    <%= problem.tasks.size %>
+                </td>
+
+            	<td>
+                    <%= render :partial => "point", :locals => { :problem => problem, :user => current_user } %>
+                </td>
+
+                <% if signed_in? && current_user.admin? %>
+                    <td>
+                      <%= link_to icon("edit"), edit_problem_path(problem), :class =>
+                      "btn btn-default", :title => "Edit" %>
+                    </td>
+                <% end %>
+
+            </tr>
+          <% end %>
+        <% end %>
+    </table>
+</div>

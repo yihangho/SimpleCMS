@@ -1,40 +1,42 @@
 <h1>Submissions</h1>
 
-<table class="table">
-  <thead>
-    <th>ID</th>
-    <th>User</th>
-    <th>Problem</th>
-    <th>Test Case</th>
-    <th>Status</th>
-  </thead>
-  <tbody>
-    <% @submissions.each do |submission| %>
-      <tr>
-        <td><%= link_to submission.id, submission %></td>
-        <td><%= link_to submission.user.username, submission.user %></td>
-        <td>
-          <%=
-          begin
-            link_to submission.task.problem.title, submission.task.problem
-          rescue
-            "N/A"
-          end
-          %>
-        </td>
-        <td><%= submission.task.order + 1 if submission.task %></td>
-        <td>
-          <% if submission.accepted? %>
-            <p class="text-success">Accepted</p>
-          <% elsif submission.accepted.nil? %>
-            <p class="text-warning">Ungraded</p>
-          <% else %>
-            <p class="text-danger">Wrong Answer</p>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <th>ID</th>
+      <th>User</th>
+      <th>Problem</th>
+      <th>Test Case</th>
+      <th>Status</th>
+    </thead>
+    <tbody>
+      <% @submissions.each do |submission| %>
+        <tr>
+          <td><%= link_to submission.id, submission %></td>
+          <td><%= link_to submission.user.username, submission.user %></td>
+          <td>
+            <%=
+            begin
+              link_to submission.task.problem.title, submission.task.problem
+            rescue
+              "N/A"
+            end
+            %>
+          </td>
+          <td><%= submission.task.order + 1 if submission.task %></td>
+          <td>
+            <% if submission.accepted? %>
+              <p class="text-success">Accepted</p>
+            <% elsif submission.accepted.nil? %>
+              <p class="text-warning">Ungraded</p>
+            <% else %>
+              <p class="text-danger">Wrong Answer</p>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
 <%= will_paginate(@submissions) %>

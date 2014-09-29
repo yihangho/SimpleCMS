@@ -1,22 +1,24 @@
 <h1>Users</h1>
 
-<table class="table">
-  <thead>
-    <th>Name</th>
-    <th>Participating Contests</th>
-  </thead>
-  <% @users.each do |user| %>
-    <tr>
-      <td><%= link_to user.username, user %> 
-        <% if user.admin?  %> 
-        <span class="text-muted"> - admin</span> 
-        <% end %>
-      </td>
-      <td>
-        <% user.participated_contests.each do |contest| %>
-          <%= link_to contest.title, contest %><br/>
-        <% end %>
-      </td>
-    </tr>
-  <% end %>
-</table>
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <th>Name</th>
+      <th>Participating Contests</th>
+    </thead>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.username, user %>
+          <% if user.admin?  %>
+          <span class="text-muted"> - admin</span>
+          <% end %>
+        </td>
+        <td>
+          <% user.participated_contests.each do |contest| %>
+            <%= link_to contest.title, contest %><br/>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

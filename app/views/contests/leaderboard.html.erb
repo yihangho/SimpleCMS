@@ -4,24 +4,26 @@
 
 <% problems = @contest.problems.sort { |a, b| a.total_points <=> b.total_points } %>
 
-<table class="table table-hover">
-  <thead>
-    <th>User</th>
-    <% problems.each do |problem| %>
-      <th><%= link_to "#{problem.title} (#{problem.total_points})", problem %></th>
-    <% end %>
-    <th>Total points</th>
-  </thead>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <th>User</th>
+      <% problems.each do |problem| %>
+        <th><%= link_to "#{problem.title} (#{problem.total_points})", problem %></th>
+      <% end %>
+      <th>Total points</th>
+    </thead>
 
-  <tbody>
-    <% @contest.leaderboard.each do |row| %>
-      <tr>
-        <td><%= link_to row[:user].username, user_submissions_path(row[:user]) %></td>
-        <% problems.each do |problem| %>
-          <td><%= row[:problems][problem.id] %></td>
-        <% end %>
-        <td><%= row[:points] %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    <tbody>
+      <% @contest.leaderboard.each do |row| %>
+        <tr>
+          <td><%= link_to row[:user].username, user_submissions_path(row[:user]) %></td>
+          <% problems.each do |problem| %>
+            <td><%= row[:problems][problem.id] %></td>
+          <% end %>
+          <td><%= row[:points] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

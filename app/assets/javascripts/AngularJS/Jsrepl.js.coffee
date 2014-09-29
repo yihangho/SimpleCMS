@@ -3,8 +3,19 @@ app = angular.module('SimpleCMS.jsrepl', [])
 app.factory 'jsrepl', ['$q', ($q) ->
   _dfd = $q.defer()
   promise = _dfd.promise
+  dfd = null
 
   jsrepl = new JSREPL
+    timeout:
+      time: 10000
+      callback: ->
+        if kill = confirm("Your program is taking too long to finish. Do you want to stop it?")
+          dfd.reject()
+          _dfd = $q.defer()
+          promise = _dfd.promise
+          jsrepl.loadLanguage "python", -> _dfd.resolve()
+        kill
+
   jsrepl.loadLanguage "python", -> _dfd.resolve()
   jsreplEvents = ["input", "output", "result", "error"]
 

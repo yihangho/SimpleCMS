@@ -24,8 +24,8 @@
     <% if c.listed_to?(current_user) %>
       <tr>
           <td><%= link_to c.title, c %></td>
-          <td><%= c.start %></td>
-          <td><%= c.end %></td>
+          <td><%= format_datetime(c.start, cookies[:timezone]) %></td>
+          <td><%= format_datetime(c.end, cookies[:timezone]) %></td>
         <% if signed_in? && current_user.admin? %>
           <td><%= c.invited_users.size %></td>
         <% end %>

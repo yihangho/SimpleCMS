@@ -1,3 +1,5 @@
+require "CSV"
+
 class ContestsController < ApplicationController
   before_action :admin_only, :only => [:new, :create, :edit, :update]
   before_action :signed_in_users_only, :only => [:participate, :invited, :ongoing]

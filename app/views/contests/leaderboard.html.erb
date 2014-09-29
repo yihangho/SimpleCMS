@@ -2,6 +2,8 @@
   <h1>Leaderboard for <%= @contest.title %></h1>
 <% end %>
 
+<%= link_to "Download CSV", leaderboard_path(@contest, :format => "csv") %>
+
 <% problems = @contest.problems.sort { |a, b| a.total_points <=> b.total_points } %>
 
 <div class="table-responsive">

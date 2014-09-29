@@ -1,0 +1,17 @@
+<%=
+CSV.generate do |csv|
+  problem_ids = @contest.problems.sort { |a, b| a.total_points <=> b.total_points }.map { |x| x.id }
+
+  header = ["Username", "School", "Total points"]
+  problem_ids.each do |id|
+    header << Problem.find(id).title
+  end
+  csv << header
+
+  @contest.leaderboard.each do |row|
+    csv_row = [row[:user].username, row[:user].school, row[:points]]
+    problem_ids.each { |id| csv_row << row[:problems][id] }
+    csv << csv_row
+  end
+end.html_safe
+%>

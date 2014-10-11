@@ -8,7 +8,6 @@ gem 'thin', '~> 1.6.2'
 gem 'websocket-rails', '~> 0.7.0'
 
 gem 'pg'
-gem 'rails_12factor', group: :production
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 gem 'bootstrap-sass', '~> 3.2.0'
@@ -62,6 +61,11 @@ group :test do
   gem 'database_cleaner'
   gem 'capybara-screenshot'
   gem 'capybara-webkit'
+end
+
+group :production do
+  gem 'rails_12factor'
+  gem 'newrelic_rpm'
 end
 
 # Use unicorn as the app server

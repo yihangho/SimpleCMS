@@ -30,6 +30,17 @@ git add remote production <username>@<host>:SimpleCMS.git
 
 Replace `<username>` with the user on the server that ran the setup script and `<host>` with the IP/domain of the server. To deploy, just push to the `master` branch of `production` remote.
 
+## Environment Variables
+
+- `PG_USERNAME`
+- `PG_PASSWORD`
+- `PG_SIMPLECMS_DEV`
+- `PG_SIMPLECMS_TEST`
+- `NEW_RELIC_LICENSE_KEY`
+- `PUSHBULLET_ACCESS_TOKEN`
+- `GA_TRACKING_ID`
+- `CONTACT_EMAIL`
+
 ## Development
 ### `data-` attributes
 #### `data-mathjax-source`

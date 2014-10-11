@@ -1,4 +1,4 @@
-require "CSV"
+require "csv"
 
 class ContestsController < ApplicationController
   before_action :admin_only, :only => [:new, :create, :edit, :update]

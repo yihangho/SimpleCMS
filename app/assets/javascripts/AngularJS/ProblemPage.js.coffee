@@ -85,7 +85,7 @@ app.controller('ProblemPage', ['$scope', '$http', '$window', '$timeout', 'jsrepl
   $scope.runCode = (code = $scope.code, listeners = {}) ->
     originalBefore = listeners["before"]
     listeners["before"] = ->
-      jsrepl.writer(">\n", "jqconsole-old-prompt")
+      jsrepl.writer(">\nRunning...\n", "jqconsole-old-prompt")
       originalBefore() if originalBefore?
 
     jsrepl.eval(code, listeners)

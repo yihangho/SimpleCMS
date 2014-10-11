@@ -1,0 +1,15 @@
+<h1>Codes written by <%= @user.username %></h1>
+
+<% @codes.each do |code| %>
+  <% begin %>
+  <% if code.is_a? Code %>
+    <h2><%= code.problem.title %>(Editor)</h2>
+  <% else %>
+    <h2><%= code.task.problem.title %> (Test Case <%= code.task.order + 1 %>)</h2>
+  <% end %>
+  <% rescue %>
+  <% end %>
+
+  <pre><%= code.code %></pre>
+  <hr>
+<% end %>

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :not_signed_in_users_only, :only => :new
-  before_action :admin_only, :only => [:index, :set_admin]
+  before_action :admin_only, :only => [:index, :set_admin, :code]
   before_action :current_user_only, :only => [:edit, :update]
 
   def index
@@ -42,6 +42,12 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.update_attribute(:admin, set_admin_params)
     render 'show'
+  end
+
+  # Show list code written by user
+  def code
+    @user  = User.find(params[:id])
+    @codes = @user.codes + @user.submissions
   end
 
   private

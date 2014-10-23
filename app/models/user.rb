@@ -13,4 +13,5 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :solved_tasks, :class_name => "Task", :join_table => "solved_tasks", :validate => false
   has_many :seeds
   has_many :codes
+  has_many :contest_results
 end

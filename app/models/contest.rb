@@ -22,6 +22,7 @@ class Contest < ActiveRecord::Base
   belongs_to :creator, :class_name => "User", :validate => false
   has_and_belongs_to_many :invited_users, :class_name => "User", :validate => false
   has_and_belongs_to_many :participants, :class_name => "User", :join_table => "contests_participants", :validate => false
+  has_many :contest_results
 
   accepts_nested_attributes_for :permalink, :update_only => true, :reject_if => :all_blank, :allow_destroy => true
 

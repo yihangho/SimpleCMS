@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141023131338) do
+ActiveRecord::Schema.define(version: 20141023133713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -152,22 +152,6 @@ ActiveRecord::Schema.define(version: 20141023131338) do
 
   add_index "solve_statuses", ["problem_id", "user_id"], name: "index_solve_statuses_on_problem_id_and_user_id", unique: true, using: :btree
   add_index "solve_statuses", ["user_id", "problem_id"], name: "index_solve_statuses_on_user_id_and_problem_id", unique: true, using: :btree
-
-  create_table "solved_problems", id: false, force: true do |t|
-    t.integer "problem_id"
-    t.integer "user_id"
-  end
-
-  add_index "solved_problems", ["problem_id"], name: "index_solved_problems_on_problem_id", using: :btree
-  add_index "solved_problems", ["user_id"], name: "index_solved_problems_on_user_id", using: :btree
-
-  create_table "solved_tasks", id: false, force: true do |t|
-    t.integer "task_id"
-    t.integer "user_id"
-  end
-
-  add_index "solved_tasks", ["task_id"], name: "index_solved_tasks_on_task_id", using: :btree
-  add_index "solved_tasks", ["user_id"], name: "index_solved_tasks_on_user_id", using: :btree
 
   create_table "submissions", force: true do |t|
     t.integer  "user_id"

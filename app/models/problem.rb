@@ -5,7 +5,6 @@ class Problem < ActiveRecord::Base
   has_many :tasks, :dependent => :destroy, :validate => false
   has_many :codes
   has_and_belongs_to_many :contests, :validate => false
-  has_and_belongs_to_many :solvers, :class_name => "User", :join_table => "solved_problems", :validate => false
   has_many :solve_statuses
 
   validates_associated :tasks

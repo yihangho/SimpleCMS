@@ -14,4 +14,5 @@ class User < ActiveRecord::Base
   has_many :seeds
   has_many :codes
   has_many :contest_results
+  has_many :solve_statuses
 end

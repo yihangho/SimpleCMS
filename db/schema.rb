@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141023121303) do
+ActiveRecord::Schema.define(version: 20141023131338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,6 +141,17 @@ ActiveRecord::Schema.define(version: 20141023121303) do
   add_index "sessions", ["remember_token", "user_id"], name: "index_sessions_on_remember_token_and_user_id", using: :btree
   add_index "sessions", ["remember_token"], name: "index_sessions_on_remember_token", unique: true, using: :btree
   add_index "sessions", ["user_id", "remember_token"], name: "index_sessions_on_user_id_and_remember_token", using: :btree
+
+  create_table "solve_statuses", force: true do |t|
+    t.integer  "user_id",                 null: false
+    t.integer  "problem_id",              null: false
+    t.json     "tasks",      default: {}, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "solve_statuses", ["problem_id", "user_id"], name: "index_solve_statuses_on_problem_id_and_user_id", unique: true, using: :btree
+  add_index "solve_statuses", ["user_id", "problem_id"], name: "index_solve_statuses_on_user_id_and_problem_id", unique: true, using: :btree
 
   create_table "solved_problems", id: false, force: true do |t|
     t.integer "problem_id"

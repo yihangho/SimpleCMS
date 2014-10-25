@@ -28,11 +28,12 @@ class Task < ActiveRecord::Base
   end
 
   def solved_by?(user)
-    solvers.include?(user)
+    solve_status = user.solve_statuses.where(:problem_id => problem).first
+    solve_status && solve_status.tasks[id.to_s]
   end
 
   def solved_between_by?(time1, time2, user)
-    user.submissions.for(self).correct_answer.where(:created_at => (time1..time2)).any?
+    Submission.where(:id => solved_by?(user)).where(:created_at => (time1..time2)).any?
   end
 
   def attempted_by?(user)
@@ -47,11 +48,9 @@ class Task < ActiveRecord::Base
 
   def regrade
     submissions.each do |submission|
-      submission.regrade
+      submission.grade
+      submission.save
     end
-
-    update_solvers
-    problem.update_solvers
   end
 
   def submissions_left_for(user)
@@ -76,12 +75,6 @@ class Task < ActiveRecord::Base
 
   def allowed_to_submit?(user)
     ![0, :not_allowed].include?(submissions_left_for(user))
-  end
-
-  def update_solvers
-    self.solvers = User.select do |user|
-      user.submissions.for(self).correct_answer.any?
-    end
   end
 
   private

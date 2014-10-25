@@ -21,24 +21,15 @@ class Submission < ActiveRecord::Base
       solve_status = user.solve_statuses.create(:problem_id => task.problem.id)
     end
 
-    # As of Rails 4.1.6, it is necessary to make a copy of .tasks and then copy it back
-    # by either using solve_status.tasks = tasks or .update_attribute.
-    # The reason behind is that ActiveModel tracks changes by rigging the attribute writer,
-    # but doing .tasks[something] = something does not go through the writer, hence,
-    # ActiveModel will not know that .tasks is changed. As a result, doing a
-    # .save or .update_attribute without doing .tasks.dup will not update .tasks.
-    #
-    # TODO Check if this happens in Rails 4.2
-    tasks = solve_status.tasks.dup
-    tasks[task.id] ||= []
+    solve_status.tasks[task.id] ||= []
 
     if accepted?
-      tasks[task.id] << id unless tasks[task.id].include?(id)
+      solve_status.tasks[task.id] << id unless solve_status.tasks[task.id].include?(id)
     else
-      tasks[task.id].delete(id)
-      tasks[task.id] = false if tasks[task.id].empty?
+      solve_status.tasks[task.id].delete(id)
+      solve_status.tasks[task.id] = false if solve_status.tasks[task.id].empty?
     end
 
-    solve_status.update_attribute(:tasks, tasks)
+    solve_status.save
   end
 end

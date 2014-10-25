@@ -15,6 +15,7 @@ class Submission < ActiveRecord::Base
   end
 
   after_save do
+    # Update solve status
     solve_status = user.solve_statuses.where(:problem_id => task.problem).first
 
     unless solve_status
@@ -31,6 +32,28 @@ class Submission < ActiveRecord::Base
     end
 
     solve_status.save
+
+    # Update contest results
+    ongoing_contests = task.problem.contests.
+                        where('"contests"."end" > ?', created_at).
+                        where(:id => user.participated_contests)
+
+    ongoing_contests.each do |contest|
+      contest_result = user.contest_results.where(:contest_id => contest).first
+      contest_result = user.contest_results.create(:contest_id => contest.id) unless contest_result
+
+      contest_result.scores[task.problem.id.to_s]               ||= {}
+      task_arr = (contest_result.scores[task.problem.id.to_s][task.id.to_s] ||= [])
+
+      if accepted?
+        task_arr << id unless task_arr.include?(id)
+      else
+        task_arr.delete(id)
+        contest_result.scores[task.problem.id.to_s][task.id.to_s] = false if task_arr.empty?
+      end
+
+      contest_result.save
+    end
   end
 
   def grade

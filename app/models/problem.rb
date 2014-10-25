@@ -27,29 +27,16 @@ class Problem < ActiveRecord::Base
   end
 
   def solved_by?(user)
-    solvers.include?(user)
-  end
-
-  def solved_between_by?(time1, time2, user)
-    tasks.all? { |task| task.solved_between_by?(time1, time2, user) }
+    solve_status = user.solve_statuses.where(:problem_id => id).first
+    solve_status && solve_status.tasks.select { |_, v| v }.keys.map(&:to_i).sort == task_ids.sort
   end
 
   def attempted_by?(user)
-    tasks.any? { |task| task.attempted_by?(user) }
-  end
-
-  def update_solvers
-    task_ids = self.task_ids
-    self.solvers = User.select do |user|
-      task_ids.all? { |id| user.submissions.for(id).correct_answer.any? }
-    end
+    user.submissions.where(:task_id => tasks).any?
   end
 
   def last_submissions_by(user)
-    user ||= User.new
-    tasks.collect do |task|
-      [task.id, user.submissions.for(task).last]
-    end.to_h
+    user.submissions.where(:task_id => tasks).last
   end
 
   def total_points
@@ -57,14 +44,9 @@ class Problem < ActiveRecord::Base
   end
 
   def points_for(user)
-    tasks.inject(0) do |sum, task|
-      task.solved_by?(user) ? sum + task.point : sum
-    end
-  end
-
-  def points_for_between(user, time1, time2)
-    tasks.inject(0) do |sum, task|
-      task.solved_between_by?(time1, time2, user) ? sum + task.point : sum
+    solve_status = user.solve_statuses.where(:problem_id => id).first
+    solve_status && solve_status.tasks.select { |_, v| v }.keys.inject(0) do |sum, id|
+      sum + Task.find(id).point
     end
   end
 

@@ -1,35 +1,22 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any styles
- * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
- * file per style scope.
- *
- *= require bootstrap
- *= require font-awesome
- *= require_tree .
- *= require_self
- */
+@import "bootstrap-sprockets"
+@import "bootstrap"
+@import "font-awesome"
+@import "*"
 
 // Variables
 $color-danger: #a94442
 $space: 20px
 
-html 
+html
   position: relative
   min-height: 100%
 
 
-body 
+body
   margin-bottom: 60px
 
 
-footer 
+footer
   position: absolute
   bottom: 0
   width: 100%
@@ -38,21 +25,21 @@ footer
   color: #eeeeee
 
 
-footer p 
+footer p
   margin: $space 0px
 
-form 
+form
   margin-bottom: $space
 
 
-.disable-select 
+.disable-select
   -webkit-user-select: none
   -moz-user-select: none
   -ms-user-select: none
   user-select: none
 
 
-.spinner-container 
+.spinner-container
   width: 100%
   height: 100%
   position: fixed
@@ -62,16 +49,16 @@ form
   z-index: 9999
 
 
-.header-container 
+.header-container
   margin-bottom: 10px
 
 
 /* Form */
-.form-group.required 
-  label:after 
+.form-group.required
+  label:after
     content: ' *'
     color: $color-danger
 
 /* Navigation */
-.navbar 
+.navbar
   border-radius: 0px

@@ -120,16 +120,14 @@ class Contest < ActiveRecord::Base
   end
 
   def leaderboard
-    participants.collect do |user|
+    contest_results.order(:total_score => :desc).map do |result|
       {
-        :points     => total_points_for(user),
-        :user       => user,
-        :problems   => problems.collect do |problem|
-                         [problem.id, problem.points_for_between(user, Time.at(0), self.end)]
-                       end.to_h
+        :user        => result.user,
+        :problems    => Hash[result.scores.map do |problem_id, tasks|
+                          [problem_id.to_i, Task.find(tasks.select { |_, v| v }.keys).inject(0) { |s, t| s + t.point }]
+                        end],
+        :total_score => result.total_score
       }
-    end.sort do |row1, row2|
-      row1[:points] <=> row2[:points]
-    end.reverse
+    end
   end
 end

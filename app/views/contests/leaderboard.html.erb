@@ -21,9 +21,9 @@
         <tr>
           <td><%= link_to row[:user].username, user_submissions_path(row[:user]) %></td>
           <% problems.each do |problem| %>
-            <td><%= row[:problems][problem.id] %></td>
+            <td><%= row[:problems][problem.id] || 0 %></td>
           <% end %>
-          <td><%= row[:points] %></td>
+          <td><%= row[:total_score] %></td>
         </tr>
       <% end %>
     </tbody>

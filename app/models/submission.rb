@@ -9,7 +9,7 @@ class Submission < ActiveRecord::Base
   validates :user_id, :task_id, :presence => true
 
   before_save do
-    self.accepted = task.grade(input, user)
+    grade
 
     true
   end
@@ -21,15 +21,19 @@ class Submission < ActiveRecord::Base
       solve_status = user.solve_statuses.create(:problem_id => task.problem.id)
     end
 
-    solve_status.tasks[task.id] ||= []
+    solve_status.tasks[task.id.to_s] ||= []
 
     if accepted?
-      solve_status.tasks[task.id] << id unless solve_status.tasks[task.id].include?(id)
+      solve_status.tasks[task.id.to_s] << id unless solve_status.tasks[task.id.to_s].include?(id)
     else
-      solve_status.tasks[task.id].delete(id)
-      solve_status.tasks[task.id] = false if solve_status.tasks[task.id].empty?
+      solve_status.tasks[task.id.to_s].delete(id)
+      solve_status.tasks[task.id.to_s] = false if solve_status.tasks[task.id.to_s].empty?
     end
 
     solve_status.save
+  end
+
+  def grade
+    self.accepted = task.grade(input, user)
   end
 end

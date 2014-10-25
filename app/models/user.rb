@@ -13,4 +13,10 @@ class User < ActiveRecord::Base
   has_many :codes
   has_many :contest_results
   has_many :solve_statuses
+
+  def solved_problems
+    Problem.where(:id => solve_statuses.pluck(:problem_id)).select do |problem|
+      problem.solved_by?(self)
+    end
+  end
 end

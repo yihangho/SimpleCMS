@@ -2,14 +2,14 @@ source 'https://rubygems.org'
 ruby '2.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.0.beta2'
+gem 'rails', '~> 4.2.0'
 gem 'thin', '~> 1.6.2'
 
 gem 'websocket-rails', '~> 0.7.0'
 
 gem 'pg'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0.0.beta1'
+gem 'sass-rails', '~> 5.0.0'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'spinjs-rails'
 gem 'font-awesome-sass'
@@ -76,4 +76,3 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-

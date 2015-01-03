@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20141023133713) do
   enable_extension "plpgsql"
 
   create_table "announcements", force: true do |t|
-    t.string   "title"
+    t.string   "title",      limit: 255
     t.text     "message"
     t.integer  "sender_id"
     t.integer  "contest_id"
@@ -51,14 +51,14 @@ ActiveRecord::Schema.define(version: 20141023133713) do
   add_index "contest_results", ["user_id"], name: "index_contest_results_on_user_id", using: :btree
 
   create_table "contests", force: true do |t|
-    t.string   "title"
+    t.string   "title",         limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "start"
     t.datetime "end"
     t.integer  "creator_id"
-    t.string   "visibility"
-    t.string   "participation"
+    t.string   "visibility",    limit: 255
+    t.string   "participation", limit: 255
     t.text     "instructions"
   end
 
@@ -90,16 +90,16 @@ ActiveRecord::Schema.define(version: 20141023133713) do
   add_index "contests_users", ["user_id"], name: "index_contests_users_on_user_id", using: :btree
 
   create_table "feedbacks", force: true do |t|
-    t.string   "email"
+    t.string   "email",      limit: 255
     t.text     "message"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "permalinks", force: true do |t|
-    t.string   "url"
+    t.string   "url",           limit: 255
     t.integer  "linkable_id"
-    t.string   "linkable_type"
+    t.string   "linkable_type", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -108,19 +108,19 @@ ActiveRecord::Schema.define(version: 20141023133713) do
   add_index "permalinks", ["url"], name: "index_permalinks_on_url", unique: true, using: :btree
 
   create_table "problems", force: true do |t|
-    t.string   "title"
+    t.string   "title",        limit: 255
     t.text     "statement"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "setter_id"
-    t.boolean  "contest_only", default: true
+    t.boolean  "contest_only",             default: true
     t.text     "stub"
   end
 
   add_index "problems", ["setter_id"], name: "index_problems_on_setter_id", using: :btree
 
   create_table "seeds", force: true do |t|
-    t.string   "seed"
+    t.string   "seed",       limit: 255
     t.integer  "user_id"
     t.integer  "task_id"
     t.datetime "created_at"
@@ -131,9 +131,9 @@ ActiveRecord::Schema.define(version: 20141023133713) do
   add_index "seeds", ["user_id", "task_id"], name: "index_seeds_on_user_id_and_task_id", unique: true, using: :btree
 
   create_table "sessions", force: true do |t|
-    t.string   "remember_token"
+    t.string   "remember_token", limit: 255
     t.integer  "user_id"
-    t.string   "user_agent"
+    t.string   "user_agent",     limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -174,22 +174,22 @@ ActiveRecord::Schema.define(version: 20141023133713) do
     t.integer  "problem_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "point",           default: 0
-    t.integer  "tokens",          default: 0
-    t.integer  "order",           default: 0
-    t.string   "label",           default: ""
+    t.integer  "point",                       default: 0
+    t.integer  "tokens",                      default: 0
+    t.integer  "order",                       default: 0
+    t.string   "label",           limit: 255, default: ""
   end
 
   add_index "tasks", ["problem_id"], name: "index_tasks_on_problem_id", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "email"
-    t.string   "password_digest"
+    t.string   "email",           limit: 255
+    t.string   "password_digest", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "admin",           default: false
-    t.string   "username"
-    t.string   "school"
+    t.boolean  "admin",                       default: false
+    t.string   "username",        limit: 255
+    t.string   "school",          limit: 255
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

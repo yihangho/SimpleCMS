@@ -16,6 +16,7 @@
 //= require jquery-ui/widget
 //= require jquery-ui/mouse
 //= require jquery-ui/sortable
+//= require spin
 //= require jquery.spin
 //= require detect_timezone
 //= require zeroclipboard

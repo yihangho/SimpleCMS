@@ -34,3 +34,20 @@ $(document).on "page:load", ->
       angular.bootstrap($(this), [$(this).attr('ng-app')])
 
   $('[data-toggle=tooltip]').tooltip()
+
+  # Bootstrap React components
+  # This will call React.render with the component specified by data-react-component
+  # along with all data-react-* attributes as the props for the component.
+  $('[data-react-component]').each ->
+    return unless $(this).data("react-component")
+
+    reactAttributes = {}
+    for k, v of $(this).data() when k isnt "reactComponent"
+      match = k.match(/^react(.+)$/)
+      continue unless match
+      attributeName = match[1]
+      attributeNameForReact = attributeName[0].toLowerCase() + attributeName.slice(1)
+      reactAttributes[attributeNameForReact] = v
+
+    reactComponent = window[$(this).data("react-component")]
+    React.render(React.createElement(reactComponent, reactAttributes), this)

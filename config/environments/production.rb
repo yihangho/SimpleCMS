@@ -82,6 +82,8 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.middleware.delete Rack::Lock
+
+  config.react.variant = :production
 end
 
 WebsocketRails.setup do |config|

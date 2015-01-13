@@ -20,6 +20,7 @@
 //= require jquery.spin
 //= require detect_timezone
 //= require zeroclipboard
+//= require react
 //= require angular
 //= require angular-resource
 //= require bootstrap/alert

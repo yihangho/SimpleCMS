@@ -5,6 +5,7 @@
 // - language
 // - tabSize
 // - name
+// - value
 //
 // If name is set, then a hidden element with that name will be created to
 // mirror the current value of the editor.
@@ -13,7 +14,7 @@
   window.AceEditor = React.createClass({
     getInitialState: function() {
       return {
-        value: ""
+        value: (this.props.value || "")
       };
     },
     componentDidMount: function() {
@@ -26,6 +27,8 @@
         editor.getSession().setTabSize(this.props.tabSize);
       }
 
+      editor.setValue(this.state.value);
+      editor.gotoLine(0);
       editor.getSession().on('change', function() {
         this.setState({
           value: editor.getValue()

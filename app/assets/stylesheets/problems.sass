@@ -3,79 +3,81 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .problems.show
-    .container 
-        width: 100%
+  .container
+    width: 100%
 
-.task 
-    .task-case 
-        max-height: 180px
-        overflow-y: auto
+.task
+  .task-case
+    max-height: 180px
+    overflow-y: auto
 
-.task-input[readonly] 
-    cursor: auto
-    background-color: white
+.task-input[readonly]
+  cursor: auto
+  background-color: white
 
 
-pre.repl-log 
-    color: inherit
-    background-color: inherit
+pre.repl-log
+  color: inherit
+  background-color: inherit
 
 // Show styles
 .form-group, .col-md-6
-    height: 100% !important
+  height: 100% !important
 
-.jsrepl-container 
-    margin-top: 10px
-    height: 100%
+.jsrepl-container
+  margin-top: 10px
+  height: 100%
 
 .terminal
-    margin-top: 0px
-    position: relative
-    height: 40%
-    interactive-terminal
-        width: 100% !important
-        height: 100%
-        display: block
-        position: static
-        pre
-            border-radius: 0px
-            border: 0
-            border-top: 1px solid #555
-            overflow: hidden
+  margin-top: 0px
+  position: relative
+  height: 40%
+  interactive-terminal
+    width: 100% !important
+    height: 100%
+    display: block
+    position: static
+    pre
+      border-radius: 0px
+      border: 0
+      border-top: 1px solid #555
+      overflow: hidden
 
 .editor
-    height: 50% !important
-    overflow: hide
-    .ace_editor
-        height: 100% !important
+  height: 50% !important
+  overflow: hide
+  .ace_editor
+    height: 100% !important
 
 .problem-container
-    overflow: hidden
+  overflow: hidden
 
 
 .problem-area
-    overflow-y: scroll
-    height: 100%
-    margin-bottom: 36px
+  overflow-y: scroll
+  height: 100%
+  margin-bottom: 36px
 
-
+.tab-pane.tasks-forms
+  padding-top: 20px
+  & > :first-child:not(table)
+    margin-top: 0
 
 @media(max-width: 996px)
-    .problem-area
-        overflow: auto
-        height: 100%
-    
-    .problem-container
-        overflow: display
-        height: 100% !important
+  .problem-area
+    overflow: auto
+    height: 100%
 
-    interactive-terminal, .editor .ace_editor
-        height: 400px !important
-    
-    .form-group, .col-md-6, .ace_editor
-        height: auto
+  .problem-container
+    overflow: display
+    height: 100% !important
+
+  interactive-terminal, .editor .ace_editor
+    height: 400px !important
+
+  .form-group, .col-md-6, .ace_editor
+    height: auto
 
 // Edit styles
 textarea#problem_statement
-    min-height: 500px
-
+  min-height: 500px

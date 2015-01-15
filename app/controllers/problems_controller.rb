@@ -38,8 +38,6 @@ class ProblemsController < ApplicationController
         task.regrade
       end
 
-      @problem.update_solvers
-
       respond_to do |res|
         res.html { render 'show' }
         res.json { render 'edit' }

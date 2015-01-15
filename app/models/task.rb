@@ -12,6 +12,21 @@ class Task < ActiveRecord::Base
     self.point ||= 0
   end
 
+  after_destroy do
+    # Remove related results from solve_status and contest_result
+    problem.solve_statuses.each do |status|
+      status.tasks.delete(id.to_s)
+      status.save
+    end
+
+    problem.contests.each do |contest|
+      contest.contest_results.each do |result|
+        result.scores[problem.id.to_s].delete(id.to_s)
+        result.save
+      end
+    end
+  end
+
   def raw_input(user)
     return nil unless user && !user.new_record?
 

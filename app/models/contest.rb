@@ -7,13 +7,13 @@ class Contest < ActiveRecord::Base
   scope :invited_but_not_participated_by, ->(user) do
     where(:id => user.invited_contests).where.not(:id => user.participated_contests)
   end
-  scope :upcoming, -> { where("\"contests\".\"start\" > ?", Time.now) }
+  scope :upcoming, -> { where(arel_table[:start].gt(Time.now)) }
   scope :ongoing,  -> do
-    where("\"contests\".\"end\" > ?", Time.now).
-    where("\"contests\".\"start\" < ?", Time.now)
+    where(arel_table[:end].gt(Time.now).
+      and(arel_table[:start].lt(Time.now)))
   end
-  scope :ended, -> { where("\"contests\".\"end\" < ?", Time.now) }
-  scope :not_ended, -> { where("\"contests\".\"end\" > ?", Time.now) }
+  scope :ended, -> { where(arel_table[:end].lt(Time.now)) }
+  scope :not_ended, -> { where(arel_table[:end].gt(Time.now)) }
   scope :participated_by, ->(user) { where(:id => user.participated_contests) }
 
   has_one :permalink, :as => :linkable, :dependent => :destroy

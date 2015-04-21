@@ -35,7 +35,7 @@ class Submission < ActiveRecord::Base
 
     # Update contest results
     ongoing_contests = task.problem.contests.
-                        where('"contests"."end" > ?', created_at).
+                        where(Contest.arel_table[:end].gt(created_at)).
                         where(:id => user.participated_contests)
 
     ongoing_contests.each do |contest|

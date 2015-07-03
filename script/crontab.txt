@@ -1,0 +1,1 @@
+* * * * * . $HOME/.profile; cd $DEPLOYMENT_DIR; script/dump_db

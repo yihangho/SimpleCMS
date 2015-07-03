@@ -49,6 +49,7 @@ echo "export PG_USERNAME=simplecms" >> ~/.profile
 echo "export PG_PASSWORD='$pg_password'" >> ~/.profile
 echo "export PG_SIMPLECMS_PROD=simplecms_production" >> ~/.profile
 echo "export SECRET_KEY_BASE=`bundle exec rake secret`" >> ~/.profile
+echo "export DEPLOYMENT_DIR=$DEPLOYMENT_DIR" >> ~/.profile
 source ~/.profile
 
 echo "Installing Git post-receive hook"
@@ -69,3 +70,7 @@ RAILS_ENV=production bundle exec rake assets:precompile
 
 echo "Starting Thin"
 RAILS_ENV=production bundle exec thin --config config/thin.yml start
+
+echo "Setting up database dumping"
+mkdir dump
+crontab script/crontab.txt

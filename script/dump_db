@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cd $DEPLOYMENT_DIR
+sudo -u postgres pg_dump -U postgres -d $PG_SIMPLECMS_PROD >"dump/$(date).dump"

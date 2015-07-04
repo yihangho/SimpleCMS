@@ -72,6 +72,9 @@ RAILS_ENV=production bundle exec rake assets:precompile
 echo "Starting Thin"
 RAILS_ENV=production bundle exec thin --config config/thin.yml start
 
+echo "Creating bootstrap admin user"
+RAILS_ENV=production bundle exec rake db:seed
+
 echo "Setting up database dumping"
 mkdir dump
 crontab script/crontab.txt

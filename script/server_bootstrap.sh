@@ -37,7 +37,7 @@ cd $HOME
 git clone https://github.com/yihangho/SimpleCMS.git --bare
 cd SimpleCMS.git
 mkdir -p $DEPLOYMENT_DIR
-GIT_WORK_TREE=$DEPLOYMENT_DIR git checkout -f master
+GIT_WORK_TREE=$DEPLOYMENT_DIR git checkout -f mcc2015
 cd $DEPLOYMENT_DIR
 
 echo "Installing Ruby Gems"
@@ -71,3 +71,7 @@ RAILS_ENV=production bundle exec rake assets:precompile
 
 echo "Starting Thin"
 RAILS_ENV=production bundle exec thin --config config/thin.yml start
+
+echo "Setting up database dumping"
+mkdir dump
+crontab script/crontab.txt

@@ -13,6 +13,7 @@ echo "Installing system dependencies"
 sudo apt-get -y install git-core postgresql libpq-dev nodejs openssh-server nginx redis-server
 
 echo "Installing RVM"
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 \curl -sSL https://get.rvm.io | bash -s stable
 source ~/.rvm/scripts/rvm
 
@@ -49,6 +50,7 @@ echo "export PG_USERNAME=simplecms" >> ~/.profile
 echo "export PG_PASSWORD='$pg_password'" >> ~/.profile
 echo "export PG_SIMPLECMS_PROD=simplecms_production" >> ~/.profile
 echo "export SECRET_KEY_BASE=`bundle exec rake secret`" >> ~/.profile
+echo "export DEPLOYMENT_DIR=$DEPLOYMENT_DIR" >> ~/.profile
 source ~/.profile
 
 echo "Installing Git post-receive hook"
